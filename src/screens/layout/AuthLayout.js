@@ -1,9 +1,19 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Dimensions,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import colors from '../../theme/colors';
 import {typography} from '../../theme/typography';
 import FullScreenLoader from '../../components/Loader/FullScreenLoader';
+
+const {height} = Dimensions.get('window');
+const verticalScale = size => (height / 812) * size;
 
 const AuthLayout = ({
   title = 'Welcome',
@@ -17,6 +27,7 @@ const AuthLayout = ({
   return (
     <SafeAreaView style={styles.container} edges={['bottom', 'left', 'right']}>
       {loader && <FullScreenLoader />}
+
       {/* Background Images */}
       <Image
         source={require('../../assets/images/appBackground/appBgUp.png')}
@@ -27,19 +38,22 @@ const AuthLayout = ({
         style={styles.appBgDownIcon}
       />
 
-      {/* Title Section */}
-      <View style={[styles.titleView, topStyle]}>
-        {title && <Text style={[styles.titleTxt, fontStyle]}>{title}</Text>}
-        {subTitle && <Text style={styles.subTitleTxt}>{subTitle}</Text>}
-      </View>
+      {/* Main Content */}
+      <View style={{flex: 1}}>
+        {/* Title Section */}
+        <View style={[styles.titleView, topStyle]}>
+          {title && <Text style={[styles.titleTxt, fontStyle]}>{title}</Text>}
+          {subTitle && <Text style={styles.subTitleTxt}>{subTitle}</Text>}
+        </View>
 
-      {/* Scrollable Content View */}
-      <View style={[styles.contentView, containerStyle]}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}>
-          {children}
-        </ScrollView>
+        {/* Scrollable Content View */}
+        <View style={[styles.contentView, containerStyle]}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContent}>
+            {children}
+          </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -49,8 +63,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.appTheme,
-    // justifyContent: "space-between",
-    // paddingTop: "80%",
   },
   appBgUpIcon: {
     width: 239,
@@ -68,15 +80,15 @@ const styles = StyleSheet.create({
     top: 101,
   },
   titleView: {
-    flex: 0.17,
     width: '85%',
-    marginTop: 68,
+    paddingTop: verticalScale(68),
+    paddingBottom: verticalScale(32),
     paddingHorizontal: 24,
+    backgroundColor: 'transparent',
   },
   titleTxt: {
     fontSize: 32,
     color: colors.white,
-    textAlignVertical: 'center',
     fontFamily: typography.Bold_700,
     lineHeight: 32 * 1.3,
     letterSpacing: 32 * (-2 / 100),
@@ -87,12 +99,11 @@ const styles = StyleSheet.create({
     lineHeight: 12 * 1.4,
     letterSpacing: 12 * (-1 / 100),
     fontFamily: typography.Medium_500,
-    marginTop: 12,
+    marginTop: verticalScale(12),
   },
   contentView: {
     flex: 1,
     backgroundColor: colors.white,
-    // top: 184,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     overflow: 'hidden',

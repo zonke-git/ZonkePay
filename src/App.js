@@ -77,7 +77,7 @@ const App = () => {
           <Provider store={store}>
             <NavigationContainer>
               <Stack.Navigator
-                initialRouteName={'SignUp'}
+                initialRouteName={'ScannerPage'}
                 screenOptions={({route}) => ({
                   headerShown: false,
                   cardStyleInterpolator:
