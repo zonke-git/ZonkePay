@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {
   Camera,
   useCameraDevice,
   useCodeScanner,
 } from 'react-native-vision-camera';
 import {requestCameraPermission} from '../../utils/permissions';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const QRScanner = ({onCodeScanned}) => {
+const QRScanner = ({onCodeScanned, onCancel}) => {
   const [hasPermission, setHasPermission] = useState(false);
   const device = useCameraDevice('back');
 
@@ -59,6 +60,11 @@ const QRScanner = ({onCodeScanned}) => {
         <View style={styles.qrFrame} />
         <Text style={styles.qrText}>Scan a QR code</Text>
       </View>
+
+      {/* Cancel Button */}
+      <TouchableOpacity style={styles.cancelButton} onPress={onCancel}>
+        <Icon name="close" size={30} color="white" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -88,6 +94,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     paddingHorizontal: 20,
+  },
+  cancelButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    backgroundColor: 'rgba(0,0,0,0.6)',
+    borderRadius: 20,
+    padding: 10,
   },
 });
 

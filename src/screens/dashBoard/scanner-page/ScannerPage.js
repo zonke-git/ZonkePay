@@ -1,8 +1,16 @@
-import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, View, Text, Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  TouchableOpacity,
+  BackHandler,
+} from 'react-native';
 import QRScanner from './QRScanner';
 
-const ScannerPage = () => {
+const ScannerPage = ({navigation}) => {
   const [isScanning, setIsScanning] = useState(false);
   const [scannedData, setScannedData] = useState('');
 
@@ -11,10 +19,32 @@ const ScannerPage = () => {
     setIsScanning(false);
   };
 
+  const handleCancel = () => {
+    setIsScanning(false);
+  };
+
+  // Add this useEffect in ScannerPage
+  useEffect(() => {
+    const backAction = () => {
+      if (isScanning) {
+        setIsScanning(false);
+        return true; // Prevent default back behavior
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, [isScanning]);
+
   return (
     <SafeAreaView style={styles.container}>
       {isScanning ? (
-        <QRScanner onCodeScanned={handleScan} />
+        <QRScanner onCodeScanned={handleScan} onCancel={handleCancel} />
       ) : (
         <View style={styles.content}>
           {scannedData ? (
@@ -27,11 +57,11 @@ const ScannerPage = () => {
               Click the button below to scan a QR code
             </Text>
           )}
-          <Button
-            title="Scan QR Code"
-            onPress={() => setIsScanning(true)}
+          <TouchableOpacity
             style={styles.scanButton}
-          />
+            onPress={() => setIsScanning(true)}>
+            <Text style={styles.scanButtonText}>Scan QR Code</Text>
+          </TouchableOpacity>
         </View>
       )}
     </SafeAreaView>
@@ -66,8 +96,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   scanButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 25,
     marginTop: 20,
-    width: 200,
+  },
+  scanButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
