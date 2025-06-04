@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "274838932691",
+    "project_id": "zonke-347ff",
+    "storage_bucket": "zonke-347ff.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274838932691:android:bd396f300ea886f95c1826",
+        "android_client_info": {
+          "package_name": "com.zonkepay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDg-Pma0eCQkq2G6mCGEQPDnGT7pCN2VzE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
