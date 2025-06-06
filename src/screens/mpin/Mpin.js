@@ -10,8 +10,14 @@ import CheckBox from '../../components/CheckBox/CheckBox';
 import {useMpin} from '../../hooks/mpin/use-Mpin';
 
 const Mpin = () => {
-  const {otpValue, setOtpValue, invalidOtp, faceIDCheckBox, setFaceIDCheckBox} =
-    useMpin();
+  const {
+    otpValue,
+    setOtpValue,
+    invalidOtp,
+    faceIDCheckBox,
+    setFaceIDCheckBox,
+    handleSumbit,
+  } = useMpin();
   return (
     <AuthLayout
       title={`${i18n.t('Create')} MPIN`}
@@ -42,10 +48,7 @@ const Mpin = () => {
             }}
           />
         </View>
-        <TouchableOpacity
-          style={[styles.buttonWrapper]}
-          // onPress={handleLogin}
-        >
+        <TouchableOpacity style={[styles.buttonWrapper]} onPress={handleSumbit}>
           <LinearGradient
             colors={[colors.appTheme, colors.appTheme]}
             style={styles.button}>

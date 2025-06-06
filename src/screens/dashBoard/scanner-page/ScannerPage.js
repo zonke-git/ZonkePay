@@ -1,14 +1,32 @@
+import 'react-native-gesture-handler';
+
 import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
-  Button,
   TouchableOpacity,
   BackHandler,
+  Image,
 } from 'react-native';
 import QRScanner from './QRScanner';
+import {typography} from '../../../theme/typography';
+import colors from '../../../theme/colors';
+import LinearGradient from 'react-native-linear-gradient';
+import BankList from '../bank/BankList';
+import LastUpdated from '../bank/LastUpdated';
+import DashboardLayout from '../../layout/DashboardLayout';
+import IconGrid from '../bank/IconGrid';
+import BottomTabSheet from '../bottomTabSheet/BottomTabSheet';
+
+const historyData = [
+  'Payment to XYZ',
+  'Top-up from Card',
+  'Paid to Grocery Store',
+  'Bank Transfer to ABC',
+  // add more as needed
+];
 
 const ScannerPage = ({navigation}) => {
   const [isScanning, setIsScanning] = useState(false);
@@ -41,71 +59,151 @@ const ScannerPage = ({navigation}) => {
     return () => backHandler.remove();
   }, [isScanning]);
 
+  const DATA = [
+    {icon: require('../../../assets/images/scanner.png'), name: 'Scan & Pay'},
+    {icon: require('../../../assets/images/contact.png'), name: 'Pay Contact'},
+    {
+      icon: require('../../../assets/images/telephone.png'),
+      name: 'Phone Number',
+    },
+    {icon: require('../../../assets/images/bank.png'), name: 'Bank Transfe'},
+    {
+      icon: require('../../../assets/images/face-scan.png'),
+      name: 'Pay Virtual ID',
+    },
+    {
+      icon: require('../../../assets/images/bank-transfer.png'),
+      name: 'Self Transfer',
+    },
+    {
+      icon: require('../../../assets/images/flash.png'),
+      name: 'Electricity Bills',
+    },
+    {
+      icon: require('../../../assets/images/mobile.png'),
+      name: 'Mobile Recharge',
+    },
+    // add more items...
+  ];
+
   return (
-    <SafeAreaView style={styles.container}>
-      {isScanning ? (
-        <QRScanner onCodeScanned={handleScan} onCancel={handleCancel} />
-      ) : (
-        <View style={styles.content}>
-          {scannedData ? (
-            <>
-              <Text style={styles.scannedText}>Scanned Data:</Text>
-              <Text style={styles.scannedData}>{scannedData}</Text>
-            </>
-          ) : (
-            <Text style={styles.instructionText}>
-              Click the button below to scan a QR code
-            </Text>
-          )}
+    <>
+      <DashboardLayout title={''} loader={false} showAuth={true}>
+        {!isScanning && (
+          <SafeAreaView style={styles.container}>
+            <LastUpdated />
+
+            <BankList />
+
+            <IconGrid data={DATA} />
+
+            {scannedData && (
+              <View style={styles.content}>
+                <Text style={styles.scannedText}>Scanned Data:</Text>
+                <Text style={styles.scannedData}>{scannedData}</Text>
+              </View>
+            )}
+          </SafeAreaView>
+        )}
+        {isScanning && (
+          <QRScanner onCodeScanned={handleScan} onCancel={handleCancel} />
+        )}
+      </DashboardLayout>
+
+      {!isScanning && <BottomTabSheet data={historyData} />}
+
+      {!isScanning && (
+        <View style={styles.scannerBtn_view}>
           <TouchableOpacity
-            style={styles.scanButton}
+            style={styles.buttonWrapper}
             onPress={() => setIsScanning(true)}>
-            <Text style={styles.scanButtonText}>Scan QR Code</Text>
+            <LinearGradient
+              colors={[colors.appTheme, colors.AmberOrange]}
+              style={styles.button}>
+              <Image
+                source={require('../../../assets/images/scanner.png')}
+                style={styles.scannedIcon}
+              />
+            </LinearGradient>
+            <Text style={styles.btnText}>Scan QR Code</Text>
           </TouchableOpacity>
         </View>
       )}
-    </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 24,
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // padding: 20,
   },
-  instructionText: {
-    fontSize: 18,
-    marginBottom: 30,
-    textAlign: 'center',
-  },
+
   scannedText: {
     fontSize: 18,
-    fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: typography.Bold_700,
   },
   scannedData: {
     fontSize: 16,
     marginBottom: 30,
     padding: 15,
-    backgroundColor: '#f0f0f0',
+    // backgroundColor: '#f0f0f0',
     borderRadius: 5,
   },
-  scanButton: {
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 25,
-    marginTop: 20,
+  scannerBtn_view: {
+    flexDirection: 'column',
+    position: 'absolute',
+    bottom: 50,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    // flex: 1,
   },
-  scanButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
+  buttonWrapper: {
+    // width: 90,
+    // height: 140,
+    borderRadius: 100,
+    shadowColor: colors.DenimBlue,
+    shadowOffset: {width: 0, height: 1},
+    shadowOpacity: 0.48,
+    shadowRadius: 4,
+    elevation: 19,
+    alignItems: 'center',
+  },
+  button: {
+    width: 80,
+    height: 80,
+    borderRadius: 40, // Half of width/height
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: colors.DenimBlue,
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+
+  scannedIcon: {
+    width: 34,
+    height: 34,
+    resizeMode: 'contain',
+  },
+
+  btnText: {
+    fontSize: 14,
+    color: colors.black,
+    lineHeight: 14 * 1.4,
+    letterSpacing: 12 * (-1 / 100),
+    fontFamily: typography.ExtraBoldItalic_800,
+    marginTop: 10,
   },
 });
 

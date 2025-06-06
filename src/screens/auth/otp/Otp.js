@@ -26,6 +26,10 @@ const OTP = () => {
     handleBack,
     verifyOtpError,
     verifyOtpErrorMessage,
+    verifyOtpSuccess,
+    loading,
+    handleChangeNumber,
+    ResendOTPloading,
   } = useOTP();
 
   return (

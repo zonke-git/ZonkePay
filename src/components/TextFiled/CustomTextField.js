@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.24,
     shadowRadius: 2,
     elevation: 2, // for Android
+    
   },
   leftIcon: {
     width: 16.27,
@@ -145,6 +146,8 @@ const styles = StyleSheet.create({
     lineHeight: 14 * 1.4,
     letterSpacing: 14 * (0 / 100),
     fontFamily: typography.Medium_500,
+
+    backgroundColor: 'transparent',
   },
   inputError: {
     borderColor: colors.FireEngineRed,

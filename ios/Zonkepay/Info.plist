@@ -79,5 +79,8 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Your message to user when the microsphone is accessed for the first time</string>
 
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs access to contacts.</string>
+
 </dict>
 </plist>

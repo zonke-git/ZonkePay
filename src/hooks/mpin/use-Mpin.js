@@ -10,7 +10,9 @@ export const useMpin = () => {
   const handleNavigation = () => {
     navigation.navigate('LogIn');
   };
-
+  const handleSumbit = () => {
+    navigation.navigate('MpinCreatedSuccessfully');
+  };
   return {
     otpValue,
     setOtpValue,
@@ -18,5 +20,6 @@ export const useMpin = () => {
     handleNavigation,
     faceIDCheckBox,
     setFaceIDCheckBox,
+    handleSumbit,
   };
 };

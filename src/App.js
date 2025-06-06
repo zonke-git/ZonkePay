@@ -1,4 +1,7 @@
 import 'react-native-reanimated';
+import 'react-native-gesture-handler';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import React, {useEffect, useState} from 'react';
 import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
@@ -13,11 +16,13 @@ import {RootSiblingParent} from 'react-native-root-siblings';
 import FullScreenLoader from './components/Loader/FullScreenLoader';
 import {requestUserPermission} from './utils/notificationPermission';
 import {
+  History,
   Location,
   LocationMap,
   LogIn,
   Mpin,
   MpinCreatedSuccessfully,
+  NewPayment,
   Onboard,
   OTP,
   ScannerPage,
@@ -26,6 +31,7 @@ import {
   WalletCreatedSuccessfully,
   Welcome,
 } from './screens';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 
@@ -65,6 +71,26 @@ const App = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const checkFirstLaunch = async () => {
+      try {
+        const hasLaunched = await AsyncStorage.getItem('hasLaunched');
+        if (hasLaunched === null) {
+          await AsyncStorage.setItem('hasLaunched', 'true');
+          setInitialScreen('SplashScreen'); // First time
+        } else {
+          // setInitialScreen('SignUp'); // Not first time
+          setInitialScreen('NewPayment'); // Not first time
+        }
+      } catch (e) {
+        console.error('Error checking launch status:', e);
+        setInitialScreen('SplashScreen');
+      }
+    };
+
+    checkFirstLaunch();
+  }, []);
+
   return (
     <>
       <RootSiblingParent>
@@ -73,53 +99,69 @@ const App = () => {
           backgroundColor="transparent"
           barStyle="dark-content"
         />
-        {initialScreen === '' ? (
+        {initialScreen !== '' ? (
           <Provider store={store}>
-            <NavigationContainer>
-              <Stack.Navigator
-                initialRouteName={'ScannerPage'}
-                screenOptions={({route}) => ({
-                  headerShown: false,
-                  cardStyleInterpolator:
-                    CardStyleInterpolators.forHorizontalIOS,
-                })}>
-                <>
-                  {/* {!isAuthenticated ? ( */}
-                  <>
-                    <Stack.Screen
-                      name="SplashScreen"
-                      component={SplashScreen}
-                    />
-                    <Stack.Screen name="Welcome" component={Welcome} />
-                    <Stack.Screen name="SignUp" component={SignUp} />
-                    <Stack.Screen name="Onboard" component={Onboard} />
-                    <Stack.Screen name="Location" component={Location} />
-                    <Stack.Screen name="LocationMap" component={LocationMap} />
-                    <Stack.Screen name="LogIn" component={LogIn} />
-                    <Stack.Screen name="OTP" component={OTP} />
-                    <Stack.Screen
-                      name="WalletCreatedSuccessfully"
-                      component={WalletCreatedSuccessfully}
-                    />
+            <GestureHandlerRootView style={{flex: 1}}>
+              <BottomSheetModalProvider>
+                <NavigationContainer>
+                  <Stack.Navigator
+                    initialRouteName={initialScreen}
+                    screenOptions={({route}) => ({
+                      headerShown: false,
+                      cardStyleInterpolator:
+                        CardStyleInterpolators.forHorizontalIOS,
+                    })}>
+                    <>
+                      {/* {!isAuthenticated ? ( */}
+                      <>
+                        <Stack.Screen
+                          name="SplashScreen"
+                          component={SplashScreen}
+                        />
+                        <Stack.Screen name="Welcome" component={Welcome} />
+                        <Stack.Screen name="SignUp" component={SignUp} />
+                        <Stack.Screen name="Onboard" component={Onboard} />
+                        <Stack.Screen name="Location" component={Location} />
+                        <Stack.Screen
+                          name="LocationMap"
+                          component={LocationMap}
+                        />
+                        <Stack.Screen name="LogIn" component={LogIn} />
+                        <Stack.Screen name="OTP" component={OTP} />
+                        <Stack.Screen
+                          name="WalletCreatedSuccessfully"
+                          component={WalletCreatedSuccessfully}
+                        />
 
-                    <Stack.Screen name="Mpin" component={Mpin} />
-                    <Stack.Screen
-                      name="MpinCreatedSuccessfully"
-                      component={MpinCreatedSuccessfully}
-                    />
-                    <Stack.Screen name="ScannerPage" component={ScannerPage} />
-                  </>
-                  {/* ) : ( */}
-                  {/* <>
+                        <Stack.Screen name="Mpin" component={Mpin} />
+                        <Stack.Screen
+                          name="MpinCreatedSuccessfully"
+                          component={MpinCreatedSuccessfully}
+                        />
+                        <Stack.Screen
+                          name="ScannerPage"
+                          component={ScannerPage}
+                        />
+
+                        <Stack.Screen name="History" component={History} />
+                        <Stack.Screen
+                          name="NewPayment"
+                          component={NewPayment}
+                        />
+                      </>
+                      {/* ) : ( */}
+                      {/* <>
                       <Stack.Screen
                         name="MainApp"
                         component={BottomTabNavigator}
                       />
                     </> */}
-                  {/* )} */}
-                </>
-              </Stack.Navigator>
-            </NavigationContainer>
+                      {/* )} */}
+                    </>
+                  </Stack.Navigator>
+                </NavigationContainer>
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
           </Provider>
         ) : (
           <>

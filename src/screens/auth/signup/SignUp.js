@@ -22,8 +22,9 @@ const SignUp = () => {
     dispatch,
     isPhoneNumberInvalid,
     handleBack,
-    isRememberMe,
-    setIsRememberMe,
+    handlePhoneNumberChange,
+    validationErrorMsg,
+    handleForgotPwd,
   } = useSignUp();
 
   return (
@@ -32,24 +33,24 @@ const SignUp = () => {
         <View>
           <CustomTextField
             label="Phone Number"
-            placeholder="Enter Mobile Number"
+            placeholder="0XX XXX XXXX"
             placeholderTextColor={colors.SilverGray}
             value={userInput?.phoneNo}
-            onChangeText={text => {
-              dispatch(setLoginDetails({phoneNo: text}));
-            }}
+            onChangeText={handlePhoneNumberChange}
             keyboardType="phone-pad"
             leftComponent={true}
+            disableContrySelection={true}
             countryPhoneCode={userInput?.countrieDetails?.phoneCode}
             countryPhoneFlag={userInput?.countrieDetails?.flag}
             setOpenCountryModal={setModalVisible}
             inputStyle={styles.inputBox}
-            error={requestOtpErrorMessage}
+            error={validationErrorMsg ?? requestOtpErrorMessage}
             maxLength={
-              userInput?.countrieDetails?.code === 'IN' ||
-              userInput?.countrieDetails?.code === 'US' ||
-              userInput?.countrieDetails?.code === 'AU' ||
               userInput?.countrieDetails?.code === 'ZA'
+                ? 12 // Allows for "0XX XXX XXXX" (10 digits + 2 spaces)
+                : userInput?.countrieDetails?.code === 'IN' ||
+                  userInput?.countrieDetails?.code === 'US' ||
+                  userInput?.countrieDetails?.code === 'AU'
                 ? 10
                 : userInput?.countrieDetails?.code === 'AE'
                 ? 9
@@ -65,10 +66,18 @@ const SignUp = () => {
             <CheckBox
               label={i18n.t('RememberMe')}
               labelStyle={styles.checkBoxLabel}
-              value={isRememberMe}
-              onToggle={() => setIsRememberMe(!isRememberMe)}
+              value={userInput?.isRememberMe}
+              onToggle={() =>
+                dispatch(
+                  setLoginDetails({
+                    isRememberMe: !userInput?.isRememberMe,
+                  }),
+                )
+              }
             />
-            <Text style={styles.forgotTxt}>{i18n.t('ForgotPassword')} ?</Text>
+            <Text style={styles.forgotTxt} onPress={handleForgotPwd}>
+              {i18n.t('ForgotPassword')} ?
+            </Text>
           </View>
         </View>
 

@@ -31,7 +31,7 @@ const WalletCreatedSuccessfully = () => {
           <TouchableOpacity
             style={styles.buttonWrapper}
             onPress={() => {
-              navigation.navigate('BusinessProfile');
+              navigation.navigate('ScannerPage');
             }}>
             <LinearGradient
               colors={[colors.white, colors.white]}
@@ -44,7 +44,7 @@ const WalletCreatedSuccessfully = () => {
           <TouchableOpacity
             style={styles.buttonWrapper}
             onPress={() => {
-              navigation.navigate('BusinessProfile');
+              navigation.navigate('ScannerPage');
             }}>
             <LinearGradient
               colors={[colors.appTheme, colors.appTheme]}

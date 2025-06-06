@@ -17,6 +17,8 @@ export {default as MpinCreatedSuccessfully} from './mpin/MpinCreatedSuccessfully
 
 // DashBoard Screens
 export {default as ScannerPage} from './dashBoard/scanner-page/ScannerPage';
+export {default as History} from './dashBoard/history/History';
+export {default as NewPayment} from './dashBoard/newPayment/NewPayment';
 // export {default as Home} from './dashBoard/home/Home';
 // export {default as Community} from './dashBoard/community/Community';
 // export {default as Pay} from './dashBoard/pay/Pay';
