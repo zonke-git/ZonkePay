@@ -1,5 +1,13 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Touchable,
+  TouchableOpacity,
+} from 'react-native';
 import {typography} from '../../../theme/typography';
 import colors from '../../../theme/colors';
 
@@ -11,7 +19,7 @@ const banks = [
   {name: 'Kotak', icon: require('../../../assets/images/bank.png')},
 ];
 
-const BankList = () => {
+const BankList = ({handleSelect}) => {
   return (
     <View style={styles.container}>
       <ScrollView
@@ -19,10 +27,13 @@ const BankList = () => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.bankListContainer}>
         {banks.map((bank, index) => (
-          <View key={index} style={styles.bankBox}>
+          <TouchableOpacity
+            key={index}
+            style={styles.bankBox}
+            onPress={() => handleSelect(index)}>
             <Image source={bank.icon} style={styles.bankIcon} />
             <Text style={styles.bankName}>{bank.name}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </ScrollView>
     </View>

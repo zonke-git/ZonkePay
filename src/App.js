@@ -25,7 +25,8 @@ import {
   NewPayment,
   Onboard,
   OTP,
-  ScannerPage,
+  DashBoard,
+  SendTo,
   SignUp,
   SplashScreen,
   WalletCreatedSuccessfully,
@@ -80,7 +81,7 @@ const App = () => {
           setInitialScreen('SplashScreen'); // First time
         } else {
           // setInitialScreen('SignUp'); // Not first time
-          setInitialScreen('NewPayment'); // Not first time
+          setInitialScreen('DashBoard'); // Not first time
         }
       } catch (e) {
         console.error('Error checking launch status:', e);
@@ -139,8 +140,8 @@ const App = () => {
                           component={MpinCreatedSuccessfully}
                         />
                         <Stack.Screen
-                          name="ScannerPage"
-                          component={ScannerPage}
+                          name="DashBoard"
+                          component={DashBoard}
                         />
 
                         <Stack.Screen name="History" component={History} />
@@ -148,6 +149,7 @@ const App = () => {
                           name="NewPayment"
                           component={NewPayment}
                         />
+                        <Stack.Screen name="SendTo" component={SendTo} />
                       </>
                       {/* ) : ( */}
                       {/* <>

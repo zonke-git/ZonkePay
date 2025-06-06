@@ -9,6 +9,7 @@ export default {
   Nickname_Optional: 'لقب (اختياري)',
   ReferralCode: 'كود الإحالة',
   SignUp: 'انضم',
+  MyContact:'جهتي الاتصال',
   //
   //
   // schema validation message

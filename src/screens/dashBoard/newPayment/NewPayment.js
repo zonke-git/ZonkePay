@@ -16,6 +16,8 @@ import DashboardLayout from '../../layout/DashboardLayout';
 import {useNewPayment} from '../../../hooks/newPayment/use-NewPayment';
 import colors from '../../../theme/colors';
 import {typography} from '../../../theme/typography';
+import {i18n} from '../../../localization';
+import IconGrid from '../bank/IconGrid';
 
 const NewPayment = () => {
   const {
@@ -135,7 +137,7 @@ const NewPayment = () => {
     return (
       <FlatList
         data={contactsData}
-        keyExtractor={item => item.recordID}
+        keyExtractor={item => item.recordID.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
         refreshControl={
@@ -155,14 +157,25 @@ const NewPayment = () => {
       loader={false}
       backButton={true}
       handleBack={handleBack}>
-      {renderContent()}
+      <View style={styles.Container}>
+        <IconGrid layoutType="horizontal" />
+        <Text style={styles.titleText}>{i18n.t('MyContact')}</Text>
+        {renderContent()}
+      </View>
     </DashboardLayout>
   );
 };
 const styles = StyleSheet.create({
-  listContainer: {
-    padding: 16,
+  Container: {flex: 1, padding: 16},
+  titleText: {
+    fontSize: 14,
+    color: colors.black,
+    lineHeight: 14 * 1.4,
+    letterSpacing: 12 * (-1 / 100),
+    fontFamily: typography.Medium_500,
+    marginTop: 20,
   },
+  listContainer: {},
   listView: {
     flexDirection: 'row',
     alignItems: 'center',

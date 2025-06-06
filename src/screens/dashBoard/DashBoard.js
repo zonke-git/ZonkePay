@@ -10,15 +10,16 @@ import {
   BackHandler,
   Image,
 } from 'react-native';
-import QRScanner from './QRScanner';
-import {typography} from '../../../theme/typography';
-import colors from '../../../theme/colors';
+import QRScanner from './scanner-page/QRScanner';
+import {typography} from '../../theme/typography';
+import colors from '../../theme/colors';
 import LinearGradient from 'react-native-linear-gradient';
-import BankList from '../bank/BankList';
-import LastUpdated from '../bank/LastUpdated';
-import DashboardLayout from '../../layout/DashboardLayout';
-import IconGrid from '../bank/IconGrid';
-import BottomTabSheet from '../bottomTabSheet/BottomTabSheet';
+import BankList from './bank/BankList';
+import LastUpdated from './bank/LastUpdated';
+import DashboardLayout from '../layout/DashboardLayout';
+import IconGrid from './bank/IconGrid';
+import BottomTabSheet from './bottomTabSheet/BottomTabSheet';
+import {useDashboard} from '../../hooks/dashboard/use-dashboard';
 
 const historyData = [
   'Payment to XYZ',
@@ -28,64 +29,15 @@ const historyData = [
   // add more as needed
 ];
 
-const ScannerPage = ({navigation}) => {
-  const [isScanning, setIsScanning] = useState(false);
-  const [scannedData, setScannedData] = useState('');
-
-  const handleScan = data => {
-    setScannedData(data);
-    setIsScanning(false);
-  };
-
-  const handleCancel = () => {
-    setIsScanning(false);
-  };
-
-  // Add this useEffect in ScannerPage
-  useEffect(() => {
-    const backAction = () => {
-      if (isScanning) {
-        setIsScanning(false);
-        return true; // Prevent default back behavior
-      }
-      return false;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-
-    return () => backHandler.remove();
-  }, [isScanning]);
-
-  const DATA = [
-    {icon: require('../../../assets/images/scanner.png'), name: 'Scan & Pay'},
-    {icon: require('../../../assets/images/contact.png'), name: 'Pay Contact'},
-    {
-      icon: require('../../../assets/images/telephone.png'),
-      name: 'Phone Number',
-    },
-    {icon: require('../../../assets/images/bank.png'), name: 'Bank Transfe'},
-    {
-      icon: require('../../../assets/images/face-scan.png'),
-      name: 'Pay Virtual ID',
-    },
-    {
-      icon: require('../../../assets/images/bank-transfer.png'),
-      name: 'Self Transfer',
-    },
-    {
-      icon: require('../../../assets/images/flash.png'),
-      name: 'Electricity Bills',
-    },
-    {
-      icon: require('../../../assets/images/mobile.png'),
-      name: 'Mobile Recharge',
-    },
-    // add more items...
-  ];
-
+const DashBoard = ({navigation}) => {
+  const {
+    isScanning,
+    handleBankSelect,
+    scannedData,
+    handleScan,
+    handleCancel,
+    setIsScanning,
+  } = useDashboard();
   return (
     <>
       <DashboardLayout title={''} loader={false} showAuth={true}>
@@ -93,9 +45,9 @@ const ScannerPage = ({navigation}) => {
           <SafeAreaView style={styles.container}>
             <LastUpdated />
 
-            <BankList />
+            <BankList handleSelect={handleBankSelect} />
 
-            <IconGrid data={DATA} />
+            <IconGrid />
 
             {scannedData && (
               <View style={styles.content}>
@@ -121,7 +73,7 @@ const ScannerPage = ({navigation}) => {
               colors={[colors.appTheme, colors.AmberOrange]}
               style={styles.button}>
               <Image
-                source={require('../../../assets/images/scanner.png')}
+                source={require('../../assets/images/scanner.png')}
                 style={styles.scannedIcon}
               />
             </LinearGradient>
@@ -207,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ScannerPage;
+export default DashBoard;

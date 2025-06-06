@@ -49,7 +49,7 @@ const BottomTabSheet = () => {
   return (
     <BottomSheet
       ref={bottomSheetRef}
-      index={2} // index 2 = 100% screen height now
+      index={-1} // index 2 = 100% screen height now
       snapPoints={snapPoints}
       onChange={handleSheetChanges}
       enablePanDownToClose={false}

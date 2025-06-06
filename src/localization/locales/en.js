@@ -9,6 +9,7 @@ export default {
   Nickname_Optional: 'Nickname(Optional)',
   ReferralCode: 'Referral Code',
   SignUp: 'Sign Up',
+  MyContact:'My Contact',
   //
   //
   // schema validation message
