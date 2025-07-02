@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import DashboardLayout from '../../layout/DashboardLayout';
 import {useNewPayment} from '../../../hooks/newPayment/use-NewPayment';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import {i18n} from '../../../localization';
 import IconGrid from '../bank/IconGrid';
 

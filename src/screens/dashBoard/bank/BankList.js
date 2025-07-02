@@ -8,8 +8,8 @@ import {
   Touchable,
   TouchableOpacity,
 } from 'react-native';
-import {typography} from '../../../theme/typography';
-import colors from '../../../theme/colors';
+import {typography} from '../../../Theme/typography';
+import colors from '../../../Theme/colors';
 
 const banks = [
   {name: 'HDFC', icon: require('../../../assets/images/bank.png')},

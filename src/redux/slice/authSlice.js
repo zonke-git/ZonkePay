@@ -9,10 +9,14 @@ const initialState = {
   countriesListLoading: false,
   countriesListError: null,
 
+  showForgotPage: false,
+
   loginDetails: {
+    // phoneNo: '812333334',
+    // phoneNo: '844444443',
+    // phoneNo: '844444447',
     phoneNo: '',
     countrieDetails: countries[161],
-    isRememberMe: false,
   },
 
   requestOtpLoader: false,
@@ -33,6 +37,8 @@ const initialState = {
   verifyOtpErrorVersion: 0,
 
   authTokenInfo: '',
+  merchant_id: '',
+  merchant_details: '',
 };
 
 const authSlice = createSlice({
@@ -58,6 +64,18 @@ const authSlice = createSlice({
 
     authToken: (state, action) => {
       state.authTokenInfo = action.payload;
+    },
+
+    setMerchant_id: (state, action) => {
+      state.merchant_id = action.payload;
+    },
+
+    setMerchant_details: (state, action) => {
+      state.merchant_details = action.payload;
+    },
+
+    setShowForgotPage: (state, action) => {
+      state.showForgotPage = action.payload;
     },
 
     // ✅ Handle OTP request
@@ -128,6 +146,11 @@ export const {
   setLoginDetails,
 
   authToken,
+
+  setMerchant_id,
+  setMerchant_details,
+
+  setShowForgotPage,
 
   setRequestOtpLoader,
   setRequestOtpSuccess,

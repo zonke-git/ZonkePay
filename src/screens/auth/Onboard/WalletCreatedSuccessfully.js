@@ -3,8 +3,8 @@ import {View, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import SuccessfullyLayout from '../../layout/SuccessfullyLayout';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import {i18n} from '../../../localization';
 import {useNavigation} from '@react-navigation/native';
 

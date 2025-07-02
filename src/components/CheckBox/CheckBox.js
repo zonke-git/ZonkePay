@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet, Image} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import colors from '../../theme/colors';
-import {typography} from '../../theme/typography';
+import colors from '../../Theme/colors';
+import {typography} from '../../Theme/typography';
 
 const CheckBox = ({
   label,
@@ -17,7 +17,13 @@ const CheckBox = ({
     <>
       <Pressable style={[styles.container, containerStyle]} onPress={onToggle}>
         <View style={[styles.checkbox, value && styles.checked]}>
-          {value && <MaterialIcons name="check" size={12} color="#fff" />}
+          {/* {value && <MaterialIcons name="check" size={12} color="#fff" />} */}
+          {value && (
+            <Image
+              source={require('../../assets/images/checkTick.png')}
+              style={styles.tickIcon}
+            />
+          )}
         </View>
         {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
         {childDiv}
@@ -56,6 +62,11 @@ const styles = StyleSheet.create({
     fontSize: 10,
     marginTop: 4,
     fontFamily: typography.Regular_400,
+  },
+  tickIcon: {
+    width: 15,
+    height: 15,
+    tintColor: colors.white,
   },
 });
 

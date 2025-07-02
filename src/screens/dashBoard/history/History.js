@@ -2,8 +2,8 @@ import React, {useCallback} from 'react';
 import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
 import DashboardLayout from '../../layout/DashboardLayout';
 import {useHistory} from '../../../hooks/history/use-History';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 
 const History = () => {
   const {historyData, handleBack} = useHistory();

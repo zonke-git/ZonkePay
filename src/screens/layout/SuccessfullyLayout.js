@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, StyleSheet, Image, ScrollView} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import LinearGradient from 'react-native-linear-gradient';
-import colors from '../../theme/colors';
+import colors from '../../Theme/colors';
 import FullScreenLoader from '../../components/Loader/FullScreenLoader';
 
 const SuccessfullyLayout = ({children, loader = false}) => {

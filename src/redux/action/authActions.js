@@ -1,4 +1,10 @@
-import {getCountries, requestOtp, verifyOtp} from '../../api/api';
+import {
+  getCountries,
+  logoutAPI,
+  requestOtp,
+  resendOtp,
+  verifyOtp,
+} from '../../api/api';
 import {
   setCountriesListFailure,
   setCountriesListLoader,
@@ -34,7 +40,7 @@ export const generateOTP = payload => async dispatch => {
     dispatch(setRequestOtpLoader());
     const response = await requestOtp(payload);
     // console.log('SignUp Request OTP Response :', response);
-    if (response.success) {
+    if (response.token) {
       dispatch(setRequestOtpSuccess(response));
     } else {
       dispatch(
@@ -43,15 +49,17 @@ export const generateOTP = payload => async dispatch => {
     }
     return response;
   } catch (error) {
-    dispatch(setRequestOtpFailure(error.message || 'ApiError'));
+    console.log('SignUp Request OTP Response Error', error);
+
+    dispatch(setRequestOtpFailure(error.error || 'ApiError'));
     throw error;
   }
 };
 
-export const verifyOTP = payload => async dispatch => {
+export const verifyOTP = (payload, token) => async dispatch => {
   try {
     dispatch(setVerifyOtpLoader());
-    const response = await verifyOtp(payload);
+    const response = await verifyOtp(payload, token);
     // console.log('Verify OTP Response :', response);
     if (response.success) {
       dispatch(setVerifyOtpSuccess(response));
@@ -62,7 +70,30 @@ export const verifyOTP = payload => async dispatch => {
     }
     return response;
   } catch (error) {
-    dispatch(setVerifyOtpFailure(error.message || 'ApiError'));
+    dispatch(setVerifyOtpFailure(error.error || 'ApiError'));
+    throw error;
+  }
+};
+
+export const resendOTP = payload => async dispatch => {
+  try {
+    const response = await resendOtp(payload);
+    console.log('Resend OTP Response :', response);
+    return response;
+  } catch (error) {
+    console.log('Resend OTP Error :', error);
+    throw error;
+  }
+};
+
+export const logOut = token => async dispatch => {
+  try {
+    const response = await logoutAPI(token);
+    // console.log('logout Response :', response);
+
+    return response;
+  } catch (error) {
+    console.log('logout Error :', error);
     throw error;
   }
 };

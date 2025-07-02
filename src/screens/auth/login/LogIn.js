@@ -1,80 +1,46 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  Platform,
-  Pressable,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import AuthLayout from '../../layout/AuthLayout';
-import {useLogin} from '../../../hooks';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
-import CustomTextField from '../../../components/TextFiled/CustomTextField';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import {i18n} from '../../../localization';
-import CheckBox from '../../../components/CheckBox/CheckBox';
+import AppButton from '../../../components/AppButton/AppButton';
+import {PhoneNumberInput} from '../../../components';
+import {setLoginDetails} from '../../../redux/slice/authSlice';
+import {useLogin} from '../../../hooks';
 
 const LogIn = () => {
   const {
-    MPIN,
-    setMPIN,
+    userInput,
+    isPhoneNumberInvalid,
+    modalVisible,
+    setModalVisible,
+    validationErrorMsg,
+    requestOtpErrorMessage,
+    handleSignUP,
+    loading,
     handleLogin,
     dispatch,
-    handleSignUP,
-    handleBack,
-    isError,
-    isLoader,
-    isRememberMe,
-    setIsRememberMe,
-    handleBiometric,
+    setValidationErrorMsg,
+    navigation,
   } = useLogin();
 
   return (
-    <AuthLayout title={i18n.t('LoginToYourAccount')} loader={isLoader}>
+    <AuthLayout title={i18n.t('LoginToYourAccount')} loader={loading}>
       <View style={styles.container}>
-        <View>
-          <CustomTextField
-            label={`${i18n.t('Enter')} MPIN`}
-            placeholder={`${i18n.t('Enter')} MPIN`}
-            placeholderTextColor={colors.SilverGray}
-            value={MPIN}
-            onChangeText={text => {
-              setMPIN(text);
-            }}
-            keyboardType="phone-pad"
-            inputStyle={styles.inputBox}
-            error={isError}
-            maxLength={4}
-            style={{marginBottom: 12.5}}
-          />
-          <View style={styles.rememberMe_Forgot_View}>
-            <CheckBox
-              label={i18n.t('RememberMe')}
-              labelStyle={styles.checkBoxLabel}
-              value={isRememberMe}
-              onToggle={() => setIsRememberMe(!isRememberMe)}
-            />
-            <Text style={styles.forgotTxt}>{i18n.t('Forgot')} MPIN ?</Text>
-          </View>
-          <Pressable
-            style={styles.authButtonLoginView}
-            onPress={handleBiometric}>
-            <Image
-              source={
-                Platform.OS === 'android'
-                  ? require('../../../assets/images/fingerPrint.png')
-                  : require('../../../assets/images/faceId.png')
-              }
-              style={styles.authIcon}
-            />
-            <Text style={styles.authLoginTxt}>
-              {Platform.OS === 'android' ? 'Fingerprint' : 'Face ID'}
-            </Text>
-          </Pressable>
-        </View>
+        <PhoneNumberInput
+          value={userInput?.phoneNo}
+          countryDetails={userInput?.countrieDetails}
+          inputStyle={styles.inputBox}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          showError={validationErrorMsg || requestOtpErrorMessage}
+          onChangePhone={({phoneNo, phoneNoRaw, error}) => {
+            dispatch(setLoginDetails({phoneNo, phoneNoRaw}));
+            setValidationErrorMsg(error);
+          }}
+        />
+
         <View>
           <View style={styles.signup_view}>
             <Text style={styles.signup_txt}>
@@ -87,15 +53,25 @@ const LogIn = () => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity
-            style={[styles.buttonWrapper]}
-            onPress={handleLogin}>
-            <LinearGradient
-              colors={[colors.appTheme, colors.appTheme]}
-              style={styles.button}>
-              <Text style={styles.btnText}>{i18n.t('LogIn')}</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+          <AppButton
+            onPress={() => {
+              navigation.navigate('OTP');
+              // handleLogin();
+            }}
+            title={i18n.t('LogIn')}
+            useColors={
+              isPhoneNumberInvalid() || loading
+                ? [colors.LightMistGray, colors.LightMistGray]
+                : [colors.appTheme, colors.appTheme]
+            }
+            // disabled={isPhoneNumberInvalid() || loading}
+            textStyle={{
+              color:
+                isPhoneNumberInvalid() || loading
+                  ? colors.LightSlateGray
+                  : colors.white,
+            }}
+          />
         </View>
       </View>
     </AuthLayout>
@@ -123,7 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: 23,
   },
   buttonWrapper: {
-    width: 'full',
+    width: '100%',
     height: 48,
 
     borderRadius: 10,
@@ -185,7 +161,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.appTheme,
     borderRadius: 30,
 
-    // width: 'full',
+    // width: '100%',
     // height: 48,
     shadowColor: colors.appTheme,
     shadowOffset: {width: 0, height: 1},
@@ -200,5 +176,12 @@ const styles = StyleSheet.create({
     letterSpacing: 14 * (-1 / 100),
     fontFamily: typography.Medium_500,
     marginLeft: 10,
+  },
+
+  error: {
+    color: colors.FireEngineRed,
+    fontSize: 10,
+    marginTop: 4,
+    fontFamily: typography.Regular_400,
   },
 });

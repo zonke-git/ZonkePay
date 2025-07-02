@@ -8,8 +8,8 @@ import {
   Dimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import colors from '../../theme/colors';
-import {typography} from '../../theme/typography';
+import colors from '../../Theme/colors';
+import {typography} from '../../Theme/typography';
 import FullScreenLoader from '../../components/Loader/FullScreenLoader';
 
 const {height} = Dimensions.get('window');

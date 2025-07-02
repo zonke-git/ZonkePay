@@ -8,9 +8,9 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import colors from '../../../theme/colors';
+import colors from '../../../Theme/colors';
 import LinearGradient from 'react-native-linear-gradient';
-import {typography} from '../../../theme/typography';
+import {typography} from '../../../Theme/typography';
 
 const NAME_DATA = [
   {

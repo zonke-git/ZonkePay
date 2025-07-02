@@ -11,8 +11,8 @@ import {
   Image,
 } from 'react-native';
 import QRScanner from './scanner-page/QRScanner';
-import {typography} from '../../theme/typography';
-import colors from '../../theme/colors';
+import {typography} from '../../Theme/typography';
+import colors from '../../Theme/colors';
 import LinearGradient from 'react-native-linear-gradient';
 import BankList from './bank/BankList';
 import LastUpdated from './bank/LastUpdated';

@@ -1,9 +1,14 @@
 export * from './welcome/use-Welcome';
 
-export * from './auth/use-Logins';
-export * from './auth/use-SignUp';
+// Auth
+export * from './auth/use-Login';
+export * from './auth/use-MpinLogin';
 export * from './auth/use-Otp';
+export * from './auth/use-SignUp';
 
-
+// OnBoard
 export * from './onBoarding/use-Onboard';
-export * from './onBoarding/use-Location';
+
+// Location
+export * from './location/use-Location';
+export * from './location/use-MapLocation';

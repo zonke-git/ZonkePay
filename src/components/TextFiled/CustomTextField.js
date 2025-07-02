@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Image} from 'react-native';
-import colors from '../../theme/colors';
-import {typography} from '../../theme/typography';
+import colors from '../../Theme/colors';
+import {typography} from '../../Theme/typography';
 
 const CustomTextField = ({
   label,
@@ -18,16 +18,14 @@ const CustomTextField = ({
   value,
   onChangeText,
   error,
-  placeholderTextColor,
+  placeholderTextColor = colors.SilverGray,
   style,
   inputStyle,
   errorStyle,
   labelStyle,
-  showLeftIcon = false,
+  showSearchIcon = false,
   onBlur,
   onFocus,
-  multiline = false,
-  numberOfLines = 1,
   secureTextEntry = false,
   keyboardType = 'default',
   showRightIcon = false,
@@ -39,26 +37,48 @@ const CustomTextField = ({
   setOpenCountryModal,
   maxLength,
   disable = true,
+  disableContrySelection = false,
+  showLocationIcon = false,
+  showVerification = false,
+  multiline = false,
+  numberOfLines = 1,
+  textAlignVertical = multiline ? 'top' : 'center',
 }) => {
+  // console.log('numberOfLines', numberOfLines);
+
   return (
     <View style={[styles.container, style]}>
-      {label && (
-        <Text style={[styles.label, labelStyle]}>
-          {label}
-          {required && <Text style={styles.required}>*</Text>}
-        </Text>
-      )}
+      <View style={styles.labelContainer}>
+        {label && (
+          <Text style={[styles.label, labelStyle]}>
+            {label}
+            {required && <Text style={styles.required}>*</Text>}
+          </Text>
+        )}
+        {showVerification && (
+          <Image
+            source={rightIconSource ?? require('../../assets/images/check.png')}
+            style={styles.tickIcon}
+          />
+        )}
+      </View>
       <View
         style={[
           styles.shadowContainer,
           inputStyle,
           error && styles.inputError,
-          ,
+          multiline && styles.multilineContainer,
           {backgroundColor: !disable ? '#F3F3F3' : colors.white},
         ]}>
-        {showLeftIcon && (
+        {showSearchIcon && (
           <Image
             source={require('../../assets/images/search.png')}
+            style={styles.leftIcon}
+          />
+        )}
+        {showLocationIcon && (
+          <Image
+            source={require('../../assets/images/location.png')}
             style={styles.leftIcon}
           />
         )}
@@ -66,7 +86,8 @@ const CustomTextField = ({
           <>
             <TouchableOpacity
               onPress={() => setOpenCountryModal(true)}
-              style={styles.countryContainer}>
+              style={styles.countryContainer}
+              disabled={disableContrySelection}>
               <Text style={styles.countryCodeFlag}>{countryPhoneFlag}</Text>
               <Text
                 style={styles.countryCodeText}>{`(${countryPhoneCode})`}</Text>
@@ -75,7 +96,7 @@ const CustomTextField = ({
           </>
         )}
         <TextInput
-          style={[styles.input]}
+          style={[styles.input, multiline && styles.multilineInput]}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
           value={value}
@@ -85,12 +106,14 @@ const CustomTextField = ({
           }}
           onBlur={onBlur}
           onFocus={onFocus}
-          multiline={multiline}
-          numberOfLines={numberOfLines}
           secureTextEntry={secureTextEntry}
           keyboardType={keyboardType}
+          // keyboardType="numeric"
           maxLength={maxLength}
           editable={disable}
+          multiline={multiline}
+          numberOfLines={multiline ? numberOfLines : 1}
+          textAlignVertical={textAlignVertical}
         />
         {showRightIcon && rightIconSource && (
           <TouchableOpacity onPress={onRightIconPress}>
@@ -98,6 +121,7 @@ const CustomTextField = ({
           </TouchableOpacity>
         )}
       </View>
+
       {error && <Text style={[styles.error, errorStyle]}>{error}</Text>}
     </View>
   );
@@ -107,6 +131,11 @@ const styles = StyleSheet.create({
   container: {
     marginBottom: 20,
   },
+  labelContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent: 'space-between',
+  },
   label: {
     fontSize: 12,
     marginBottom: 2,
@@ -114,6 +143,11 @@ const styles = StyleSheet.create({
     lineHeight: 12 * 1.6,
     letterSpacing: 12 * (0 / 100),
     fontFamily: typography.Medium_500,
+  },
+  tickIcon: {
+    width: 12,
+    height: 12,
+    marginLeft: 8,
   },
   required: {
     color: colors.FireEngineRed,
@@ -126,13 +160,23 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: 'center',
     paddingHorizontal: 14,
-    height: 46,
+    minHeight: 46, // Changed from fixed height to minHeight
     shadowColor: colors.Gainsboro,
     shadowOffset: {width: 0, height: 1},
     shadowOpacity: 0.24,
     shadowRadius: 2,
-    elevation: 2, // for Android
-    
+    elevation: 2,
+  },
+  multilineContainer: {
+    alignItems: 'flex-start', // Align items to top for multiline
+    paddingVertical: 10, // Add more vertical padding
+    height: undefined, // Remove fixed height
+  },
+
+  multilineInput: {
+    textAlignVertical: 'top', // Ensure text starts from top
+    paddingTop: 8, // Add some top padding
+    paddingBottom: 8, // Add some bottom padding
   },
   leftIcon: {
     width: 16.27,
@@ -146,8 +190,6 @@ const styles = StyleSheet.create({
     lineHeight: 14 * 1.4,
     letterSpacing: 14 * (0 / 100),
     fontFamily: typography.Medium_500,
-
-    backgroundColor: 'transparent',
   },
   inputError: {
     borderColor: colors.FireEngineRed,

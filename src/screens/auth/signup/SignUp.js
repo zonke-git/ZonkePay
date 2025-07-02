@@ -1,15 +1,13 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import AuthLayout from '../../layout/AuthLayout';
 import {useSignUp} from '../../../hooks';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
-import CountryPhoneInput from '../../../components/ContryCode/CountryPhoneInput';
-import CustomTextField from '../../../components/TextFiled/CustomTextField';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import {i18n} from '../../../localization';
+import AppButton from '../../../components/AppButton/AppButton';
+import {PhoneNumberInput} from '../../../components';
 import {setLoginDetails} from '../../../redux/slice/authSlice';
-import CheckBox from '../../../components/CheckBox/CheckBox';
 
 const SignUp = () => {
   const {
@@ -21,120 +19,63 @@ const SignUp = () => {
     requestOtpErrorMessage,
     dispatch,
     isPhoneNumberInvalid,
-    handleBack,
-    handlePhoneNumberChange,
     validationErrorMsg,
-    handleForgotPwd,
+    showForgotPage,
+    isLoader,
+    handleLogin,
+    setValidationErrorMsg,
   } = useSignUp();
 
   return (
-    <AuthLayout title={i18n.t('SignInToYourAccount')} loader={loading}>
+    <AuthLayout
+      title={showForgotPage ? 'Reset MPIN' : i18n.t('SignUpToYourNewAccount')}
+      subTitle={
+        showForgotPage
+          ? 'Enter your registered mobile number to reset your MPIN'
+          : ''
+      }
+      loader={loading || isLoader}>
       <View style={styles.container}>
+        <PhoneNumberInput
+          value={userInput?.phoneNo}
+          countryDetails={userInput?.countrieDetails}
+          inputStyle={styles.inputBox}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          showError={validationErrorMsg || requestOtpErrorMessage}
+          onChangePhone={({phoneNo, phoneNoRaw, error}) => {
+            dispatch(setLoginDetails({phoneNo, phoneNoRaw}));
+            setValidationErrorMsg(error);
+          }}
+        />
         <View>
-          <CustomTextField
-            label="Phone Number"
-            placeholder="0XX XXX XXXX"
-            placeholderTextColor={colors.SilverGray}
-            value={userInput?.phoneNo}
-            onChangeText={handlePhoneNumberChange}
-            keyboardType="phone-pad"
-            leftComponent={true}
-            disableContrySelection={true}
-            countryPhoneCode={userInput?.countrieDetails?.phoneCode}
-            countryPhoneFlag={userInput?.countrieDetails?.flag}
-            setOpenCountryModal={setModalVisible}
-            inputStyle={styles.inputBox}
-            error={validationErrorMsg ?? requestOtpErrorMessage}
-            maxLength={
-              userInput?.countrieDetails?.code === 'ZA'
-                ? 12 // Allows for "0XX XXX XXXX" (10 digits + 2 spaces)
-                : userInput?.countrieDetails?.code === 'IN' ||
-                  userInput?.countrieDetails?.code === 'US' ||
-                  userInput?.countrieDetails?.code === 'AU'
-                ? 10
-                : userInput?.countrieDetails?.code === 'AE'
-                ? 9
-                : 4
-            }
-          />
-
-          <CountryPhoneInput
-            modalVisible={modalVisible}
-            setModalVisible={setModalVisible}
-          />
-          <View style={styles.rememberMe_Forgot_View}>
-            <CheckBox
-              label={i18n.t('RememberMe')}
-              labelStyle={styles.checkBoxLabel}
-              value={userInput?.isRememberMe}
-              onToggle={() =>
-                dispatch(
-                  setLoginDetails({
-                    isRememberMe: !userInput?.isRememberMe,
-                  }),
-                )
-              }
-            />
-            <Text style={styles.forgotTxt} onPress={handleForgotPwd}>
-              {i18n.t('ForgotPassword')} ?
+          <View style={styles.signup_view}>
+            <Text style={styles.signup_txt}>
+              {i18n.t('AlreadyHaveAnAccount')}{' '}
             </Text>
+            <TouchableOpacity onPress={handleLogin}>
+              <Text style={[styles.signup_txt, {color: colors.appTheme}]}>
+                {i18n.t('Login')}
+              </Text>
+            </TouchableOpacity>
           </View>
-        </View>
-
-        <TouchableOpacity
-          style={[styles.buttonWrapper]}
-          onPress={handleSignUp}
-          disabled={isPhoneNumberInvalid()}>
-          <LinearGradient
-            colors={
-              isPhoneNumberInvalid()
+          <AppButton
+            onPress={handleSignUp}
+            title={i18n.t('SendOTP')}
+            useColors={
+              isPhoneNumberInvalid() || loading
                 ? [colors.LightMistGray, colors.LightMistGray]
                 : [colors.appTheme, colors.appTheme]
             }
-            style={styles.button}>
-            <Text
-              style={[
-                styles.btnText,
-                {
-                  color: isPhoneNumberInvalid()
-                    ? colors.LightSlateGray
-                    : colors.white,
-                },
-              ]}>
-              {i18n.t('LogIn')}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <View style={styles.choose_view}>
-          <View style={styles.verticalLine_view} />
-          <Text style={styles.Or_txt}>Or</Text>
-          <View style={styles.verticalLine_view} />
+            disabled={isPhoneNumberInvalid() || loading}
+            textStyle={{
+              color:
+                isPhoneNumberInvalid() || loading
+                  ? colors.LightSlateGray
+                  : colors.white,
+            }}
+          />
         </View>
-
-        <TouchableOpacity
-          style={[styles.buttonWrapper, {borderColor: colors.CulturedGray}]}
-          onPress={handleSignUp}
-          disabled={isPhoneNumberInvalid()}>
-          <LinearGradient
-            colors={[colors.white, colors.white]}
-            style={styles.button}>
-            <Image
-              source={require('../../../assets/images/mail.png')}
-              style={styles.mailIcon}
-            />
-            <Text
-              style={[
-                styles.btnText,
-                {
-                  color: colors.DarkCharcoal,
-                  fontFamily: typography.SemiBold_600,
-                },
-              ]}>
-              {i18n.t('LoginUsingEmail')}
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
       </View>
     </AuthLayout>
   );
@@ -145,13 +86,12 @@ export default SignUp;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'space-between',
+    justifyContent: 'space-between',
     padding: 24,
   },
   buttonWrapper: {
-    width: 'full',
+    width: '100%',
     height: 48,
-
     borderRadius: 10,
     shadowColor: colors.DenimBlue,
     shadowOffset: {width: 0, height: 1},
@@ -161,7 +101,6 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    flexDirection: 'row',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 24,
@@ -175,54 +114,19 @@ const styles = StyleSheet.create({
     letterSpacing: 12 * (-1 / 100),
     fontFamily: typography.Medium_500,
   },
-  choose_view: {
-    flexDirection: 'row',
-    marginVertical: 16,
-    justifyContent: 'space-between',
-  },
-  verticalLine_view: {
-    width: '45%',
-    height: 1,
-    display: 'flex',
-    backgroundColor: colors.CulturedGray,
-    // justifyContent: 'center',
-    // alignContent: 'center',
-    // alignItems: 'center',
-    alignSelf: 'center',
-  },
-  Or_txt: {
-    fontSize: 12,
-    color: colors.MediumGray,
-    lineHeight: 12 * 1.5,
-    letterSpacing: 12 * (-1 / 100),
-    fontFamily: typography.Regular_400,
-  },
   inputBox: {
     borderColor: colors.LightMistGray,
   },
-
-  rememberMe_Forgot_View: {
+  signup_view: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 25.5,
+    alignSelf: 'center',
   },
-  checkBoxLabel: {
-    fontSize: 12,
+  signup_txt: {
+    fontSize: 14,
     color: colors.DimGray,
-    lineHeight: 12 * 1.5,
-    letterSpacing: 12 * (0 / 100),
-    fontFamily: typography.Medium_500,
-  },
-  forgotTxt: {
-    fontSize: 12,
-    color: colors.appTheme,
-    lineHeight: 12 * 1.4,
-    letterSpacing: 12 * (0 / 100),
     fontFamily: typography.SemiBold_600,
-  },
-  mailIcon: {
-    width: 18,
-    height: 18,
-    marginRight: 10,
+    lineHeight: 14 * 1.4,
+    // letterSpacing: 12 * (0 / 100),
+    marginBottom: 23,
   },
 });

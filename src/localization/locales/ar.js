@@ -1,38 +1,4 @@
 export default {
-  SignInToYourAccount: 'تسجيل الدخول إلى حسابك',
-  ForgotPassword: 'نسيت كلمة المرور',
-  LogIn: 'تسجيل الدخول',
-  LoginUsingEmail: 'تسجيل الدخول باستخدام البريد الإلكتروني',
-  TryLoggingInUsingEmail: 'حاول تسجيل الدخول باستخدام البريد الإلكتروني',
-  FirstName: 'الاسم الأول',
-  LastName: 'اسم العائلة',
-  Nickname_Optional: 'لقب (اختياري)',
-  ReferralCode: 'كود الإحالة',
-  SignUp: 'انضم',
-  MyContact:'جهتي الاتصال',
-  //
-  //
-  // schema validation message
-  //
-  //
-  // onBoard
-  FirstNameIsRequired: 'الاسم الأول مطلوب',
-  LastNameIsRequired: 'اسم العائلة مطلوب',
-  EmailIsRequired: 'البريد الإلكتروني مطلوب',
-  LocationIsRequired: 'الموقع مطلوب',
-  YouMustAcceptTheTermsAndConditions: 'يجب عليك قبول الشروط والأحكام',
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
   welcome_message: 'مرحبًا بك في تطبيق زونكي للتجار!',
   SouthAfricasNewAgeMerchantPaymentandStorefrontPlatform:
     'منصة الدفع والتجارة الجديدة في جنوب إفريقيا',
@@ -49,6 +15,7 @@ export default {
   Details: 'تفاصيل',
   Engagement: 'انخراط',
   Model: 'نموذج',
+  SignUpToYourNewAccount: 'سجل للحصول على حسابك الجديد',
   SendOTP: 'أرسل رمز التحقق',
   Continue: 'استمر',
   Enter: 'إدخال',
@@ -57,6 +24,7 @@ export default {
     'قم بتحديد رقم تعريف شخصي مكون من 4 أرقام. سيتم استخدامه لتسجيل الدخول بشكل آمن وسريع.',
   EnableFace_ID_AlongWith_MPIN_Creation:
     'قم بتمكين التعرف على الوجه بجانب إنشاء رقم التعريف الشخصي المتنقل (MPIN)',
+  EnableFingerprint_AlongWith_MPIN_Creation: 'تفعيل بصمة الإصبع مع إنشاء MPIN',
   VerificationCode: 'كود التحقق',
   WeHaveSentTheVerificationCodeToYourPhoneNumber:
     'لقد أرسلنا رمز التحقق إلى رقم هاتفك',
@@ -72,21 +40,118 @@ export default {
   BusinessName: 'اسم العمل',
   RegistrationNumber: 'رقم التسجيل',
   BusinessCategory: 'فئة الأعمال',
+  BusinessType: 'نوع العمل',
   Select: 'اختر',
   Location: 'الموقع',
+  FirstName: 'الاسم الأول',
+  LastName: 'اسم العائلة',
   EmailID: 'معرف البريد الإلكتروني',
   PhoneNumber: 'رقم الهاتف',
   EnterMobileNumber: 'أدخل رقم الهاتف المحمول',
+  DeleteProduct: 'حذف المنتج',
   Submit: 'إرسال',
   LoginToYourAccount: 'قم بتسجيل الدخول إلى حسابك',
-  DontHaveA_Account: 'لا تملك حسابًا؟',
+  DontHaveA_Account: 'ليس لديك حساب؟',
+  SignUp: 'انضم',
+  LogIn: 'تسجيل الدخول',
   RememberMe: 'تذكرني',
   Forgot: 'نسيت',
   CreatedSuccessfully: 'تم الإنشاء بنجاح',
   Done: 'تم',
+  Admin_Manager: 'مدير / مدير',
+  Verify: 'أكد',
+  VerifyIdentity: 'تحقق من الهوية',
+  SaveContinue: 'احفظ واستمر',
+  UseMyCurrentLocation: 'استخدم موقعي الحالي',
+  SelectLocation: 'اختر الموقع',
+  Outlets: 'منافذ',
+  CreateOutlet: 'إنشاء منفذ',
+  EditOutlet: 'تحرير المنفذ',
+  BusinessNameAsPerRegistrationCertificate: 'اسم العمل حسب شهادة التسجيل',
+  OutletName: 'اسم المخرج',
+  ContactPersonName: 'اسم جهة الاتصال',
+  ContactPersonMobile: 'جهة الاتصال موبايل',
+  ContactPersonEmail: 'البريد الإلكتروني لجهة الاتصال',
+  OutletInfo: 'معلومات المخرج',
+  MobileNumber_CustomerToReachOut: 'رقم الهاتف المحمول (للتواصل مع العميل)',
+  Sub_CategoriesMax3: 'الفئات الفرعية (الحد الأقصى 3)',
+  MapLocation: 'موقع الخريطة',
+  Province: 'مقاطعة',
+  Area: 'منطقة',
+  Documents: 'وثائق',
+  OutletCharacteristics: 'خصائص المنفذ',
+  KidFriendly: 'صديق للأطفال',
+  IndoorSeating: 'جلوس داخلي',
+  GlutenFreeOptions: 'خيارات خالية من الغلوتين',
+  WheelchairAccessible: 'مناسب للكراسي المتحركة',
+  ValetParkingAvailable: 'خدمة صف السيارات متاحة',
+  FreeParking: 'موقف سيارات مجاني',
+  TableBookingRecommended: 'يُوصى بحجز الطاولة',
+  PrivateDiningArea: 'منطقة تناول الطعام الخاصة',
+  LIVE_Music: 'موسيقى حية',
+  Previous: 'سابق',
+  Save_Next: 'احفظ وانتقل للخطوة التالية',
+  YouCanAddAaximum_5_photos: 'يمكنك إضافة حد أقصى 5 صور',
+  RegistrationNo: 'رقم التسجيل',
+  RegistrationDate: 'تاريخ التسجيل',
+  IssuingProvince: 'المقاطعة المصدرة',
+  RegistrationCertificatePDF_JPG_PNG: 'شهادة التسجيل (PDF، JPG، PNG)',
+  TaxRegistrationNumber_TRN: 'رقم تسجيل الضريبة (TRN)',
+  TaxRegistrationDate: 'تاريخ تسجيل الضريبة',
+  IssuingAuthority: 'السلطة المصدرة',
+  TaxCertificatePDF_JPG_PNG: 'شهادة ضريبة (PDF، JPG، PNG)',
+  AreYouSureYouWantToRemoveThisImage: 'هل أنت متأكد أنك تريد إزالة هذه الصورة؟',
+  RemoveImage: 'إزالة الصورة',
+  CashbackPercentage: 'نسبة الاسترداد النقدي',
+  Settlements: 'المستوطنات',
+  Reports: 'تقارير',
+  Users: 'المستخدمون',
+  QR_Codes: 'رموز الاستجابة السريعة',
+  Menus: 'قوائم الطعام',
+  BusinessVerification: 'تحقق من الأعمال',
+  VerifyEmail: 'تحقق من البريد الإلكتروني',
+  AddMenu: 'إضافة القائمة',
+  EditMenu: 'قائمة تعديل',
+  MenuName: 'اسم القائمة',
+  MenuType: 'نوع القائمة',
+  Price: 'سعر',
+  Description: 'وصف',
+  Photos: 'الصور',
+  Photo: 'صورة',
+  DeleteOutlet: 'حذف المنفذ',
+  Edit: 'تعديل',
+  PlatformFee: 'رسوم المنصة',
+  NoOutletsFound: 'لم يتم العثور على منافذ',
+  YouCanCreate_A_NewOutletToGetStarted: 'يمكنك إنشاء منفذ جديد للبدء',
+  Locality: 'محلية',
+  ContactPerson: 'شخص الاتصال',
+  Sub_Categories: 'تصنيفات فرعية',
+  VerifyBusiness: 'تحقق من الأعمال',
+  TaxCertificate: 'شهادة ضريبة',
+  TaxNumber: 'رقم الضريبة',
+  RegistrationDocument: 'وثيقة التسجيل',
+  AcceptAgreement: 'قبول الاتفاق',
+  Re_enter: 'أعد الإدخال',
+  AlreadyHaveAnAccount: 'هل لديك حساب بالفعل؟',
+  ContactPersonFirstName: 'اسم الشخص المتواجد للاتصال',
+  ContactPersonLastName: 'اسم العائلة لشخص الاتصال',
+  OutletLocation: 'مكان المنفذ',
+  Subcategory: 'فئة فرعية',
+  MerchantID: 'معرف التاجر',
+  WalletID: 'معرف المحفظة',
+  CurrentBalance: 'الرصيد الحالي',
+  AvailableBalance: 'الرصيد المتوفر',
+  //
+  //
+  //
+  //
   //
   //
   // schema validation message
+  //
+  //
+  //
+  //
   //
   //
   // SignUP / Login
@@ -100,11 +165,16 @@ export default {
   CIPC_RegistrationNumberIsRequired: 'رقم تسجيل CIPC مطلوب',
   FormatMustBeYYYY_NNNNNN_07: 'يجب أن يكون التنسيق YYYY/NNNNNN/07',
   BusinessCategoryIsRequired: 'فئة الأعمال مطلوبة',
+  LocationIsRequired: 'الموقع مطلوب',
+  YouMustAcceptTheTermsAndConditions: 'يجب عليك قبول الشروط والأحكام',
   // Contact Details Form
+  FirstNameIsRequired: 'الاسم الأول مطلوب',
   NameMustStartWithALetterAndContainOnlyAlphabetsAndSpaces:
     'يجب أن يبدأ الاسم بحرف وأن يحتوي فقط على حروف وأSpaces',
   NameMustBeAtLeastTwoCharacters: 'يجب أن يتكون الاسم من حرفين على الأقل',
   NameMustBeLessThanFiftyCharacters: 'يجب أن يكون الاسم أقل من 50 حرفًا',
+  LastNameIsRequired: 'اسم العائلة مطلوب',
+  EmailIsRequired: 'البريد الإلكتروني مطلوب',
   InvalidEmailAddress: 'عنوان البريد الإلكتروني غير صالح',
   // Compliance And Financial Details Form
   TaxNumberIsRequired: 'رقم الضريبة مطلوب',
@@ -114,6 +184,44 @@ export default {
   TaxNumberMustBeLessThanTwentyDigits:
     'يجب أن يكون رقم الضريبة أقل من 20 رقمًا',
   TradeLicensePhotoIsRequired: 'صورة رخصة التجارة مطلوبة',
+  RegisterationCertificateIsRequired: 'شهادة التسجيل مطلوبة',
+  // Outlet Info
+  OutletNameIsRequired: 'اسم المنفذ مطلوب',
+  NoMenusFound: 'لم يتم العثور على قوائم',
+  OutletNameMustBeAtLeastTwoCharacters:
+    'يجب أن يتكون اسم المنفذ من حرفين على الأقل',
+  OutletNameMustBeLessThanFiftyCharacters:
+    'يجب أن يكون اسم المنفذ أقل من 50 حرفًا',
+  ContactPersonNameIsRequired: 'اسم جهة الاتصال مطلوب',
+  //
+  RegistrationNumberIsRequired: 'رقم التسجيل مطلوب',
+  RegistrationNumberMustBeAtLeastThreeCharacters:
+    'يجب أن يتكون رقم التسجيل من ثلاثة أحرف على الأقل',
+  RegistrationDateIsRequired: 'تاريخ التسجيل مطلوب',
+  IssuingProvinceIsRequired: 'مطلوب إصدار المقاطعة',
+  RegistrationCertificateIsRequired: 'ينبغي توفر شهادة التسجيل ...',
+  RegistrationCertificate: 'شهادة التسجيل',
+  TaxNumberMustBeAtLeastFiveCharacters:
+    'يجب أن يتكون رقم الضريبة من خمسة أحرف على الأقل',
+  TaxRegistrationDateIsRequired: 'تاريخ تسجيل الضريبة مطلوب',
+  IssuingAuthorityIsRequired: 'تتطلب السلطة المصدرة',
+  TaxCertificateIsRequired: 'شهادة الضريبة مطلوبة',
+  AreaIsRequired: 'المساحة مطلوبة',
+  ProvinceIsRequired: 'المقاطعة مطلوبة',
+  MapLocationIsRequired: 'مطلوب تحديد موقع الخريطة',
+  AddressIsRequired: 'العنوان مطلوب',
+  Menu: 'القائمة',
+  MenuNameIsRequired: 'اسم القائمة مطلوب',
+  MenuNameMustBeAtMost_100_Characters:
+    'يجب أن يكون اسم القائمة مكونًا من 100 حرف كحد أقصى',
+  AtLeastOneSubCategoryRequired: 'يتطلب الأمر وجود فئة فرعية واحدة على الأقل',
+  MaxThreeSubCategories: 'بحد أقصى ثلاث فئات فرعية',
+  OTP_HasBeenSentToYourEmail_ID: 'تم إرسال رمز التحقق إلى بريدك الإلكتروني',
+  OutletIsRequired: 'يجب توفير المخرج',
+  SubcategoryRequired: 'تصنيف فرعي مطلوب',
+  AboutISRequired: 'حول مطلوب',
+  ChangeEmailID: 'تغيير معرف البريد الإلكتروني',
+  Annexures: 'مرفقات',
   //
   //
   //
@@ -135,6 +243,7 @@ export default {
   Password: 'كلمة المرور',
   EmptyPassword: 'ادخل رقمك السري',
   InvalidPassword: 'رمز مرور خاطئ',
+  Login: 'تسجيل الدخول',
   LoginOption:
     'حاول تسجيل الدخول باستخدام رقم هاتفك المحمول أو البريد الإلكتروني',
   Home: 'الصفحة الرئيسية',
@@ -142,9 +251,10 @@ export default {
   MyTransactions: 'معاملاتي',
   Profile: 'الملف الشخصي',
   About: 'حول',
-  Menu: 'القائمة',
   SpecialDeals: 'العروض الخاصة',
-  Photos: 'الصور',
+  ProductName: 'اسم المنتج',
+  ProductType: 'نوع المنتج',
+  TagValue: 'قيمة العلامة',
   Direct: 'مباشر',
   DeliveryBased: 'التسليم القائم',
   Date: 'تاريخ',
@@ -197,7 +307,7 @@ export default {
   transactionStatus: 'يرجى تحديد حالة التحويل',
   Apply: 'تطبيق',
   PaymentRequest: 'طلب الدفع',
-  SelectOutlet: 'الرجاء تحديد المنفذ',
+  SelectOutlet: 'حدد المتجر',
   QRCode: 'رمز الاستجابة السريعة',
   //Week Days
   Monday: 'الاثنين',
@@ -240,7 +350,6 @@ export default {
   // GeneretaeQRCode: 'قم بإنشاء رمز QR Code آخر',
   GeneretaeQRCode: 'Generate New QRCode',
   PrivacyPolicy: 'سياسة الخصوصية',
-  NoOutletsFound: 'لم يتم العثور على منافذ',
   MerchantPortalLogin:
     'الرجاء تسجيل الدخول في بوابة تاجر sociopay وإنشاء المنفذ',
   NoOffers: 'لا عروض',

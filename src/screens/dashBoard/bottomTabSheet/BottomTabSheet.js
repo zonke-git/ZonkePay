@@ -5,8 +5,8 @@ import BottomSheet, {
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {useBottomSheet} from '../../../hooks/bottomSheet/use-BottomSheet';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 
 const BottomTabSheet = () => {
   const {

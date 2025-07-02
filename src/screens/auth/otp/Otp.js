@@ -1,18 +1,12 @@
-import React, {useState} from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Pressable,
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React from 'react';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {useOTP} from '../../../hooks';
 import AuthLayout from '../../layout/AuthLayout';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import OtpCodeField from '../../../components/Otp/OtpCodeField';
 import {i18n} from '../../../localization';
+import AppButton from '../../../components/AppButton/AppButton';
 
 const OTP = () => {
   const {
@@ -26,24 +20,40 @@ const OTP = () => {
     handleBack,
     verifyOtpError,
     verifyOtpErrorMessage,
-    verifyOtpSuccess,
     loading,
     handleChangeNumber,
-    ResendOTPloading,
+    handleChangeEmailId,
+    resendLoader,
+    mpinError,
+    isLoader,
+    showEmailVerifyContent,
+    handleVerifyEmailOTP,
+    autoFocus,
+    navigation,
   } = useOTP();
 
   return (
     <AuthLayout
       title={i18n.t('VerificationCode')}
-      subTitle={i18n.t('WeHaveSentTheVerificationCodeToYourPhoneNumber')}>
+      subTitle={
+        showEmailVerifyContent
+          ? i18n.t('OTP_HasBeenSentToYourEmail_ID')
+          : i18n.t('WeHaveSentTheVerificationCodeToYourPhoneNumber')
+      }
+      loader={loading || resendLoader || isLoader}>
       <View style={styles.container}>
         <View>
-          <OtpCodeField
-            value={otpValue}
-            setValue={setOtpValue}
-            invalidOtp={verifyOtpError ? verifyOtpErrorMessage : ''}
-          />
-
+          <View style={styles.optView}>
+            <OtpCodeField
+              value={otpValue}
+              setValue={setOtpValue}
+              invalidOtp={
+                verifyOtpError ? verifyOtpErrorMessage : '' || mpinError
+              }
+              spacebetween={{marginHorizontal: 5}}
+              shouldAutoFocus={autoFocus}
+            />
+          </View>
           <View style={styles.timerContainer}>
             <Text style={styles.timerText}>{formatTime(timeLeft)}</Text>
 
@@ -60,47 +70,45 @@ const OTP = () => {
               </Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            style={[styles.buttonWrapper, {marginBottom: 16}]}
-            onPress={handleSubmit}>
-            <LinearGradient
-              colors={
-                otpValue?.length === 6
-                  ? [colors.appTheme, colors.appTheme]
-                  : [colors.LightMistGray, colors.LightMistGray]
-              }
-              style={[styles.button, {}]}>
-              <Text
-                style={[
-                  styles.btnText,
-                  {
-                    color:
-                      otpValue?.length === 6
-                        ? colors.white
-                        : colors.LightSlateGray,
-                  },
-                ]}>
-                OTP {i18n.t('ViaCall')}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.buttonWrapper]} onPress={handleBack}>
-            <LinearGradient
-              colors={[colors.white, colors.white]}
-              style={styles.button}>
-              <Text style={[styles.btnText, {color: colors.DarkCharcoal}]}>
-                {i18n.t('ChangeNumber')}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
         </View>
         <View>
-          <Pressable style={styles.emailLogin_pressable}>
-            <Text style={styles.emailLogin_txt}>
-              {i18n.t('TryLoggingInUsingEmail')}
-            </Text>
-          </Pressable>
+          <AppButton
+            disabled={otpValue?.length === 6 ? false : true}
+            onPress={() => {
+              navigation.navigate('Onboard');
+              //   if (showEmailVerifyContent) {
+              //     handleVerifyEmailOTP();
+              //   } else {
+              //     handleSubmit();
+              //   }
+            }}
+            title={`${i18n.t('Verify')} OTP`}
+            useColors={
+              otpValue?.length === 6
+                ? [colors.appTheme, colors.appTheme]
+                : [colors.LightMistGray, colors.LightMistGray]
+            }
+            buttonStyle={styles.buttonContainer}
+            textStyle={{
+              color:
+                otpValue?.length === 6 ? colors.white : colors.LightSlateGray,
+            }}
+          />
+
+          <AppButton
+            onPress={
+              showEmailVerifyContent ? handleChangeEmailId : handleChangeNumber
+            }
+            title={
+              showEmailVerifyContent
+                ? i18n.t('ChangeEmailID')
+                : i18n.t('ChangeNumber')
+            }
+            useColors={[colors.white, colors.white]}
+            textStyle={{
+              color: colors.DarkCharcoal,
+            }}
+          />
         </View>
       </View>
     </AuthLayout>
@@ -117,28 +125,15 @@ const styles = StyleSheet.create({
     paddingTop: 44,
   },
 
-  buttonWrapper: {
-    width: 'full',
-    height: 48,
-    borderRadius: 10,
-    shadowColor: colors.DenimBlue,
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.48,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    flex: 1,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    justifyContent: 'center',
+  optView: {
+    paddingHorizontal: 60,
+    paddingTop: 12,
+    paddingBottom: 24,
     alignItems: 'center',
   },
-  btnText: {
-    fontSize: 14,
-    color: colors.white,
-    fontFamily: typography.Regular_400,
+
+  buttonContainer: {
+    marginBottom: 16,
   },
 
   timerContainer: {
@@ -146,7 +141,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     // alignItems: "center",
-    marginBottom: 24,
   },
   timerText: {
     fontSize: 12,
@@ -159,15 +153,10 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontFamily: typography.SemiBold_600,
   },
-  emailLogin_pressable: {
-    marginBottom: 40,
-  },
-  emailLogin_txt: {
-    textAlign: 'center',
-    fontSize: 12,
-    color: colors.appTheme,
-    lineHeight: 12 * 1.4,
-    letterSpacing: 12 * (0 / 100),
-    fontFamily: typography.Medium_500,
+  error: {
+    color: colors.FireEngineRed,
+    fontSize: 10,
+    marginTop: 4,
+    fontFamily: typography.Regular_400,
   },
 });

@@ -1,271 +1,36 @@
 /* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-catch-shadow */
-import Geolocation from '@react-native-community/geolocation';
-import React, {useEffect, useState, useCallback} from 'react';
+import React from 'react';
 import {
   View,
   Text,
   StyleSheet,
-  PermissionsAndroid,
-  Platform,
-  Alert,
   TouchableOpacity,
-  Linking,
-  AppState,
   Image,
   ActivityIndicator,
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import AuthLayout from '../../layout/AuthLayout';
-import LinearGradient from 'react-native-linear-gradient';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
-import {useDispatch} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
-import {setOnBoardDetails} from '../../../redux/slice/onBoardSlice';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
+import AppButton from '../../../components/AppButton/AppButton';
+import {i18n} from '../../../localization';
+import {useMapLocation} from '../../../hooks';
 
 const LocationMap = () => {
-  const dispatch = useDispatch();
-  const navigation = useNavigation();
-  const [appState, setAppState] = useState(AppState.currentState);
-  const [location, setLocation] = useState(null);
-  const [locationAddress, setLocationAddress] = useState(null);
-  const [error, setError] = useState(null);
-  const [showGpsPrompt, setShowGpsPrompt] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState(null); // New state for selected location
-  const [selectedLocationAddress, setSelectedLocationAddress] = useState(null); // New state for selected address
-  const [fetchingAddress, setFetchingAddress] = useState(false); // New state for address loading
-  const mapRef = React.useRef(null);
-
-  useEffect(() => {
-    getLocation();
-  }, [getLocation]);
-
-  useEffect(() => {
-    const subscription = AppState.addEventListener('change', nextAppState => {
-      if (appState.match(/inactive|background/) && nextAppState === 'active') {
-        getLocation();
-      }
-      setAppState(nextAppState);
-    });
-
-    return () => {
-      subscription.remove();
-    };
-  }, [appState, getLocation]);
-
-  const hasLocationPermission = async () => {
-    if (Platform.OS === 'ios') {
-      // On iOS, just check if we have permission
-      const status = await Geolocation.requestAuthorization('whenInUse');
-      return status === 'granted';
-    }
-
-    // For Android
-    if (Platform.Version < 23) {
-      return true;
-    }
-
-    const hasFineLocation = await PermissionsAndroid.check(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-
-    if (hasFineLocation) {
-      return true;
-    }
-
-    const status = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-    );
-
-    return status === PermissionsAndroid.RESULTS.GRANTED;
-  };
-
-  const getLocation = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      const hasPermission = await hasLocationPermission();
-
-      if (!hasPermission) {
-        setError('Location permission denied');
-        setLoading(false);
-        Alert.alert(
-          'Permission Required',
-          'Please enable location permissions in settings.',
-          [
-            {text: 'Cancel', style: 'cancel'},
-            {text: 'Open Settings', onPress: openLocationSettings},
-          ],
-        );
-        return;
-      }
-
-      // First try high accuracy
-      let position = await new Promise((resolve, reject) => {
-        Geolocation.getCurrentPosition(
-          resolve,
-          Error => {
-            console.log('High accuracy failed, trying lower accuracy:', Error);
-            // Fallback to lower accuracy if high fails
-            Geolocation.getCurrentPosition(resolve, reject, {
-              enableHighAccuracy: false,
-              timeout: 10000,
-              maximumAge: 0,
-            });
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 5000,
-            maximumAge: 0,
-          },
-        );
-      });
-
-      const {latitude, longitude} = position.coords;
-      console.log('Got coordinates:', latitude, longitude); // Debug log
-
-      const loc = {
-        latitude,
-        longitude,
-        latitudeDelta: 0.01,
-        longitudeDelta: 0.01,
-      };
-
-      // Fetch address
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyCE4n2FNNx1tUYVwsLwnqbCkwoygOetgQA`,
-      );
-      const data = await response.json();
-
-      if (data.status === 'OK' && data.results.length > 0) {
-        const components = data.results[0].address_components;
-
-        const city =
-          components.find(c => c.types.includes('locality'))?.long_name ||
-          components.find(c => c.types.includes('administrative_area_level_2'))
-            ?.long_name;
-
-        const address = data.results[0].formatted_address;
-        let addressData = {
-          city: city,
-          address: address,
-        };
-        console.log('📍 Location:', addressData);
-        setLocation(loc);
-        setLocationAddress(addressData);
-        setSelectedLocation(loc);
-        setSelectedLocationAddress(addressData);
-      } else {
-        console.log('❌ No address found or error:', data.status);
-      }
-
-      if (mapRef.current) {
-        mapRef.current.animateToRegion(loc, 1000);
-      }
-    } catch (Error) {
-      console.log('Final location error:', Error);
-      setError(Error.message || 'Unable to get current location');
-
-      if (Error.code === 2 || Error.code === 'CLEARED') {
-        setShowGpsPrompt(true);
-        Alert.alert(
-          'Enable GPS',
-          'For better accuracy, please enable GPS in your device settings',
-          [
-            {text: 'Cancel', style: 'cancel'},
-            {text: 'Open Settings', onPress: openLocationSettings},
-          ],
-        );
-      }
-
-      // Fallback to default location
-      const fallbackLocation = {
-        latitude: 20.5937,
-        longitude: 78.9629,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
-      };
-      setLocation(fallbackLocation);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  const handleMapPress = async e => {
-    const {coordinate} = e.nativeEvent;
-    setSelectedLocation(coordinate);
-    setFetchingAddress(true);
-
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinate.latitude},${coordinate.longitude}&key=AIzaSyCE4n2FNNx1tUYVwsLwnqbCkwoygOetgQA`,
-      );
-      const data = await response.json();
-
-      if (data.status === 'OK' && data.results.length > 0) {
-        const components = data.results[0].address_components;
-
-        const city =
-          components.find(c => c.types.includes('locality'))?.long_name ||
-          components.find(c => c.types.includes('administrative_area_level_2'))
-            ?.long_name;
-
-        const address = data.results[0].formatted_address;
-        let addressData = {
-          city: city,
-          address: address,
-        };
-        console.log('📍 Location:', addressData);
-        setSelectedLocationAddress(addressData);
-      } else {
-        console.log('❌ No address found or error:', data.status);
-      }
-    } catch (Error) {
-      console.log('Reverse Geocode error:', Error);
-    } finally {
-      setFetchingAddress(false);
-    }
-  };
-
-  const handleSelect = () => {
-    if (selectedLocation) {
-      // You can dispatch the selected location to Redux here if needed
-      dispatch(setOnBoardDetails({location: selectedLocation}));
-
-      // Or pass it back through navigation params
-      navigation.navigate('Location', {
-        selectedLocation,
-        selectedLocationAddress,
-      });
-    } else {
-      Alert.alert(
-        'No Location Selected',
-        'Please tap on the map to select a location',
-      );
-    }
-  };
-
-  const showEnableGpsDialog = () => {
-    Alert.alert(
-      'Enable GPS',
-      'For better accuracy, please enable GPS in your device settings',
-      [
-        {text: 'Cancel', style: 'cancel'},
-        {text: 'Open Settings', onPress: openLocationSettings},
-      ],
-    );
-  };
-
-  const openLocationSettings = () => {
-    if (Platform.OS === 'android') {
-      Linking.sendIntent('android.settings.LOCATION_SOURCE_SETTINGS');
-    } else {
-      Linking.openURL('app-settings:');
-    }
-  };
+  const {
+    mapRef,
+    fetchingAddress,
+    selectedLocationAddress,
+    locationAddress,
+    location,
+    selectedLocation,
+    loading,
+    error,
+    showGpsPrompt,
+    showEnableGpsDialog,
+    handleMapPress,
+    handleSelect,
+  } = useMapLocation();
 
   return (
     <AuthLayout
@@ -374,13 +139,15 @@ const LocationMap = () => {
           </View>
         )}
 
-        <TouchableOpacity style={styles.buttonWrapper} onPress={handleSelect}>
-          <LinearGradient
-            colors={[colors.appTheme, colors.appTheme]}
-            style={styles.button}>
-            <Text style={styles.btnText}>Select Location</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+        <AppButton
+          title={i18n.t('SelectLocation')}
+          onPress={handleSelect}
+          // disabled={!isValid}
+          useColors={[colors.appTheme, colors.appTheme]}
+          // textStyle={{
+          //   color: !isValid ? colors.LightSlateGray : colors.white,
+          // }}
+        />
       </View>
     </AuthLayout>
   );

@@ -6,30 +6,33 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import {useLocation} from '../../../hooks';
 import AuthLayout from '../../layout/AuthLayout';
 import CustomTextField from '../../../components/TextFiled/CustomTextField';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import AppButton from '../../../components/AppButton/AppButton';
+import {i18n} from '../../../localization';
 
 const Location = () => {
   const {
     searchValue,
     setSearchValue,
-    isCategoryList,
     handleNavigation,
     handleCurrentLocationNavigation,
+    isCategoryList,
   } = useLocation();
 
   return (
     <AuthLayout
       title="Please Select Location"
       topStyle={{flex: 0.085}}
-      fontStyle={{fontSize: 24}}>
+      fontStyle={{fontSize: 24}}
+      // loader={isLoader}
+    >
       <View style={styles.container}>
-        <CustomTextField
-          showLeftIcon
+        {/* <CustomTextField
+          showSearchIcon
           placeholder="Search by city or area name"
           placeholderTextColor={colors.NeutralGray}
           value={searchValue}
@@ -42,24 +45,19 @@ const Location = () => {
           <View style={styles.semiHorizontalLine} />
           <Text style={styles.Or_Text}>Or</Text>
           <View style={styles.semiHorizontalLine} />
-        </View>
-        <View>
-          <TouchableOpacity
-            style={[styles.buttonWrapper]}
-            onPress={handleCurrentLocationNavigation}>
-            <LinearGradient
-              colors={[colors.appTheme, colors.appTheme]}
-              style={styles.button}>
-              <Text style={styles.btnText}>Use my Current Location</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
+        </View> */}
+        {/* <AppButton
+          title={i18n.t('UseMyCurrentLocation')}
+          onPress={handleCurrentLocationNavigation}
+          useColors={[colors.appTheme, colors.appTheme]}
+        /> */}
+
         <View style={[styles.horizontalLine, {marginTop: 24}]} />
         <Text style={styles.cityHeading_txt}>Popular Cities</Text>
-        {isCategoryList.map((item, index) => {
+        {isCategoryList?.map((item, index) => {
           return (
             <TouchableOpacity
-              onPress={() => handleNavigation(item.name)}
+              onPress={() => handleNavigation(item)}
               key={'@' + index}>
               <Text style={styles.cityName_txt}>{item.name}</Text>
               {isCategoryList?.length !== index + 1 && (
@@ -110,7 +108,7 @@ const styles = StyleSheet.create({
     // position: "absolute",
     // top: 706,
     // left: 201,
-    width: 'full',
+    width: '100%',
     height: 48,
 
     borderRadius: 10,
@@ -153,10 +151,12 @@ const styles = StyleSheet.create({
   },
   cityHeading_txt: {
     fontSize: 18,
-    fontFamily: typography.Regular_400,
+    fontFamily: typography.SemiBold_600,
     color: colors.SimplyCharcoal,
     marginTop: 16,
     marginBottom: 24,
+    lineHeight: 18 * 1.4,
+    letterSpacing: 18 * (0 / 100),
   },
   cityName_txt: {
     fontSize: 14,

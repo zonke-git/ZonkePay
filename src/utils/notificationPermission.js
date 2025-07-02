@@ -9,9 +9,9 @@ export async function requestUserPermission() {
     authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
   if (enabled) {
-    // console.log('Notification permission granted:', authStatus);
+    console.log('Notification permission granted:', authStatus);
     const fcmToken = await messaging().getToken();
-    // console.log('FCM Token:', fcmToken);
+    console.log('FCM Token:', fcmToken);
     return fcmToken; // return the token so caller can use it
   } else {
     console.log('Notification permission denied');

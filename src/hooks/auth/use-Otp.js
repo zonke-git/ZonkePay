@@ -1,61 +1,71 @@
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {Alert, BackHandler} from 'react-native';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useState} from 'react';
-import Toast from 'react-native-root-toast';
 import {useDispatch, useSelector} from 'react-redux';
-import {BackHandler} from 'react-native';
+import Toast from 'react-native-root-toast';
 import DeviceInfo from 'react-native-device-info';
 import messaging from '@react-native-firebase/messaging';
-import {
-  businessDetails_submitOnBoard_reset,
-  resetBusinessDetails,
-  setBusinessDetails,
-  setOnBoardFormNumber,
-} from '../../redux/slice/onBoardSlice';
-import {
-  authToken,
-  resetRequestOtpState,
-  resetVerifyOtpState,
-} from '../../redux/slice/authSlice';
-import {generateOTP, verifyOTP} from '../../redux/action/authActions';
 
-const RESEND_OTP_TIME_LIMIT = 30;
+import {
+  resetVerifyOtpState,
+  resetRequestOtpState,
+} from '../../redux/slice/authSlice';
+import {
+  setContactDetails,
+  setOnBoardFormNumber,
+  setShowEmailVerifyContent,
+} from '../../redux/slice/onBoardSlice';
+// import {resendOTP, verifyOTP} from '../../redux/action/authActions';
+import {getAuthToken, getMerchant_id} from '../../utils/authStorage';
+import {
+  VerifyOTP_MPIN_API,
+  Resend_MPIN_API,
+  emailotp_verifyAPI,
+} from '../../api/api';
+import handleRequestEmail from '../../utils/handleRequestEmail';
+import {saveSessionAndNavigate} from '../../utils/saveSessionAndNavigate';
+
+const RESEND_OTP_TIME_LIMIT = 3;
 
 export const useOTP = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
   const [otpValue, setOtpValue] = useState('');
+  const [autoFocus, setAutoFocus] = useState(true);
   const [timeLeft, setTimeLeft] = useState(RESEND_OTP_TIME_LIMIT);
   const [canResend, setCanResend] = useState(false);
-  const loading = useSelector(state => state.auth.verifyOtpLoader);
-  const ResendOTPloading = useSelector(state => state.auth.requestOtpLoader);
-  const requestOtpdata = useSelector(state => state?.auth?.requestOtpdata);
-  const verifyOtpError = useSelector(state => state?.auth?.verifyOtpError);
-  const verifyOtpErrorMessage = useSelector(
-    state => state?.auth?.verifyOtpErrorMessage,
-  );
-  const verifyOtpSuccess = useSelector(state => state?.auth?.verifyOtpSuccess);
-  const verifyOtpData = useSelector(state => state?.auth?.verifyOtpData);
-  const userInput = useSelector(state => state?.auth?.loginDetails);
-  //
+  const [resendLoader, setResendLoader] = useState(false);
+  const [isLoader, setIsLoader] = useState(false);
+  const [mpinError, setMpinError] = useState('');
 
-  // console.log('verifyOtpError', verifyOtpError);
-  // console.log('verifyOtpErrorMessage', verifyOtpErrorMessage);
-  // console.log('verifyOtpSuccess', verifyOtpSuccess);
-  // console.log('verifyOtpData', verifyOtpData);
+  const {
+    verifyOtpLoader: loading,
+    requestOtpdata,
+    verifyOtpError,
+    verifyOtpErrorMessage,
+    verifyOtpSuccess,
+    loginDetails: userInput,
+    showForgotPage,
+    authTokenInfo: token,
+  } = useSelector(state => state.auth);
+
+  const {showEmailVerifyContent, contactDetails} = useSelector(
+    state => state.onBoard,
+  );
+
+  const verifyOtp_token = requestOtpdata?.token;
+  const verifyEmail_id = contactDetails?.verifyEmail_id;
 
   useFocusEffect(
-    React.useCallback(() => {
+    useCallback(() => {
       const onBackPress = () => {
-        // Navigate to 'Home' instead of going back
-        navigation.navigate('SignUp');
-        return true; // Prevent default back behavior
+        navigation.goBack();
+        return true;
       };
-
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-      return () => {
+      return () =>
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-      };
     }, [navigation]),
   );
 
@@ -65,7 +75,6 @@ export const useOTP = () => {
         setCanResend(true);
         return;
       }
-
       const timerId = setInterval(() => {
         setTimeLeft(prev => {
           if (prev <= 1) {
@@ -76,132 +85,208 @@ export const useOTP = () => {
           return prev - 1;
         });
       }, 1000);
-
-      // 🔴 Clear timer when user leaves screen
-      return () => {
-        clearInterval(timerId);
-      };
+      return () => clearInterval(timerId);
     }, [timeLeft]),
   );
 
   useEffect(() => {
-    if (otpValue?.length == 6) {
-      handleSubmit();
+    if (otpValue?.length === 6) {
+      showEmailVerifyContent ? handleVerifyEmailOTP() : handleSubmit();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [otpValue]);
 
   const formatTime = seconds => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs
-      .toString()
-      .padStart(2, '0')}`;
+    const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const secs = String(seconds % 60).padStart(2, '0');
+    return `${mins}:${secs}`;
   };
 
-  const handleResendOTP = () => {
-    if (!canResend) {
-      return;
+  const makeApiCall = async (
+    apiCallFn,
+    payload,
+    token,
+    successMessage,
+    successCallback,
+  ) => {
+    setIsLoader(true);
+    setAutoFocus(false);
+    setMpinError('');
+    try {
+      const response = await apiCallFn(payload, token);
+      if (response?.success || response) {
+        if (successMessage) {
+          Toast.show(successMessage, {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+          });
+        }
+        successCallback(response);
+      } else {
+        Toast.show(response?.message || 'Something went wrong', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+        });
+      }
+    } catch (error) {
+      console.error('API Error:', error);
+      setMpinError(error?.error);
+      if (error?.error === 'Exceed attempts of invalid otp') {
+        Alert.alert(
+          'Error',
+          error?.error || 'Something went wrong',
+          [{text: 'OK', onPress: () => navigation.goBack()}],
+          {cancelable: false},
+        );
+      } else {
+        Toast.show(error?.error || 'Something went wrong', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+        });
+      }
+    } finally {
+      setIsLoader(false);
+      setOtpValue('');
+      setAutoFocus(true);
     }
+  };
 
-    // Add your resend OTP logic here
-    console.log('Resending OTP...');
+  const handleResendOTP = async () => {
+    if (!canResend) return;
 
-    // Reset timer
+    setMpinError('');
+    setAutoFocus(false);
+    setResendLoader(true);
     setTimeLeft(RESEND_OTP_TIME_LIMIT);
     setCanResend(false);
-    const payload = {
-      contact_no: userInput?.phoneNo?.replace(/\s+/g, ''),
-      country_code: userInput?.countrieDetails?.code,
-    };
-    console.log('payload', payload);
-    dispatch(resetRequestOtpState());
-    dispatch(resetVerifyOtpState());
     setOtpValue('');
-    dispatch(generateOTP(payload));
+    dispatch(resetVerifyOtpState());
+
+    try {
+      if (showEmailVerifyContent) {
+        handleRequestEmail({
+          contactDetailsFormValues: contactDetails,
+          token,
+          dispatch,
+          navigation,
+          resetForm: {},
+          setOtpValue,
+          callback: ({success, response, error}) => {
+            if (success) {
+            } else {
+              Toast.show(error?.message || 'Failed to resend Email OTP', {
+                duration: Toast.durations.SHORT,
+                position: Toast.positions.BOTTOM,
+              });
+            }
+            setAutoFocus(true); // Trigger auto focus after resend callback
+          },
+        });
+      } else if (showForgotPage) {
+        const auth_token = await getAuthToken();
+        const payload = {
+          contact_number: userInput?.phoneNo?.replace(/\s+/g, ''),
+          country_code: userInput?.countrieDetails?.phoneCode,
+        };
+        await makeApiCall(
+          Resend_MPIN_API,
+          payload,
+          auth_token,
+          'MPIN OTP resent successfully',
+          () => setAutoFocus(true),
+        );
+      } else {
+        const payload = {
+          contact_number: userInput?.phoneNo?.replace(/\s+/g, ''),
+        };
+        const response = await dispatch(resendOTP(payload));
+        if (response?.token || response?.message) {
+          Toast.show(response?.message || 'OTP resent successfully', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+          });
+        }
+        setAutoFocus(true);
+      }
+    } catch (error) {
+      Toast.show(error?.message || 'Failed to resend OTP', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.BOTTOM,
+      });
+    } finally {
+      setResendLoader(false);
+      setAutoFocus(true);
+    }
+  };
+
+  const handleVerifyEmailOTP = async () => {
+    const auth_token = await getAuthToken();
+    const payload = {otp: otpValue};
+    await makeApiCall(
+      emailotp_verifyAPI,
+      payload,
+      auth_token,
+      'Email verified successfully!',
+      () => {
+        dispatch(setShowEmailVerifyContent(false));
+        dispatch(setContactDetails({verifyEmail_id: true}));
+        dispatch(setOnBoardFormNumber(3)); // For Email verfication
+        navigation.navigate('Onboard');
+      },
+    );
   };
 
   const handleSubmit = async () => {
-    // navigation.navigate('Onboard');
-    const fcm_token = await messaging().getToken();
-    const device_id = await DeviceInfo.getUniqueId(); // async
-    const device_model = DeviceInfo.getModel(); // sync
-    const device_version = DeviceInfo.getSystemVersion(); // sync
-    const platform = DeviceInfo.getSystemName(); // sync
-    const app_version = DeviceInfo.getVersion(); // sync
-    // console.log('fcm_token :', fcm_token);
-
-    const payload = {
-      otp: otpValue,
-      session_id: requestOtpdata?.sessionId,
-      fcm_token,
-      device_id,
-      device_model,
-      device_version,
-      platform,
-      app_version,
-      verify_merchant: true,
-    };
-    console.log('payload', payload);
-    navigation.navigate('Onboard');
-    // dispatch(resetVerifyOtpState());
-    // dispatch(businessDetails_submitOnBoard_reset());
-    // dispatch(setOnBoardFormNumber(1));
-    // dispatch(verifyOTP(payload))
-    //   .then(response => {
-    //     console.log('Verify OTP Response :', response);
-    //     if (response?.is_verified && response?.success) {
-    //       dispatch(
-    //         setOnBoardFormNumber(
-    //           // response?.merchant?.current_step_no === 3
-    //           //   ? response?.merchant?.current_step_no + 1
-    //           //   :
-    //           response?.merchant?.current_step_no,
-    //         ),
-    //       );
-    //       dispatch(authToken(response?.tokenInfo));
-    //       dispatch(
-    //         setBusinessDetails({
-    //           businessCategory_id: response?.merchant?.business_type,
-    //           CIPCRegistrationNumber: response?.merchant?.registration_number,
-    //         }),
-    //         //category_id
-    //         // business_type
-    //       );
-    //       navigation.navigate('Onboard');
-    //     } else if (response?.success && response?.new_user) {
-    //       dispatch(resetBusinessDetails());
-    //       navigation.navigate('Onboard');
-    //     }
-    //     setOtpValue('');
-    //   })
-    //   .catch(error => {
-    //     console.error('Verify OTP Error :', error);
-    //     setOtpValue('');
-    //   });
-
-    // setInvalidOtp(true);
+    if (showForgotPage) {
+      const auth_token = await getAuthToken();
+      const merchant_id = await getMerchant_id();
+      const payload = {
+        otp: otpValue,
+        id: merchant_id,
+      };
+      await makeApiCall(
+        VerifyOTP_MPIN_API,
+        payload,
+        auth_token,
+        'MPIN OTP verified successfully!',
+        () => navigation.navigate('Mpin'),
+      );
+    } else {
+      const fcm_token = await messaging().getToken();
+      const payload = {
+        otp: otpValue,
+        device_id: await DeviceInfo.getUniqueId(),
+        device_model: DeviceInfo.getModel(),
+        device_version: DeviceInfo.getSystemVersion(),
+        device_platform: DeviceInfo.getSystemName(),
+        app_version: DeviceInfo.getVersion(),
+      };
+      dispatch(resetVerifyOtpState());
+      setAutoFocus(false);
+      try {
+        const response = await dispatch(verifyOTP(payload, verifyOtp_token));
+        await saveSessionAndNavigate(response, dispatch, navigation);
+      } catch (error) {
+        if (error.error === 'Exceed attempts of invalid otp') {
+          Alert.alert(
+            'Error',
+            error?.error || 'Something went wrong',
+            [{text: 'OK', onPress: () => navigation.goBack()}],
+            {cancelable: false},
+          );
+        } else {
+          Toast.show(error.error || 'Something went wrong', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+          });
+        }
+      } finally {
+        setOtpValue('');
+        setAutoFocus(true);
+      }
+    }
   };
 
-  const handleBack = () => {
-    navigation.goBack();
-  };
-
-  const showToastMessage = () => {
-    Toast.show('Please fill OTP', {
-      duration: Toast.durations.SHORT,
-      position: Toast.positions.BOTTOM,
-      shadow: true,
-      animation: true,
-      hideOnPress: true,
-      delay: 0,
-    });
-  };
-
-  const handleChangeNumber = () => {
-    dispatch(resetRequestOtpState());
-    navigation.navigate('SignUp');
-  };
   return {
     otpValue,
     setOtpValue,
@@ -210,12 +295,25 @@ export const useOTP = () => {
     formatTime,
     handleResendOTP,
     handleSubmit,
-    handleBack,
+    handleBack: () => navigation.goBack(),
+    handleChangeNumber: () => {
+      dispatch(resetRequestOtpState());
+      navigation.goBack();
+    },
+    handleChangeEmailId: () => {
+      dispatch(resetRequestOtpState());
+      navigation.goBack();
+    },
     verifyOtpError,
     verifyOtpErrorMessage,
     verifyOtpSuccess,
     loading,
-    handleChangeNumber,
-    ResendOTPloading,
+    resendLoader,
+    mpinError,
+    isLoader,
+    showEmailVerifyContent,
+    handleVerifyEmailOTP,
+    autoFocus,
+    navigation,
   };
 };

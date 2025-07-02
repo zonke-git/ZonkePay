@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import DashboardLayout from '../../layout/DashboardLayout';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
+import {typography} from '../../../Theme/typography';
 import {i18n} from '../../../localization';
 import {useSendTo} from '../../../hooks/dashboard/use-sendTo';
 import SendToContacts from './SendToContacts';

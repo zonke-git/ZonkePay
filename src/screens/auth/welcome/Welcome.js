@@ -1,13 +1,13 @@
 import React from 'react';
-import {ScrollView, TouchableOpacity} from 'react-native';
+import {ScrollView} from 'react-native';
 import {View, Text, StyleSheet, Dimensions, Image} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import Carousel from 'react-native-reanimated-carousel';
+// import Carousel from 'react-native-reanimated-carousel';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import colors from '../../../theme/colors';
-import {typography} from '../../../theme/typography';
+import colors from '../../../Theme/colors';
 import {useWelcome} from '../../../hooks';
 import {i18n} from '../../../localization';
+import {typography} from '../../../Theme/typography';
+import AppButton from '../../../components/AppButton/AppButton';
 
 const {width} = Dimensions.get('window');
 
@@ -15,42 +15,26 @@ const CarouselData = [
   {
     id: 1,
     name: 'first',
-    image: require('../../../assets/images/onBoarding/EQ-Pay-is-a-Scan-Pay.png'),
+    image: require('../../../assets/images/onBoarding/Thrift-shop-cuate.png'),
     title: 'Create your free storefront in minutes',
     content:
-      'EQ Pay is a Scan & Pay Mobile App. The power to customise your CashBack and GiveBack is now in your control.',
+      'List your products or services with ease and start accepting payments instantly. Get discovered by new customers browsing on Zonke.',
   },
   {
     id: 2,
     name: 'second',
-    image: require('../../../assets/images/onBoarding/Pay-across-merchants.png'),
+    image: require('../../../assets/images/onBoarding/E-Wallet-bro.png'),
     title: 'Accept wallet payments easily',
     content:
-      'Pay across merchants which include Restaurants, Supermarkets, Fashion, Medical and more.',
+      'Set up your Zonke Wallet without the need for machines or hardware. Start receiving payments through QR codes or optional POS integration.',
   },
   {
     id: 3,
     name: 'third',
-    image: require('../../../assets/images/onBoarding/EQ-Pay-helps-you.png'),
+    image: require('../../../assets/images/onBoarding/Business-growth-amico.png'),
     title: 'Increase loyalty and repeat buys',
     content:
-      'EQ Pay helps you find your charitable purpose and empowers you to GiveBack.',
-  },
-  {
-    id: 4,
-    name: 'fourth',
-    image: require('../../../assets/images/onBoarding/Browse-the-App.png'),
-    title: 'Increase loyalty and repeat buys',
-    content:
-      'Browse the App for never before seen offers with up to 50% off CashBack and GiveBack form partner outlets',
-  },
-  {
-    id: 5,
-    name: 'fifth',
-    image: require('../../../assets/images/onBoarding/Make-every-payments-count.png'),
-    title: 'Increase loyalty and repeat buys',
-    content:
-      'Make every payments count. EQ Pay guarantees to safeguard your complete privacy and will not share any of your information.',
+      'Drive repeat sales by offering cashback and loyalty rewards. Encourage return visits and build stronger relationships with your customers.',
   },
 ];
 
@@ -74,7 +58,7 @@ const Welcome = () => {
           contentContainerStyle={styles.scrollViewContainer}
           showsVerticalScrollIndicator={false}>
           <>
-            {/* {welcomeMessage ? (
+            {welcomeMessage ? (
               <View style={styles.welcome_view}>
                 <View>
                   <View style={styles.welcome_img_view}>
@@ -100,92 +84,90 @@ const Welcome = () => {
                   </View>
                 </View>
 
-                <TouchableOpacity
-                  style={[styles.buttonWrapper, {width: 'full'}]}
-                  onPress={handleWelcomeScreen}>
-                  <LinearGradient
-                    colors={[colors.appTheme, colors.appTheme]}
-                    style={styles.button}>
-                    <Text style={styles.btnText}>{i18n.t('Next')}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
-            ) : ( */}
-            <>
-              <View>
-                <Carousel
-                  ref={carouselRef}
-                  style={{alignSelf: 'center'}}
-                  width={width * 0.9}
-                  height={width * 0.9}
-                  data={CarouselData}
-                  scrollAnimationDuration={1000}
-                  onSnapToItem={index => setActiveIndex(index)}
-                  renderItem={({item}) => (
-                    <View style={styles.item}>
-                      <Image source={item?.image} style={styles.image_size} />
-                    </View>
-                  )}
+                <AppButton
+                  onPress={handleWelcomeScreen}
+                  title={i18n.t('Next')}
+                  useColors={[colors.appTheme, colors.appTheme]}
+                  // Optional props:
+                  // width="90%"
+                  // buttonStyle={{marginTop: 20}}
+                  // textStyle={{fontSize: 18}}
+                  // gradientStyle={{borderRadius: 10}}
                 />
-                {/* Dots */}
-                <View style={styles.pagination}>
-                  {CarouselData.map((_, index) => (
-                    <View
-                      key={index}
-                      style={[
-                        styles.dot,
-                        activeIndex === index
-                          ? styles.activeDot
-                          : styles.inactiveDot,
-                      ]}
-                    />
-                  ))}
-                </View>
-                {/* <Text style={styles.title_txt}>
-                  {CarouselData[activeIndex]?.title}
-                </Text> */}
-                <Text style={styles.content_txt}>
-                  {CarouselData[activeIndex]?.content}
-                </Text>
               </View>
-              {activeIndex < 4 ? (
-                <View style={styles.btnView}>
-                  <TouchableOpacity
-                    style={styles.buttonWrapper}
-                    onPress={() => {
-                      handleIndexChange(4);
-                    }}>
-                    <LinearGradient
-                      colors={[colors.white, colors.white]}
-                      style={styles.button}>
-                      <Text style={[styles.btnText, {color: colors.DimGray}]}>
-                        {i18n.t('Skip')}
-                      </Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.buttonWrapper}
-                    onPress={() => handleIndexChange(activeIndex + 1)}>
-                    <LinearGradient
-                      colors={[colors.appTheme, colors.appTheme]}
-                      style={styles.button}>
-                      <Text style={styles.btnText}>{i18n.t('Next')}</Text>
-                    </LinearGradient>
-                  </TouchableOpacity>
+            ) : (
+              <>
+                <View>
+                  {/* <Carousel
+                    ref={carouselRef}
+                    style={{alignSelf: 'center'}}
+                    width={width * 0.9}
+                    height={width * 0.9}
+                    data={CarouselData}
+                    scrollAnimationDuration={1000}
+                    onSnapToItem={index => setActiveIndex(index)}
+                    panGestureHandlerProps={{
+                      enabled: false, // 👈 This disables swipe gestures
+                    }}
+                    renderItem={({item}) => (
+                      <View style={styles.item}>
+                        <Image source={item?.image} style={styles.image_size} />
+                      </View>
+                    )}
+                  /> */}
+                  <View style={styles.item}>
+                    <Image
+                      source={CarouselData[activeIndex]?.image}
+                      style={styles.image_size}
+                    />
+                  </View>
+                  {/* Dots */}
+                  <View style={styles.pagination}>
+                    {CarouselData.map((_, index) => (
+                      <View
+                        key={index}
+                        style={[
+                          styles.dot,
+                          activeIndex === index
+                            ? styles.activeDot
+                            : styles.inactiveDot,
+                        ]}
+                      />
+                    ))}
+                  </View>
+                  <Text style={styles.title_txt}>
+                    {CarouselData[activeIndex]?.title}
+                  </Text>
+                  <Text style={styles.content_txt}>
+                    {CarouselData[activeIndex]?.content}
+                  </Text>
                 </View>
-              ) : (
-                <TouchableOpacity
-                  style={[styles.buttonWrapper, {width: 'full'}]}
-                  onPress={handleNavigation}>
-                  <LinearGradient
-                    colors={[colors.appTheme, colors.appTheme]}
-                    style={styles.button}>
-                    <Text style={styles.btnText}>{i18n.t('GetStarted')}</Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              )}
-            </>
-            {/* )} */}
+                {activeIndex < 2 ? (
+                  <View style={styles.btnView}>
+                    <AppButton
+                      width={'45%'}
+                      onPress={() => handleIndexChange(2)}
+                      title={i18n.t('Skip')}
+                      useColors={[colors.white, colors.white]}
+                      textStyle={{color: colors.DimGray}}
+                    />
+
+                    <AppButton
+                      width={'45%'}
+                      onPress={() => handleIndexChange(activeIndex + 1)}
+                      title={i18n.t('Next')}
+                      useColors={[colors.appTheme, colors.appTheme]}
+                    />
+                  </View>
+                ) : (
+                  <AppButton
+                    onPress={handleNavigation}
+                    title={i18n.t('GetStarted')}
+                    useColors={[colors.appTheme, colors.appTheme]}
+                  />
+                )}
+              </>
+            )}
           </>
         </ScrollView>
       </SafeAreaView>
@@ -197,8 +179,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.white,
-    // justifyContent: "space-between",
-    // paddingTop: "80%",
     padding: 0,
   },
   scrollViewContainer: {
@@ -211,19 +191,12 @@ const styles = StyleSheet.create({
   welcome_view: {
     flex: 1,
     justifyContent: 'space-between',
-    // alignItems: "center",
-    // alignContent: "center",
-    // alignSelf: "center",
   },
   welcome_img_view: {
-    // justifyContent: "center",
-    // alignItems: "center",
     aspectRatio: 272 / 310,
   },
   welcome_msg_view: {
     width: '85%',
-    // alignContent: "center",
-    // backgroundColor: "red",
     alignSelf: 'center',
     marginTop: 16,
   },
@@ -259,14 +232,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 8,
     aspectRatio: 310 / 310,
-    // padding: 20,
-    // marginHorizontal: 10,
   },
   image_size: {
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
-    // marginBottom: 20,
   },
   title_txt: {
     fontSize: 16,
@@ -288,9 +258,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   buttonWrapper: {
-    // position: "absolute",
-    // top: 706,
-    // left: 201,
     width: 150,
     height: 48,
 

@@ -9,11 +9,12 @@ import {
   StyleSheet,
 } from 'react-native';
 import {countries} from './Countries';
-import {typography} from '../../theme/typography';
-import colors from '../../theme/colors';
-import LinearGradient from 'react-native-linear-gradient';
+import {typography} from '../../Theme/typography';
+import colors from '../../Theme/colors';
 import {setLoginDetails} from '../../redux/slice/authSlice';
 import {useDispatch} from 'react-redux';
+import AppButton from '../AppButton/AppButton';
+import {i18n} from '../../localization';
 
 export default function CountryPhoneInput({modalVisible, setModalVisible}) {
   const dispatch = useDispatch();
@@ -57,18 +58,14 @@ export default function CountryPhoneInput({modalVisible, setModalVisible}) {
           keyboardShouldPersistTaps="handled"
         />
 
-        <TouchableOpacity
-          style={styles.closeButton}
+        <AppButton
+          title={i18n.t('Close')}
           onPress={() => {
             setModalVisible(false);
             setSearchText('');
-          }}>
-          <LinearGradient
-            colors={[colors.appTheme, colors.appTheme]}
-            style={styles.button}>
-            <Text style={styles.closeButtonText}>Close</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+          }}
+          useColors={[colors.appTheme, colors.appTheme]}
+        />
       </View>
     </Modal>
   );
@@ -117,7 +114,7 @@ const styles = StyleSheet.create({
 
   closeButton: {
     margin: 20,
-    width: 'full',
+    width: '100%',
     height: 48,
 
     borderRadius: 10,

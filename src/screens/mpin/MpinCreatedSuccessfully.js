@@ -4,9 +4,9 @@ import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import {useNavigation} from '@react-navigation/native';
 import SuccessfullyLayout from '../layout/SuccessfullyLayout';
-import colors from '../../theme/colors';
+import colors from '../../Theme/colors';
 import {i18n} from '../../localization';
-import {typography} from '../../theme/typography';
+import {typography} from '../../Theme/typography';
 
 const MpinCreatedSuccessfully = () => {
   const navigation = useNavigation();

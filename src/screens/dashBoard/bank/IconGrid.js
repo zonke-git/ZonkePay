@@ -7,7 +7,7 @@ import {
   FlatList,
   ScrollView,
 } from 'react-native';
-import colors from '../../../theme/colors';
+import colors from '../../../Theme/colors';
 import LinearGradient from 'react-native-linear-gradient';
 
 const DATA = [

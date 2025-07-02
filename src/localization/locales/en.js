@@ -1,39 +1,4 @@
 export default {
-  SignInToYourAccount: 'Sign in to your Account',
-  ForgotPassword: 'Forgot Password',
-  LogIn: 'Log In',
-  LoginUsingEmail: 'Login using Email',
-  TryLoggingInUsingEmail: 'Try logging in using Email',
-  FirstName: 'First Name',
-  LastName: 'Last Name',
-  Nickname_Optional: 'Nickname(Optional)',
-  ReferralCode: 'Referral Code',
-  SignUp: 'Sign Up',
-  MyContact:'My Contact',
-  //
-  //
-  // schema validation message
-  //
-  //
-  // onBoard
-  FirstNameIsRequired: 'First Name is required',
-  LastNameIsRequired: 'Last Name is required',
-  EmailIsRequired: 'Email is required',
-  LocationIsRequired: 'Location is required',
-  YouMustAcceptTheTermsAndConditions:
-    'You must accept the terms and conditions',
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
-  //
   welcome_message: 'Welcome to Zonke Merchant App!',
   SouthAfricasNewAgeMerchantPaymentandStorefrontPlatform:
     'South Africa’s New-Age Merchant Payment and Storefront Platform',
@@ -50,6 +15,7 @@ export default {
   Details: 'Details',
   Engagement: 'Engagement',
   Model: 'Model',
+  SignUpToYourNewAccount: 'Sign up to your New Account',
   SendOTP: 'Send OTP',
   Continue: 'Continue',
   Enter: 'Enter',
@@ -58,6 +24,8 @@ export default {
     'Set you personal 4-digit MPIN. It will be used for secure and fast sign in.',
   EnableFace_ID_AlongWith_MPIN_Creation:
     'Enable Face ID along with MPIN creation',
+  EnableFingerprint_AlongWith_MPIN_Creation:
+    'Enable Fingerprint along with MPIN creation',
   VerificationCode: 'Verification Code',
   WeHaveSentTheVerificationCodeToYourPhoneNumber:
     'We have sent the verification code to your phone number',
@@ -73,21 +41,123 @@ export default {
   BusinessName: 'Business Name',
   RegistrationNumber: 'Registration Number',
   BusinessCategory: ' Business Category',
+  BusinessType: 'Business Type',
   Select: 'Select',
   Location: 'Location',
+  FirstName: 'First Name',
+  LastName: 'Last Name',
   EmailID: 'Email ID',
   PhoneNumber: 'Phone Number',
+  DeleteProduct: 'Delete Product',
   EnterMobileNumber: 'Enter Mobile Number',
   Submit: 'Submit',
   LoginToYourAccount: 'Login to your Account',
-  DontHaveA_Account: 'Don’t have a account?',
+  DontHaveA_Account: 'Don’t have an account?',
+  SignUp: 'Sign Up',
+  LogIn: 'Log In',
   RememberMe: 'Remember me',
   Forgot: 'Forgot',
   CreatedSuccessfully: 'Created Successfully',
   Done: 'Done',
+  Admin_Manager: 'Admin/Manager',
+  Verify: 'Verify',
+  VerifyIdentity: 'Verify Identity',
+  SaveContinue: 'Save & Continue',
+  UseMyCurrentLocation: 'Use my Current Location',
+  SelectLocation: 'Select Location',
+  Outlets: 'Outlets',
+  CreateOutlet: 'Create Outlet',
+  EditOutlet: 'Edit Outlet',
+  BusinessNameAsPerRegistrationCertificate:
+    'Business Name as per Registration Certificate',
+  RegistrationCertificate: 'Registration Certificate',
+  OutletName: 'Outlet Name',
+  ContactPersonName: 'Contact Person Name',
+  ContactPersonMobile: 'Contact Person Mobile',
+  ContactPersonEmail: 'Contact Person Email',
+  OutletInfo: 'Outlet Info',
+  MobileNumber_CustomerToReachOut: 'Mobile Number(Customer to reach out)',
+  Sub_CategoriesMax3: 'Sub-Categories (Max 3)',
+  MapLocation: 'Map Location',
+  Province: 'Province',
+  Area: 'Area',
+  Documents: 'Documents',
+  OutletCharacteristics: 'Outlet Characteristics',
+  KidFriendly: 'Kid Friendly',
+  IndoorSeating: 'Indoor Seating',
+  GlutenFreeOptions: 'Gluten Free Options',
+  WheelchairAccessible: 'Wheelchair Accessible',
+  ValetParkingAvailable: 'Valet Parking Available',
+  FreeParking: 'Free Parking',
+  TableBookingRecommended: 'Table Booking Recommended',
+  PrivateDiningArea: 'Private Dining Area',
+  LIVE_Music: 'LIVE Music',
+  Previous: 'Previous',
+  Save_Next: 'Save & Next',
+  YouCanAddAaximum_5_photos: 'You can add maximum 5 photos',
+  RegistrationNo: 'Registration No.',
+  RegistrationDate: 'Registration Date',
+  IssuingProvince: 'Issuing Province',
+  RegistrationCertificatePDF_JPG_PNG:
+    'Registration Certificate (PDF, JPG, PNG)',
+  TaxRegistrationNumber_TRN: 'Tax Registration Number (TRN)',
+  TaxRegistrationDate: 'Tax Registration Date',
+  IssuingAuthority: 'Issuing Authority',
+  TaxCertificatePDF_JPG_PNG: 'Tax Certificate (PDF, JPG, PNG)',
+  AreYouSureYouWantToRemoveThisImage:
+    'Are you sure you want to remove this image?',
+  RemoveImage: 'Remove Image',
+  CashbackPercentage: 'Cashback Percentage',
+  Settlements: 'Settlements',
+  Reports: 'Reports',
+  Users: 'Users',
+  QR_Codes: 'QR Codes',
+  Menus: 'Menus',
+  BusinessVerification: 'Business Verification',
+  VerifyEmail: 'Verify Email',
+  AddMenu: 'Add Menu',
+  EditMenu: 'Edit Menu',
+  MenuName: 'Menu Name',
+  MenuType: 'Menu Type',
+  Price: 'Price',
+  Description: 'Description',
+  Photos: 'Photos',
+  Photo: 'Photo',
+  DeleteOutlet: 'Delete Outlet',
+  Edit: 'Edit',
+  PlatformFee: 'Platform Fee',
+  NoOutletsFound: 'No Outlets Found',
+  YouCanCreate_A_NewOutletToGetStarted:
+    'You can create a new outlet to get started',
+  Locality: 'Locality',
+  ContactPerson: 'Contact Person',
+  Sub_Categories: 'Sub-Categories',
+  VerifyBusiness: 'Verify Business',
+  TaxCertificate: 'Tax Certificate',
+  TaxNumber: 'Tax Number',
+  RegistrationDocument: 'Registration Document',
+  AcceptAgreement: 'Accept Agreement',
+  Re_enter: 'Re-enter',
+  AlreadyHaveAnAccount: 'Already have an account?',
+  ContactPersonFirstName: 'Contact Person First Name',
+  ContactPersonLastName: 'Contact Person Last Name',
+  OutletLocation: 'Outlet Location',
+  Subcategory: 'Subcategory',
+  MerchantID: 'Merchant ID',
+  WalletID: 'Wallet ID',
+  CurrentBalance: 'Current Balance',
+  AvailableBalance: 'Available Balance',
+  //
+  //
+  //
+  //
   //
   //
   // schema validation message
+  //
+  //
+  //
+  //
   //
   //
   // SignUP / Login
@@ -101,13 +171,17 @@ export default {
   CIPC_RegistrationNumberIsRequired: 'CIPC registration number is required',
   FormatMustBeYYYY_NNNNNN_07: 'Format must be YYYY/NNNNNN/07',
   BusinessCategoryIsRequired: 'Business category is required',
-
+  LocationIsRequired: 'Location is required',
+  YouMustAcceptTheTermsAndConditions:
+    'You must accept the terms and conditions',
   // Contact Details Form
+  FirstNameIsRequired: 'First Name is required',
   NameMustStartWithALetterAndContainOnlyAlphabetsAndSpaces:
     'Name must start with a letter and contain only alphabets and spaces',
   NameMustBeAtLeastTwoCharacters: 'Name must be at least 2 characters',
   NameMustBeLessThanFiftyCharacters: 'Name must be less than 50 characters',
-
+  LastNameIsRequired: 'Last Name is required',
+  EmailIsRequired: 'Email is required',
   InvalidEmailAddress: 'Invalid email address',
   // Compliance And Financial Details Form
   TaxNumberIsRequired: 'Tax number is required',
@@ -115,6 +189,44 @@ export default {
   TaxNumberMustBeAtLeastFiveDigits: 'Tax number must be at least 5 digits',
   TaxNumberMustBeLessThanTwentyDigits: 'Tax number must be less than 20 digits',
   TradeLicensePhotoIsRequired: 'Trade license photo is required',
+  RegisterationCertificateIsRequired: 'Registeration Certificate is required',
+  // Outlet Info
+  OutletNameIsRequired: 'Outlet name is required',
+  NoMenusFound: 'No Menus found',
+  OutletNameMustBeAtLeastTwoCharacters:
+    'Outlet name must be at least two characters',
+  OutletNameMustBeLessThanFiftyCharacters:
+    'Outlet name must be less than 50 characters',
+  ContactPersonNameIsRequired: 'Contact Person Name is required',
+  //
+  RegistrationNumberIsRequired: 'Registration number is required',
+  RegistrationNumberMustBeAtLeastThreeCharacters:
+    'Registration number must be at least three characters',
+  RegistrationDateIsRequired: 'Registration date is required',
+  IssuingProvinceIsRequired: 'Issuing province is required',
+  RegistrationCertificateIsRequired: 'Registration certificate is required',
+  TaxNumberMustBeAtLeastFiveCharacters:
+    'Tax number must be at least five characters',
+  TaxRegistrationDateIsRequired: 'Tax registration date is required',
+  IssuingAuthorityIsRequired: 'Issuing authority is required',
+  TaxCertificateIsRequired: 'Tax certificate is required',
+  AreaIsRequired: 'Area is required',
+  ProvinceIsRequired: 'Province is required',
+  MapLocationIsRequired: 'Map location is required',
+  AddressIsRequired: 'Address is required',
+  Menu: 'Menu',
+  MenuNameIsRequired: 'Menu name is required',
+  MenuNameMustBeAtMost_100_Characters:
+    'Menu name must be at most 100 characters',
+  AtLeastOneSubCategoryRequired: 'At least one subcategory required',
+  MaxThreeSubCategories: 'Max three subcategories',
+  OTP_HasBeenSentToYourEmail_ID: 'OTP has been sent to your email ID',
+  OutletIsRequired: 'Outlet is required',
+  SubcategoryRequired: 'Subcategory required',
+  AboutISRequired: 'About is required',
+  ChangeEmailID: 'Change Email ID',
+  Annexures: 'Annexures',
+
   //
   //
   //
@@ -136,15 +248,17 @@ export default {
   Password: 'Password',
   EmptyPassword: 'Enter your password',
   InvalidPassword: 'Invalid password',
+  Login: 'Login',
   LoginOption: 'Try logging in with your Mobile Number or Email',
   Home: 'Home',
   MyOrders: 'My Orders',
   MyTransactions: 'My Transactions',
   Profile: 'Profile',
   About: 'About',
-  Menu: 'Menu',
   SpecialDeals: 'Special Deals',
-  Photos: 'Photos',
+  ProductName: 'Product Name',
+  ProductType: 'Product Type',
+  TagValue: 'Tag Value',
   Direct: 'Direct',
   DeliveryBased: 'Delivery Based',
   Date: 'Date',
@@ -193,7 +307,7 @@ export default {
   transactionStatus: 'Please select Transaction Status',
   Apply: 'Apply',
   PaymentRequest: 'Payment Request',
-  SelectOutlet: 'Please select outlet',
+  SelectOutlet: 'Select Outlet',
   QRCode: 'QR Code',
   //Week Days
   Monday: 'Monday',
@@ -209,7 +323,7 @@ export default {
   ExitApp: 'Exit App',
   ExitAlert: 'Are you sure you want to Exit?',
   Cancel: 'Cancel',
-  OK: 'OK',
+  OK: 'Ok',
   Timings: 'Timings',
   Refund: 'Void',
   RefundRaised: 'Already refund has raised',
@@ -242,7 +356,6 @@ export default {
   RefundText: 'Refunded',
   GeneretaeQRCode: 'Generate New QRCode',
   PrivacyPolicy: 'Privacy Policy',
-  NoOutletsFound: 'No Outlets Found',
   MerchantPortalLogin:
     'Please login in sociopay merchant portal and create the outlet',
   NoOffers: 'No Offers',

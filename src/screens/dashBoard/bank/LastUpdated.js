@@ -7,8 +7,8 @@ import {
   ScrollView,
   Pressable,
 } from 'react-native';
-import {typography} from '../../../theme/typography';
-import colors from '../../../theme/colors';
+import {typography} from '../../../Theme/typography';
+import colors from '../../../Theme/colors';
 import LinearGradient from 'react-native-linear-gradient';
 
 const banks = [
