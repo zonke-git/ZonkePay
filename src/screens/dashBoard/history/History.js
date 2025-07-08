@@ -1,9 +1,9 @@
 import React, {useCallback} from 'react';
 import {View, Text, FlatList, StyleSheet, Image} from 'react-native';
-import DashboardLayout from '../../layout/DashboardLayout';
 import {useHistory} from '../../../hooks/history/use-History';
 import colors from '../../../Theme/colors';
 import {typography} from '../../../Theme/typography';
+import DashLayout from '../../layout/DashLayout';
 
 const History = () => {
   const {historyData, handleBack} = useHistory();
@@ -39,7 +39,7 @@ const History = () => {
   );
 
   return (
-    <DashboardLayout
+    <DashLayout
       title="History"
       loader={false}
       backButton={true}
@@ -47,11 +47,11 @@ const History = () => {
       showFilter={true}>
       <FlatList
         data={historyData}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => item.id?.toString() || index.toString()}
         renderItem={renderItem}
         contentContainerStyle={styles.listContainer}
       />
-    </DashboardLayout>
+    </DashLayout>
   );
 };
 

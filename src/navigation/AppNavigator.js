@@ -3,20 +3,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {CardStyleInterpolators} from '@react-navigation/stack';
 import BottomTabNavigator from './BottomTabNavigator';
 import {
-  AddMenu,
-  // BusinessDetailsVerifiedSuccessfully,
-  BusinessProfile,
   Location,
   LocationMap,
   LogIn,
-  Menu,
   Mpin,
   MpinCreatedSuccessfully,
   MpinLogin,
   Onboard,
   OTP,
-  Outlet,
-  OutletList,
   SignUp,
   SplashScreen,
   WalletCreatedSuccessfully,
@@ -46,21 +40,12 @@ const AppNavigator = ({initialRouteName}) => {
         name="WalletCreatedSuccessfully"
         component={WalletCreatedSuccessfully}
       />
-      {/* <Stack.Screen name="BusinessProfile" component={BusinessProfile} /> */}
-      {/* <Stack.Screen
-        name="BusinessDetailsVerifiedSuccessfully"
-        component={BusinessDetailsVerifiedSuccessfully}
-      /> */}
       <Stack.Screen name="Mpin" component={Mpin} />
       <Stack.Screen
         name="MpinCreatedSuccessfully"
         component={MpinCreatedSuccessfully}
       />
-      {/* <Stack.Screen name="OutletList" component={OutletList} /> */}
-      {/* <Stack.Screen name="Outlet" component={Outlet} /> */}
-      {/* <Stack.Screen name="MainApp" component={BottomTabNavigator} /> */}
-      {/* <Stack.Screen name="Menu" component={Menu} /> */}
-      {/* <Stack.Screen name="AddMenu" component={AddMenu} /> */}
+      <Stack.Screen name="MainApp" component={BottomTabNavigator} />
     </Stack.Navigator>
   );
 };

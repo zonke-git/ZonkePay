@@ -1,9 +1,9 @@
 export default {
-  welcome_message: 'مرحبًا بك في تطبيق زونكي للتجار!',
-  SouthAfricasNewAgeMerchantPaymentandStorefrontPlatform:
-    'منصة الدفع والتجارة الجديدة في جنوب إفريقيا',
-  GetstartedInMinutesAndEnjoyBuilt_inLoyaltyAandCashbackToolsToGrowYourBusiness:
-    'ابدأ في دقائق واستمتع بأدوات الولاء واسترداد النقود المدمجة لتنمية عملك.',
+  welcome_message: 'مرحبًا بكم في زونكي باي الجنوبية!',
+  AfricasSecureAllInOneDigitalWalletAndPaymentApp:
+    'محفظة رقمية آمنة وشاملة للتعاملات المالية في أفريقيا.',
+  SetUpYourAccountInMinutesAndStartManagingYourMoneyReceivingPaymentsAndSendingFundsWithEase:
+    'قم بإعداد حسابك في دقائق وابدأ في إدارة أموالك، واستقبال المدفوعات، وإرسال الأموال بسهولة.',
   Next: 'التالي',
   Skip: 'تخطي',
   GetStarted: 'ابدأ',
@@ -409,7 +409,6 @@ export default {
   InvalidFullName: 'Invalid Full Name',
   InvalidEmailID: 'Invalid Email ID',
   InvalidMobileNumber: 'Invalid Mobile Number',
-  Optional: '(Optional)',
   FullName: 'Full Name',
   EditStaffDetails: 'Edit Details',
   Add: 'Add',
@@ -496,4 +495,7 @@ export default {
   UploadInvoice: 'Please Upload Invoice',
   ReadStoragePermission: 'Permission is required to access the Image/PDF',
   ReadPermissionText: 'Permission',
+  Nickname: 'اسم مستعار',
+  Optional: 'اختياري',
+  ReferralCode: 'كود الإحالة',
 };

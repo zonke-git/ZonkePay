@@ -35,33 +35,29 @@ const AppButton = ({
 
 const styles = StyleSheet.create({
   buttonWrapper: {
+    alignSelf: 'center',
     width: 150,
-    height: 48,
     borderRadius: 10,
     ...Platform.select({
-      ios: {
-        shadowColor: colors.DenimBlue,
-        shadowOffset: {width: 0, height: 2},
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      },
       android: {
-        shadowColor: colors.DenimBlue,
-        shadowOffset: {width: 0, height: 1},
-        shadowOpacity: 0.48,
+        elevation: 3,
+      },
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {width: 0, height: 2},
+        shadowOpacity: 0.1,
         shadowRadius: 4,
-        elevation: 4,
       },
     }),
   },
+
   button: {
-    flex: 1,
     borderRadius: 10,
-    paddingVertical: Platform.OS === 'ios' ? 0 : 10,
-    paddingHorizontal: Platform.OS === 'ios' ? 0 : 24,
+    paddingVertical: Platform.OS === 'ios' ? 0 : 14,
+    // paddingHorizontal: Platform.OS === 'ios' ? 0 : 24,
     justifyContent: 'center',
     alignItems: 'center',
-    overflow: 'hidden', // Ensures the gradient stays within borderRadius
+    overflow: 'hidden',
   },
   btnText: {
     fontSize: 14,
@@ -69,12 +65,6 @@ const styles = StyleSheet.create({
     fontFamily: typography.Medium_500,
     lineHeight: 14 * 1.4,
     letterSpacing: 14 * (-1 / 100),
-    ...Platform.select({
-      ios: {
-        // iOS typically needs slightly different text rendering
-        // fontWeight: typography.Medium_500, // Medium weight
-      },
-    }),
   },
 });
 

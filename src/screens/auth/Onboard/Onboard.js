@@ -1,17 +1,15 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import AuthLayout from '../../layout/AuthLayout';
-import {useOnboard} from '../../../hooks';
-import {i18n} from '../../../localization';
-import {setOnBoardDetails} from '../../../redux/slice/onBoardSlice';
-import colors from '../../../Theme/colors';
-import CustomTextField from '../../../components/TextFiled/CustomTextField';
 import LinearGradient from 'react-native-linear-gradient';
 import {Formik} from 'formik';
-import {typography} from '../../../Theme/typography';
-import CheckBox from '../../../components/CheckBox/CheckBox';
+import {useOnboard} from '../../../hooks';
+import {i18n} from '../../../localization';
 import {onboardValidationSchema} from '../../schema/validationSchemas';
-import Toast from 'react-native-root-toast';
+import {CheckBox, CustomTextField, MessageModal} from '../../../components';
+import colors from '../../../Theme/colors';
+import AuthLayout from '../../layout/AuthLayout';
+import {typography} from '../../../Theme/typography';
+import {setOnBoardDetails} from '../../../redux/slice/onBoardSlice';
 
 const Onboard = () => {
   const {
@@ -20,7 +18,11 @@ const Onboard = () => {
     onBoardFormValues,
     handleLocationNavigation,
     handleFormSubmit,
+    openTermsAndConditionModal,
+    setOpenTermsAndConditionModal,
   } = useOnboard();
+
+  console.log('onBoardFormValues', onBoardFormValues);
 
   return (
     <AuthLayout title={i18n.t('HelloLetsGetYouOnboard')}>
@@ -28,6 +30,7 @@ const Onboard = () => {
         <Formik
           initialValues={onBoardFormValues}
           validationSchema={onboardValidationSchema}
+          enableReinitialize
           onSubmit={handleFormSubmit}>
           {({
             handleChange,
@@ -73,9 +76,52 @@ const Onboard = () => {
 
                     {renderTextField(
                       'nickname',
-                      i18n.t('Nickname_Optional'),
+                      `${i18n.t('Nickname')} (${i18n.t('Optional')})`,
                       {},
                     )}
+
+                    <CustomTextField
+                      label={`CIPC ${i18n.t('RegistrationNumber')}`}
+                      required
+                      placeholder="CIPC Registration Number"
+                      placeholderTextColor={colors.SilverGray}
+                      value={values?.CIPCRegistrationNumber}
+                      onChangeText={text => {
+                        // Remove all non-digit characters
+                        const cleaned = text.replace(/\D/g, '');
+
+                        let formatted = '';
+
+                        if (cleaned.length <= 4) {
+                          formatted = cleaned;
+                        } else if (cleaned.length <= 10) {
+                          formatted = `${cleaned.slice(0, 4)}/${cleaned.slice(
+                            4,
+                          )}`;
+                        } else {
+                          formatted = `${cleaned.slice(0, 4)}/${cleaned.slice(
+                            4,
+                            10,
+                          )}/${cleaned.slice(10, 12)}`;
+                        }
+
+                        setFieldValue('CIPCRegistrationNumber', formatted);
+                        dispatch(
+                          setOnBoardDetails({
+                            CIPCRegistrationNumber: formatted,
+                          }),
+                        );
+                      }}
+                      onBlur={handleBlur('CIPCRegistrationNumber')}
+                      error={
+                        touched.CIPCRegistrationNumber &&
+                        errors.CIPCRegistrationNumber
+                        // ||
+                        // businessDetails_SubmitErrorMessage?.registration_number
+                      }
+                      keyboardType="number-pad"
+                    />
+
                     {renderTextField('email', i18n.t('EmailID'), {
                       required: true,
                       keyboardType: 'email-address',
@@ -85,7 +131,7 @@ const Onboard = () => {
                       label={i18n.t('PhoneNumber')}
                       placeholder={i18n.t('EnterMobileNumber')}
                       placeholderTextColor={colors.SilverGray}
-                      value={loginDetails?.email}
+                      value={loginDetails?.phoneNo}
                       keyboardType="phone-pad"
                       leftComponent={true}
                       countryPhoneCode={
@@ -93,7 +139,7 @@ const Onboard = () => {
                       }
                       countryPhoneFlag={loginDetails?.countrieDetails?.flag}
                       inputStyle={styles.inputBox}
-                      disable={false}
+                      editableFiled={false}
                     />
 
                     <View style={styles.selectableBox_view}>
@@ -142,42 +188,41 @@ const Onboard = () => {
                     )}
 
                     <CheckBox
-                      value={
-                        onBoardFormValues?.termsAndConditions_PrivacyPolicyCheckBox
-                      }
-                      onToggle={() =>
+                      value={values?.termsAndConditions_PrivacyPolicyCheckBox}
+                      onToggle={() => {
+                        const newValue =
+                          !values?.termsAndConditions_PrivacyPolicyCheckBox;
                         dispatch(
                           setOnBoardDetails({
-                            termsAndConditions_PrivacyPolicyCheckBox:
-                              !onBoardFormValues?.termsAndConditions_PrivacyPolicyCheckBox,
+                            termsAndConditions_PrivacyPolicyCheckBox: newValue,
                           }),
-                        )
-                      }
+                        );
+                      }}
                       childDiv={
                         <>
                           <Text style={styles.checkBoxLabel_txt}>
-                            I have read and accepted the{' '}
+                            I have read and accepted the EQPay{' '}
                             <Text
                               style={styles.clickableColor_txt}
                               onPress={() => {
-                                Toast.show('Under Development', {
-                                  duration: Toast.durations.SHORT,
-                                  position: Toast.positions.BOTTOM,
-                                  shadow: true,
-                                  animation: true,
-                                  hideOnPress: true,
-                                  delay: 0,
-                                });
+                                setOpenTermsAndConditionModal(true);
                               }}>
-                              EQPay
+                              terms & conditions
                             </Text>{' '}
-                            terms & conditions and privacy policy
+                            and{' '}
+                            <Text
+                              style={styles.clickableColor_txt}
+                              onPress={() => {
+                                setOpenTermsAndConditionModal(true);
+                              }}>
+                              privacy policy
+                            </Text>
                           </Text>
                         </>
                       }
                       error={
                         !isValid
-                          ? !onBoardFormValues?.termsAndConditions_PrivacyPolicyCheckBox
+                          ? !values?.termsAndConditions_PrivacyPolicyCheckBox
                             ? i18n.t('YouMustAcceptTheTermsAndConditions')
                             : ''
                           : ''
@@ -216,6 +261,13 @@ const Onboard = () => {
                     </TouchableOpacity>
                   </View>
                 </View>
+
+                <MessageModal
+                  title={'Terms and Condition'}
+                  visible={openTermsAndConditionModal}
+                  message={'Comming Soon'}
+                  onClose={() => setOpenTermsAndConditionModal(false)}
+                />
               </>
             );
           }}

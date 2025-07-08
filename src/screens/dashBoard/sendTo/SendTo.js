@@ -1,17 +1,16 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import DashboardLayout from '../../layout/DashboardLayout';
 import colors from '../../../Theme/colors';
 import {typography} from '../../../Theme/typography';
-import {i18n} from '../../../localization';
 import {useSendTo} from '../../../hooks/dashboard/use-sendTo';
 import SendToContacts from './SendToContacts';
+import DashLayout from '../../layout/DashLayout';
 
 const SendTo = () => {
   const {handleBack, selectedUser, handleSelectedUser} = useSendTo();
 
   return (
-    <DashboardLayout
+    <DashLayout
       title="Send Money"
       loader={false}
       backButton={true}
@@ -26,15 +25,15 @@ const SendTo = () => {
           handleSelectedUser={handleSelectedUser}
         />
         {/* <View style={styles.dispalyMainContent}> */}
-          <Text style={styles.titleText}>{selectedUser?.name}</Text>
-          <Text style={styles.titleText}>{selectedUser?.name}</Text>
-          <Text style={styles.titleText}>{selectedUser?.name}</Text>
-          <Text style={styles.titleText}>{selectedUser?.name}</Text>
-          <Text style={styles.titleText}>{selectedUser?.name}</Text>
-          <Text style={styles.titleText}>{selectedUser?.name}</Text>
+        <Text style={styles.titleText}>{selectedUser?.name}</Text>
+        <Text style={styles.titleText}>{selectedUser?.name}</Text>
+        <Text style={styles.titleText}>{selectedUser?.name}</Text>
+        <Text style={styles.titleText}>{selectedUser?.name}</Text>
+        <Text style={styles.titleText}>{selectedUser?.name}</Text>
+        <Text style={styles.titleText}>{selectedUser?.name}</Text>
         {/* </View> */}
       </View>
-    </DashboardLayout>
+    </DashLayout>
   );
 };
 const styles = StyleSheet.create({

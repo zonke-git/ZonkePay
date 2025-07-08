@@ -1,16 +1,16 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Dashboard, Home, MyAccount} from '../screens';
 import colors from '../Theme/colors';
 import {Image} from 'react-native';
+import {DashBoard, History, NewPayment, Scanner, SendTo} from '../screens';
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home" // Set Home as the default tab
+      initialRouteName="DashBoard" // Set Home as the default tab
       screenOptions={({route}) => ({
         headerShown: false,
         tabBarActiveTintColor: colors.appTheme, // Use your theme color
@@ -26,14 +26,20 @@ const BottomTabNavigator = () => {
           let icon;
 
           switch (route.name) {
-            case 'Home':
+            case 'DashBoard':
               icon = require('../assets/images/Home.png');
               break;
-            case 'Dashboard':
-              icon = require('../assets/images/Home.png');
+            case 'History':
+              icon = require('../assets/images/file.png');
               break;
-            case 'MyAccount':
-              icon = require('../assets/images/Home.png');
+            case 'Scanner':
+              icon = require('../assets/images/scanner.png');
+              break;
+            case 'NewPayment':
+              icon = require('../assets/images/coins.png');
+              break;
+            case 'SendTo':
+              icon = require('../assets/images/send.png');
               break;
             default:
               icon = require('../assets/images/Home.png');
@@ -56,19 +62,30 @@ const BottomTabNavigator = () => {
         },
       })}>
       <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{title: 'Home'}} // Customize tab label
+        name="DashBoard"
+        component={DashBoard}
+        options={{title: 'DashBoard'}} // Customize tab label
       />
       <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{title: 'Dashboard'}}
+        name="History"
+        component={History}
+        options={{title: 'History'}}
       />
       <Tab.Screen
-        name="MyAccount"
-        component={MyAccount}
-        options={{title: 'Account'}}
+        name="Scanner"
+        component={Scanner}
+        options={{title: 'Scanner'}}
+      />
+      <Tab.Screen
+        name="NewPayment"
+        component={NewPayment}
+        options={{title: 'NewPayment'}}
+      />
+
+      <Tab.Screen
+        name="SendTo"
+        component={SendTo}
+        options={{title: 'SendTo'}}
       />
     </Tab.Navigator>
   );

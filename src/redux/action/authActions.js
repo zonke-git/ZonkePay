@@ -36,10 +36,11 @@ export const fetchCountries = () => async dispatch => {
 };
 
 export const generateOTP = payload => async dispatch => {
+  // console.log('payload', payload);
   try {
     dispatch(setRequestOtpLoader());
     const response = await requestOtp(payload);
-    // console.log('SignUp Request OTP Response :', response);
+    // console.log('Request OTP Response :', response);
     if (response.token) {
       dispatch(setRequestOtpSuccess(response));
     } else {
@@ -49,7 +50,7 @@ export const generateOTP = payload => async dispatch => {
     }
     return response;
   } catch (error) {
-    console.log('SignUp Request OTP Response Error', error);
+    console.log('Request OTP Response Error', error);
 
     dispatch(setRequestOtpFailure(error.error || 'ApiError'));
     throw error;

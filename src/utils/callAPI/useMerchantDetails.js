@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {getMerchantDetails} from '../../redux/action/businessProfileActions';
-import {setMerchantDetailsFailure} from '../../redux/slice/businessProfileSlice';
+import {getMerchantDetails} from '../../redux/action/commonDetailsActions';
+import {setMerchantDetailsFailure} from '../../redux/slice/commonDetailsSlice';
 
 const useMerchantDetails = (token, onSuccess) => {
   const dispatch = useDispatch();

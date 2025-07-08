@@ -1,11 +1,14 @@
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setBusinessDetails} from '../../redux/slice/onBoardSlice';
+import {
+  setBusinessDetails,
+  setOnBoardDetails,
+} from '../../redux/slice/onBoardSlice';
 import {BackHandler, PermissionsAndroid, Platform} from 'react-native';
 import Toast from 'react-native-root-toast';
 import Geolocation from '@react-native-community/geolocation';
-import { fetchGoogleLocation } from '../../api/api';
+import {fetchGoogleLocation} from '../../api/api';
 
 export const useLocation = () => {
   const dispatch = useDispatch();
@@ -38,7 +41,6 @@ export const useLocation = () => {
     };
   }, [searchValue]);
 
-
   // API call with debounced value
   useEffect(() => {
     if (debouncedValue?.length > 1) {
@@ -58,8 +60,6 @@ export const useLocation = () => {
     }
   }, [debouncedValue, token]);
 
-
-
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
@@ -77,10 +77,12 @@ export const useLocation = () => {
   );
 
   const handleNavigation = async values => {
+    console.log('values', values);
+
     dispatch(
-      setBusinessDetails({
-        businessLocation: values?.name,
-        businessLocation_name: values?.name,
+      setOnBoardDetails({
+        location: values?.name,
+        location_name: values?.name,
       }),
     );
     await navigation.navigate('Onboard');

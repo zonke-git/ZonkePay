@@ -1,9 +1,9 @@
 export default {
-  welcome_message: 'Welcome to Zonke Merchant App!',
-  SouthAfricasNewAgeMerchantPaymentandStorefrontPlatform:
-    'South Africa’s New-Age Merchant Payment and Storefront Platform',
-  GetstartedInMinutesAndEnjoyBuilt_inLoyaltyAandCashbackToolsToGrowYourBusiness:
-    'Get started in minutes and enjoy built-in loyalty and cashback tools to grow your business.',
+  welcome_message: 'Welcome to ZonkePay South!',
+  AfricasSecureAllInOneDigitalWalletAndPaymentApp:
+    'Africa’s secure, all-in-one digital wallet and payment app.',
+  SetUpYourAccountInMinutesAndStartManagingYourMoneyReceivingPaymentsAndSendingFundsWithEase:
+    'Set up your account in minutes and start managing your money, receiving payments, and sending funds with ease.',
   Next: 'Next',
   Skip: 'Skip',
   GetStarted: 'Get Started',
@@ -413,7 +413,6 @@ export default {
   InvalidFullName: 'Invalid Full Name',
   InvalidEmailID: 'Invalid Email ID',
   InvalidMobileNumber: 'Invalid Mobile Number',
-  Optional: '(Optional)',
   FullName: 'Full Name',
   EditStaffDetails: 'Edit Details',
   Add: 'Add',
@@ -507,4 +506,7 @@ export default {
   UploadInvoice: 'Please Upload Invoice',
   ReadStoragePermission: 'Permission is required to access the Image/PDF',
   ReadPermissionText: 'Permission',
+  Nickname: 'Nickname',
+  Optional: 'Optional',
+  ReferralCode: 'Referral Code',
 };

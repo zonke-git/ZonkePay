@@ -29,14 +29,51 @@ export const onboardValidationSchema = Yup.object().shape({
     .min(2, i18n.t('NameMustBeAtLeastTwoCharacters'))
     .max(50, i18n.t('NameMustBeLessThanFiftyCharacters')),
 
+  nickname: Yup.string()
+    .nullable()
+    .matches(/^[A-Za-z\s]*$/, i18n.t('NicknameCanOnlyContainLettersAndSpaces'))
+    .max(30, i18n.t('NicknameMustBeLessThanThirtyCharacters')),
+
+  CIPCRegistrationNumber: Yup.string()
+    .nullable()
+    .notRequired()
+    .test(
+      'is-valid-cipc-format',
+      'Invalid CIPC Registration Number',
+      function (value) {
+        if (!value || value.trim() === '') return true; // ✅ Skip validation if empty
+
+        const regexFull =
+          /^\d{4}\/\d{6,7}\/(06|07|08|09|10|12|21|22|23|24|25|26|30|31)$/;
+
+        if (!/^\d{4}\/\d{6,7}\/\d{2}$/.test(value)) {
+          return this.createError({
+            message: 'Expected format: XXXX/XXXXXX/XX',
+          });
+        }
+
+        if (!regexFull.test(value)) {
+          return this.createError({
+            message: 'Invalid CIPC Registration Number',
+          });
+        }
+
+        return true;
+      },
+    ),
+
   email: Yup.string()
     .required(i18n.t('EmailIsRequired'))
     .email(i18n.t('InvalidEmailAddress')),
 
   location: Yup.string().required(i18n.t('LocationIsRequired')),
 
-  // termsAndConditions_PrivacyPolicyCheckBox: Yup.boolean().oneOf(
-  //   [true],
-  //   i18n.t('YouMustAcceptTheTermsAndConditions'),
-  // ),
+  referralCode: Yup.string()
+    .nullable()
+    .max(20, i18n.t('ReferralCodeMustBeLessThanTwentyCharacters')),
+
+  termsAndConditions_PrivacyPolicyCheckBox: Yup.boolean().oneOf(
+    [true],
+    i18n.t('YouMustAcceptTheTermsAndConditions'),
+  ),
 });

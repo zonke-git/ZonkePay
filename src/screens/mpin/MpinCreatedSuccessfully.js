@@ -27,7 +27,7 @@ const MpinCreatedSuccessfully = () => {
           <TouchableOpacity
             style={styles.buttonWrapper}
             onPress={() => {
-              navigation.navigate('LogIn');
+              navigation.navigate('MainApp');
             }}>
             <LinearGradient
               colors={[colors.appTheme, colors.appTheme]}

@@ -1,11 +1,12 @@
-import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {validateSouthAfricanMobile} from '../../validation/Validation';
 import Toast from 'react-native-root-toast';
 import {ForgotMPIN_API} from '../../api/api';
 import {getAuthToken} from '../../utils/authStorage';
 import {handleGenerateOTPforMob} from '../../utils/handleGenerateOTPforMob';
+import {Alert, BackHandler} from 'react-native';
 
 export const useSignUp = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,25 @@ export const useSignUp = () => {
     state => state?.auth?.requestOtpErrorMessage,
   );
   const requestOtpdata = useSelector(state => state?.auth?.requestOtpdata);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        // Confirm exit
+        Alert.alert('Exit App', 'Are you sure you want to exit the app?', [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ]);
+        return true; // prevent default back behavior
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, []),
+  );
 
   const isPhoneNumberInvalid = () => {
     const code = userInput?.countrieDetails?.code;

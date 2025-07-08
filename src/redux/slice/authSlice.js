@@ -5,12 +5,6 @@ import {countries} from '../../components/ContryCode/Countries';
 // import * as Sentry from '@sentry/react-native';
 
 const initialState = {
-  countriesList: [],
-  countriesListLoading: false,
-  countriesListError: null,
-
-  showForgotPage: false,
-
   loginDetails: {
     // phoneNo: '812333334',
     // phoneNo: '844444443',
@@ -18,6 +12,9 @@ const initialState = {
     phoneNo: '',
     countrieDetails: countries[161],
   },
+
+  // customerDetailsById: '',
+  authTokenInfo: '',
 
   requestOtpLoader: false,
   requestOtpSuccess: false,
@@ -36,46 +33,29 @@ const initialState = {
   verifyOtpSuccessVersion: 0,
   verifyOtpErrorVersion: 0,
 
-  authTokenInfo: '',
   merchant_id: '',
   merchant_details: '',
+  showForgotPage: false,
+
+  countriesList: [],
+  countriesListLoading: false,
+  countriesListError: null,
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setCountriesListLoader: state => {
-      state.countriesListLoading = true;
-      state.countriesListError = null;
-    },
-    setCountriesListSuccess: (state, action) => {
-      state.countriesListLoading = false;
-      state.countriesList = action.payload;
-    },
-    setCountriesListFailure: (state, action) => {
-      state.countriesListLoading = false;
-      state.countriesListError = action.payload;
-    },
-
     setLoginDetails: (state, action) => {
       state.loginDetails = {...state.loginDetails, ...action.payload};
     },
 
+    // setCustomerDetailsById: (state, action) => {
+    //   state.customerDetailsById = action.payload;
+    // },
+
     authToken: (state, action) => {
       state.authTokenInfo = action.payload;
-    },
-
-    setMerchant_id: (state, action) => {
-      state.merchant_id = action.payload;
-    },
-
-    setMerchant_details: (state, action) => {
-      state.merchant_details = action.payload;
-    },
-
-    setShowForgotPage: (state, action) => {
-      state.showForgotPage = action.payload;
     },
 
     // ✅ Handle OTP request
@@ -135,22 +115,47 @@ const authSlice = createSlice({
       state.verifyOtpSuccessVersion = 0;
       state.verifyOtpErrorVersion = 0;
     },
+
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    setCountriesListLoader: state => {
+      state.countriesListLoading = true;
+      state.countriesListError = null;
+    },
+    setCountriesListSuccess: (state, action) => {
+      state.countriesListLoading = false;
+      state.countriesList = action.payload;
+    },
+    setCountriesListFailure: (state, action) => {
+      state.countriesListLoading = false;
+      state.countriesListError = action.payload;
+    },
+
+    setMerchant_id: (state, action) => {
+      state.merchant_id = action.payload;
+    },
+
+    setMerchant_details: (state, action) => {
+      state.merchant_details = action.payload;
+    },
+
+    setShowForgotPage: (state, action) => {
+      state.showForgotPage = action.payload;
+    },
   },
 });
 
 export const {
-  setCountriesListLoader,
-  setCountriesListSuccess,
-  setCountriesListFailure,
-
   setLoginDetails,
-
+  // setCustomerDetailsById,
   authToken,
-
-  setMerchant_id,
-  setMerchant_details,
-
-  setShowForgotPage,
 
   setRequestOtpLoader,
   setRequestOtpSuccess,
@@ -161,6 +166,15 @@ export const {
   setVerifyOtpSuccess,
   setVerifyOtpFailure,
   resetVerifyOtpState,
+
+  //
+  setMerchant_id,
+  setMerchant_details,
+  setShowForgotPage,
+
+  setCountriesListLoader,
+  setCountriesListSuccess,
+  setCountriesListFailure,
 } = authSlice.actions;
 
 export default authSlice.reducer;

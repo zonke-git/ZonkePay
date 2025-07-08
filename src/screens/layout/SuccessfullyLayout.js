@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pageColor: {
-    flex: 0.4,
+    flex: 0.2,
   },
   appBgUpIcon: {
     width: 239,

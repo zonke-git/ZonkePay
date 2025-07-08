@@ -1,9 +1,10 @@
 /* eslint-disable curly */
-import {useNavigation} from '@react-navigation/native';
-import {useState} from 'react';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {handleGenerateOTPforMob} from '../../utils/handleGenerateOTPforMob';
 import {validateSouthAfricanMobile} from '../../validation/Validation';
+import {Alert, BackHandler} from 'react-native';
 
 export const useLogin = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,25 @@ export const useLogin = () => {
     state => state?.auth?.requestOtpErrorMessage,
   );
   const loading = useSelector(state => state.auth.requestOtpLoader);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        // Confirm exit
+        Alert.alert('Exit App', 'Are you sure you want to exit the app?', [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ]);
+        return true; // prevent default back behavior
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, []),
+  );
 
   const isPhoneNumberInvalid = () => {
     const code = userInput?.countrieDetails?.code;

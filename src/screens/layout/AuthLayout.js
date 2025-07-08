@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   titleView: {
     width: '85%',
     paddingTop: verticalScale(68),
-    paddingBottom: verticalScale(32),
+    paddingBottom: verticalScale(35),
     paddingHorizontal: 24,
     backgroundColor: 'transparent',
   },
@@ -94,10 +94,10 @@ const styles = StyleSheet.create({
     letterSpacing: 32 * (-2 / 100),
   },
   subTitleTxt: {
-    fontSize: 12,
+    fontSize: 14,
     color: colors.white,
-    lineHeight: 12 * 1.4,
-    letterSpacing: 12 * (-1 / 100),
+    lineHeight: 14 * 1.4,
+    letterSpacing: 14 * (0 / 100),
     fontFamily: typography.Medium_500,
     marginTop: verticalScale(12),
   },

@@ -4,7 +4,8 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import Toast from 'react-native-root-toast';
 import DeviceInfo from 'react-native-device-info';
-import messaging from '@react-native-firebase/messaging';
+import messaging, {getMessaging} from '@react-native-firebase/messaging';
+import {getApp} from '@react-native-firebase/app';
 
 import {
   resetVerifyOtpState,
@@ -13,7 +14,6 @@ import {
 import {
   setContactDetails,
   setOnBoardFormNumber,
-  setShowEmailVerifyContent,
 } from '../../redux/slice/onBoardSlice';
 // import {resendOTP, verifyOTP} from '../../redux/action/authActions';
 import {getAuthToken, getMerchant_id} from '../../utils/authStorage';
@@ -24,6 +24,7 @@ import {
 } from '../../api/api';
 import handleRequestEmail from '../../utils/handleRequestEmail';
 import {saveSessionAndNavigate} from '../../utils/saveSessionAndNavigate';
+import {resendOTP, verifyOTP} from '../../redux/action/authActions';
 
 const RESEND_OTP_TIME_LIMIT = 3;
 
@@ -228,7 +229,6 @@ export const useOTP = () => {
       auth_token,
       'Email verified successfully!',
       () => {
-        dispatch(setShowEmailVerifyContent(false));
         dispatch(setContactDetails({verifyEmail_id: true}));
         dispatch(setOnBoardFormNumber(3)); // For Email verfication
         navigation.navigate('Onboard');
@@ -252,7 +252,13 @@ export const useOTP = () => {
         () => navigation.navigate('Mpin'),
       );
     } else {
-      const fcm_token = await messaging().getToken();
+      // const fcm_token = await messaging().getToken();
+
+      const messaging = getMessaging(getApp());
+      const fcm_token = await messaging.getToken();
+
+      // console.log('fcm_token', fcm_token);
+
       const payload = {
         otp: otpValue,
         device_id: await DeviceInfo.getUniqueId(),

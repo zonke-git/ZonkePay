@@ -1,6 +1,5 @@
 import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import {View, StyleSheet, Text, Platform} from 'react-native';
 import {i18n} from '../../localization';
 import AuthLayout from '../layout/AuthLayout';
 import colors from '../../Theme/colors';
@@ -8,53 +7,109 @@ import {typography} from '../../Theme/typography';
 import OtpCodeField from '../../components/Otp/OtpCodeField';
 import CheckBox from '../../components/CheckBox/CheckBox';
 import {useMpin} from '../../hooks/mpin/use-Mpin';
+import AppButton from '../../components/AppButton/AppButton';
 
 const Mpin = () => {
   const {
     otpValue,
     setOtpValue,
     invalidOtp,
-    faceIDCheckBox,
-    setFaceIDCheckBox,
+    fingerPrintORfaceIDCheckBox,
+    setFingerPrintORfaceIDCheckBox,
     handleSumbit,
+    isLoader,
+    reEnterOtpValue,
+    setReEnterOtpValue,
+    reEnterStatus,
+    setReEnterStatus,
   } = useMpin();
+
   return (
     <AuthLayout
       title={`${i18n.t('Create')} MPIN`}
       subTitle={i18n.t(
         'SetYouPersonal4_digitMPIN_ItWillBeUsedForSecureAndFastSignIn',
       )}
-      loader={false}>
+      loader={isLoader}>
       <View style={styles.container}>
         <View style={styles.insideContainer}>
-          <Text style={styles.titleTxt}>{i18n.t('Enter')} MPIN</Text>
+          <Text style={styles.titleTxt}>
+            {`${reEnterStatus ? i18n.t('Re_enter') : i18n.t('Enter')} MPIN`}
+          </Text>
           <View style={styles.optView}>
-            <OtpCodeField
-              value={otpValue}
-              setValue={setOtpValue}
-              invalidOtp={invalidOtp}
-              CUSTOM_CELL_COUNT={4}
-              showValues={false}
-              customInputStyle={styles.otpBox}
-              OTP_textColor={{color: colors.CharcoalGray}}
-            />
+            {/* Conditional rendering of OtpCodeField for better control over autoFocus */}
+            {!reEnterStatus ? (
+              <OtpCodeField
+                value={otpValue}
+                setValue={setOtpValue}
+                invalidOtp={invalidOtp}
+                CUSTOM_CELL_COUNT={4}
+                showValues={false}
+                customInputStyle={styles.otpBox}
+                OTP_textColor={{color: colors.CharcoalGray}}
+                autoFocus={true} // Auto-focus for the initial MPIN entry
+              />
+            ) : (
+              <OtpCodeField
+                key="reEnterOtpField" // Add a key to force remount when reEnterStatus changes
+                value={reEnterOtpValue}
+                setValue={setReEnterOtpValue}
+                invalidOtp={invalidOtp} // You might want a separate invalidOtp for re-enter if logic differs
+                CUSTOM_CELL_COUNT={4}
+                showValues={false}
+                customInputStyle={styles.otpBox}
+                OTP_textColor={{color: colors.CharcoalGray}}
+                autoFocus={true} // Auto-focus for the re-enter MPIN entry
+              />
+            )}
           </View>
           <CheckBox
-            label={i18n.t('EnableFace_ID_AlongWith_MPIN_Creation')}
+            label={
+              Platform.OS === 'android'
+                ? i18n.t('EnableFingerprint_AlongWith_MPIN_Creation')
+                : i18n.t('EnableFace_ID_AlongWith_MPIN_Creation')
+            }
             labelStyle={styles.checkBoxLabel}
-            value={faceIDCheckBox}
+            value={fingerPrintORfaceIDCheckBox}
             onToggle={() => {
-              setFaceIDCheckBox(!faceIDCheckBox);
+              setFingerPrintORfaceIDCheckBox(!fingerPrintORfaceIDCheckBox);
             }}
           />
         </View>
-        <TouchableOpacity style={[styles.buttonWrapper]} onPress={handleSumbit}>
-          <LinearGradient
-            colors={[colors.appTheme, colors.appTheme]}
-            style={styles.button}>
-            <Text style={styles.btnText}>{i18n.t('Create')} MPIN</Text>
-          </LinearGradient>
-        </TouchableOpacity>
+
+        <AppButton
+          title={`${i18n.t('Create')} MPIN`}
+          onPress={() => {
+            reEnterStatus ? handleSumbit() : setReEnterStatus(true);
+          }}
+          disabled={
+            reEnterStatus
+              ? reEnterOtpValue?.length === 4
+                ? false
+                : true
+              : otpValue?.length === 4
+              ? false
+              : true
+          }
+          useColors={
+            reEnterStatus
+              ? reEnterOtpValue?.length === 4
+                ? [colors.appTheme, colors.appTheme]
+                : [colors.white, colors.white]
+              : otpValue?.length === 4
+              ? [colors.appTheme, colors.appTheme]
+              : [colors.white, colors.white]
+          }
+          textStyle={{
+            color: reEnterStatus
+              ? reEnterOtpValue?.length === 4
+                ? colors.white
+                : colors.LightSlateGray
+              : otpValue?.length === 4
+              ? colors.white
+              : colors.LightSlateGray,
+          }}
+        />
       </View>
     </AuthLayout>
   );
@@ -81,6 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 60,
     paddingTop: 12,
     paddingBottom: 24,
+    alignItems: 'center',
   },
   otpBox: {
     width: 54,
@@ -90,32 +146,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.WarmGrayTone,
     lineHeight: 12 * 1.5,
-    letterSpacing: 12 * (-1 / 100),
-    fontFamily: typography.Medium_500,
-  },
-  buttonWrapper: {
-    width: 'full',
-    height: 48,
-
-    borderRadius: 10,
-    shadowColor: colors.DenimBlue,
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.48,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  button: {
-    flex: 1,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btnText: {
-    fontSize: 14,
-    color: colors.white,
-    lineHeight: 14 * 1.4,
     letterSpacing: 12 * (-1 / 100),
     fontFamily: typography.Medium_500,
   },

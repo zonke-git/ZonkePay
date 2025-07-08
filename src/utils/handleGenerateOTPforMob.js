@@ -4,7 +4,6 @@ import {
   resetVerifyOtpState,
 } from '../redux/slice/authSlice';
 import {generateOTP} from '../redux/action/authActions';
-import {setShowEmailVerifyContent} from '../redux/slice/onBoardSlice';
 
 export const handleGenerateOTPforMob = async ({
   userInput,
@@ -23,7 +22,6 @@ export const handleGenerateOTPforMob = async ({
     const response = await dispatch(generateOTP(payload));
 
     if (response?.token) {
-      dispatch(setShowEmailVerifyContent(false));
       navigation.navigate('OTP');
     } else {
       Toast.show(response?.message, {

@@ -16,26 +16,26 @@ const CarouselData = [
     id: 1,
     name: 'first',
     image: require('../../../assets/images/onBoarding/Thrift-shop-cuate.png'),
-    title: 'Create your free storefront in minutes',
+    title: 'Receive and Send Money Instantly',
     content:
-      'List your products or services with ease and start accepting payments instantly. Get discovered by new customers browsing on Zonke.',
+      ' Use ZonkePay to pay friends, family, or businesses in real time. Enjoy fast, secure peer-to-peer transfers and simplified payments with QR codes.',
   },
   {
     id: 2,
     name: 'second',
     image: require('../../../assets/images/onBoarding/E-Wallet-bro.png'),
-    title: 'Accept wallet payments easily',
+    title: 'Manage and Access Your Money',
     content:
-      'Set up your Zonke Wallet without the need for machines or hardware. Start receiving payments through QR codes or optional POS integration.',
+      'Top up your wallet from your bank account or card, withdraw money anytime, track your balance, and view all your transactions in one place.',
   },
-  {
-    id: 3,
-    name: 'third',
-    image: require('../../../assets/images/onBoarding/Business-growth-amico.png'),
-    title: 'Increase loyalty and repeat buys',
-    content:
-      'Drive repeat sales by offering cashback and loyalty rewards. Encourage return visits and build stronger relationships with your customers.',
-  },
+  // {
+  //   id: 3,
+  //   name: 'third',
+  //   image: require('../../../assets/images/onBoarding/Business-growth-amico.png'),
+  //   title: 'Increase loyalty and repeat buys',
+  //   content:
+  //     'Drive repeat sales by offering cashback and loyalty rewards. Encourage return visits and build stronger relationships with your customers.',
+  // },
 ];
 
 const Welcome = () => {
@@ -71,14 +71,14 @@ const Welcome = () => {
                     <Text style={styles.welcome_txt}>
                       {i18n.t('welcome_message')}
                     </Text>
-                    <Text style={styles.welcome_content_txt}>
+                    <Text style={styles.welcome_content_msg_txt}>
                       {i18n.t(
-                        'SouthAfricasNewAgeMerchantPaymentandStorefrontPlatform',
+                        'AfricasSecureAllInOneDigitalWalletAndPaymentApp',
                       )}
                     </Text>
                     <Text style={styles.welcome_content_msg_txt}>
                       {i18n.t(
-                        'GetstartedInMinutesAndEnjoyBuilt_inLoyaltyAandCashbackToolsToGrowYourBusiness',
+                        'SetUpYourAccountInMinutesAndStartManagingYourMoneyReceivingPaymentsAndSendingFundsWithEase',
                       )}
                     </Text>
                   </View>
@@ -142,11 +142,11 @@ const Welcome = () => {
                     {CarouselData[activeIndex]?.content}
                   </Text>
                 </View>
-                {activeIndex < 2 ? (
+                {activeIndex < 1 ? (
                   <View style={styles.btnView}>
                     <AppButton
                       width={'45%'}
-                      onPress={() => handleIndexChange(2)}
+                      onPress={() => handleIndexChange(1)}
                       title={i18n.t('Skip')}
                       useColors={[colors.white, colors.white]}
                       textStyle={{color: colors.DimGray}}
@@ -194,9 +194,10 @@ const styles = StyleSheet.create({
   },
   welcome_img_view: {
     aspectRatio: 272 / 310,
+    // aspectRatio: 238 / 286,
   },
   welcome_msg_view: {
-    width: '85%',
+    // width: '100%',
     alignSelf: 'center',
     marginTop: 16,
   },
@@ -220,8 +221,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.CharcoalGray,
     textAlign: 'center',
-    marginBottom: 8,
-    fontFamily: typography.Regular_400,
+    // marginBottom: 8,
+    fontFamily: typography.Medium_500,
     lineHeight: 14 * 1.5,
   },
   item: {

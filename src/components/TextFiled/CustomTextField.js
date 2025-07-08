@@ -36,7 +36,7 @@ const CustomTextField = ({
   countryPhoneFlag,
   setOpenCountryModal,
   maxLength,
-  disable = true,
+  editableFiled = true,
   disableContrySelection = false,
   showLocationIcon = false,
   showVerification = false,
@@ -68,7 +68,7 @@ const CustomTextField = ({
           inputStyle,
           error && styles.inputError,
           multiline && styles.multilineContainer,
-          {backgroundColor: !disable ? '#F3F3F3' : colors.white},
+          {backgroundColor: !editableFiled ? '#F3F3F3' : colors.white},
         ]}>
         {showSearchIcon && (
           <Image
@@ -110,7 +110,7 @@ const CustomTextField = ({
           keyboardType={keyboardType}
           // keyboardType="numeric"
           maxLength={maxLength}
-          editable={disable}
+          editable={editableFiled}
           multiline={multiline}
           numberOfLines={multiline ? numberOfLines : 1}
           textAlignVertical={textAlignVertical}

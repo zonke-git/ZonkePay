@@ -12,12 +12,12 @@ import {
   PermissionsAndroid,
   Linking,
 } from 'react-native';
-import DashboardLayout from '../../layout/DashboardLayout';
 import {useNewPayment} from '../../../hooks/newPayment/use-NewPayment';
 import colors from '../../../Theme/colors';
 import {typography} from '../../../Theme/typography';
 import {i18n} from '../../../localization';
 import IconGrid from '../bank/IconGrid';
+import DashLayout from '../../layout/DashLayout';
 
 const NewPayment = () => {
   const {
@@ -152,7 +152,7 @@ const NewPayment = () => {
   };
 
   return (
-    <DashboardLayout
+    <DashLayout
       title="New Payment"
       loader={false}
       backButton={true}
@@ -162,7 +162,7 @@ const NewPayment = () => {
         <Text style={styles.titleText}>{i18n.t('MyContact')}</Text>
         {renderContent()}
       </View>
-    </DashboardLayout>
+    </DashLayout>
   );
 };
 const styles = StyleSheet.create({

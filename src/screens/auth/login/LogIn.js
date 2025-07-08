@@ -55,8 +55,8 @@ const LogIn = () => {
 
           <AppButton
             onPress={() => {
-              navigation.navigate('OTP');
-              // handleLogin();
+              // navigation.navigate('OTP');
+              handleLogin();
             }}
             title={i18n.t('LogIn')}
             useColors={
@@ -64,7 +64,7 @@ const LogIn = () => {
                 ? [colors.LightMistGray, colors.LightMistGray]
                 : [colors.appTheme, colors.appTheme]
             }
-            // disabled={isPhoneNumberInvalid() || loading}
+            disabled={isPhoneNumberInvalid() || loading}
             textStyle={{
               color:
                 isPhoneNumberInvalid() || loading

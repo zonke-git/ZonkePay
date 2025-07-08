@@ -2,73 +2,60 @@ import {Url} from './url';
 import {get, post, del, put} from './methods';
 
 export const requestOtp = async payload => {
-  const url = `${Url.URL_V4}/login`;
-  return await post(url, payload);
-};
-
-export const resendOtp = async payload => {
-  const url = `${Url.URL_V4}/resend/otp`;
+  const url = `${Url.URL_V4}/customer/login`;
   return await post(url, payload);
 };
 
 export const verifyOtp = async (payload, token) => {
-  const url = `${Url.URL_V4}/otp_verify`;
+  const url = `${Url.URL_V4}/customer/otp_verify`;
   return await post(url, payload, token);
 };
 
-export const getBusinessCategories = async token => {
-  const url = `${Url.URL_V4}/categorys`;
+export const resendOtp = async payload => {
+  const url = `${Url.URL_V4}/customer/resend/otp`;
+  return await post(url, payload);
+};
+
+export const requestEmailOtpAPI = async (payload, token) => {
+  const url = `${Url.URL_V4}/customer/send_email_otp`;
+  return await post(url, payload, token);
+};
+
+export const emailotp_verifyAPI = async (payload, token) => {
+  const url = `${Url.URL_V4}/customer/emailotp_verify`;
+  return await post(url, payload, token);
+};
+
+export const getCustomerById_API = async token => {
+  const url = `${Url.URL_V4}/customer`;
   return await get(url, '', token);
 };
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 export const businessDetailsAPI = async (payload, token) => {
   const url = `${Url.URL_V4}/step1`;
   return await post(url, payload, token);
 };
-
-export const requestEmailOtpAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/send_email_otp`;
-  return await post(url, payload, token);
-};
-
-export const emailotp_verifyAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/emailotp_verify`;
-  return await post(url, payload, token);
-};
-
-export const contactDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/step2`;
-  return await post(url, payload, token);
-};
-
-export const complianceFinancialDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/step3`;
-  return await post(url, payload, token);
-};
-
-export const engagementModelDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/step4`;
-  return await post(url, payload, token);
-};
-
-export const get_annexuresAPI = async (token, annexures_ID) => {
-  let url = `${Url.URL_V4}/annexures`;
-  if (annexures_ID) {
-    url += `/${annexures_ID}`;
-  }
-  return await get(url, '', token);
-};
-
-export const annuxureSubmitAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/annuxure/submit`;
-  return await post(url, payload, token);
-};
-
-//
-//
-//
-//
-//
 
 export const subCategorysAPI = async (token, outlets_ID) => {
   let url = `${Url.URL_V4}/subCategorys`;
@@ -141,10 +128,6 @@ export const areaAPI = async token => {
   return await get(url, '', token);
 };
 
-//
-//
-//
-//
 export const getOutletsAPI = async token => {
   const url = `${Url.URL_V4}/outlets`;
   return await get(url, '', token);
@@ -200,9 +183,6 @@ export const deleteOutletAPI = async (payload, token, outlet_ID) => {
   return await del(url, payload, token);
 };
 
-//
-//
-//
 export const CreateMPIN_API = async (payload, token) => {
   const url = `${Url.URL_V4}/mpin`;
   return await post(url, payload, token);
@@ -228,8 +208,6 @@ export const Resend_MPIN_API = async (payload, token) => {
   return await post(url, payload, token);
 };
 
-//
-
 export const profileBusinessDetailsAPI = async (payload, token) => {
   const url = `${Url.URL_V4}/profileBusinessDetails`;
   return await put(url, payload, token);
@@ -250,15 +228,6 @@ export const profileBankDetailsAPI = async (payload, token) => {
   return await post(url, payload, token);
 };
 
-//
-//
-//
-//
-
-//
-//
-//
-//
 export const fetchGoogleLocation = async (token, params) => {
   const url =
     'https://zonkeapi-c7b6ete9cqfuajeq.canadacentral-01.azurewebsites.net/googlelocation';
@@ -292,11 +261,6 @@ export const deleteMenuAPI = async (token, menuId) => {
   const url = `${Url.URL_V4}/menu/${menuId}`;
   return await del(url, {}, token);
 };
-
-//
-//
-//
-//
 
 export const merchantDetailsAPI = async token => {
   const url = `${Url.URL_V4}/merchant`;

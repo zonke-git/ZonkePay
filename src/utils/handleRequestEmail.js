@@ -1,10 +1,7 @@
 // src/utils/handleRequestEmail.js
 
 import Toast from 'react-native-root-toast';
-import {
-  contactDetails_submitOnBoardFormFailure,
-  setShowEmailVerifyContent,
-} from '../redux/slice/onBoardSlice';
+import {contactDetails_submitOnBoardFormFailure} from '../redux/slice/onBoardSlice';
 import {resetVerifyOtpState} from '../redux/slice/authSlice';
 // import {contactDetails_RequestEmail_OTP} from '../redux/action/onBoardActions';
 
@@ -36,7 +33,6 @@ const handleRequestEmail = ({
       // console.log('Request Email Response :', response);
 
       if (response) {
-        dispatch(setShowEmailVerifyContent(true));
         dispatch(resetVerifyOtpState());
         navigation.navigate('OTP');
       } else {
