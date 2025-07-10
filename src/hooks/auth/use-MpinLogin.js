@@ -1,14 +1,13 @@
-import {useEffect, useState} from 'react';
-import {Alert} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useCallback, useEffect, useState} from 'react';
+import {Alert, BackHandler} from 'react-native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import Toast from 'react-native-root-toast';
 import ReactNativeBiometrics from 'react-native-biometrics';
-
-import {VerifyMPIN_API} from '../../api/api';
 import {setShowForgotPage} from '../../redux/slice/authSlice';
 import {getBioMetrics, getMerchant_id} from '../../utils/authStorage';
 import {saveSessionAndNavigate} from '../../utils/saveSessionAndNavigate';
+import {verifyMPIN_API} from '../../api/api';
 
 const rnBiometrics = new ReactNativeBiometrics();
 
@@ -21,6 +20,24 @@ export const useMpinLogin = () => {
   const [isErrorMsg, setIsErrorMsg] = useState('');
   const [biometricKeys, setBiometricKeys] = useState(null);
   const [biometricEnabled, setBiometricEnabled] = useState(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        Alert.alert('Exit App', 'Are you sure you want to exit the app?', [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Yes', onPress: () => BackHandler.exitApp()},
+        ]);
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+      };
+    }, []),
+  );
 
   useEffect(() => {
     (async () => {
@@ -52,17 +69,17 @@ export const useMpinLogin = () => {
     }
 
     setIsLoader(true);
-    // console.log('payload', payload);
+    console.log('payload', payload);
 
     try {
-      const response = await VerifyMPIN_API(payload);
+      // const response = await verifyMPIN_API(payload);
       // console.log('response', response);
 
-      if (response?.success) {
-        await saveSessionAndNavigate(response, dispatch, navigation);
-      } else {
-        showToast(response?.message || 'Login failed');
-      }
+      // if (response?.success) {
+      //   await saveSessionAndNavigate(response, dispatch, navigation, true);
+      // } else {
+      //   showToast(response?.message || 'Login failed');
+      // }
     } catch (error) {
       console.error('Verify MPIN Error :', error);
       setIsErrorMsg(error?.error);

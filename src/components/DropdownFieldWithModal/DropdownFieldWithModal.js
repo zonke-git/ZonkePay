@@ -69,6 +69,7 @@ const DropdownFieldWithModal = ({
 
       <TouchableOpacity
         style={[styles.inputContainer, error && styles.inputError]}
+        hitSlop={{top: 50}}
         onPress={() => setModalVisible(true)}>
         <Text style={[styles.input, !selectedValue && styles.placeholder]}>
           {getDisplayText()}

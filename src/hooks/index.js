@@ -7,6 +7,7 @@ export * from './auth/use-Otp';
 export * from './auth/use-SignUp';
 
 // OnBoard
+export * from './onBoarding/use-UserType';
 export * from './onBoarding/use-Onboard';
 
 // Location

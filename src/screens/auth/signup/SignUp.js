@@ -49,16 +49,18 @@ const SignUp = () => {
           }}
         />
         <View>
-          <View style={styles.signup_view}>
-            <Text style={styles.signup_txt}>
-              {i18n.t('AlreadyHaveAnAccount')}{' '}
-            </Text>
-            <TouchableOpacity onPress={handleLogin}>
-              <Text style={[styles.signup_txt, {color: colors.appTheme}]}>
-                {i18n.t('Login')}
+          {!showForgotPage && (
+            <View style={styles.signup_view}>
+              <Text style={styles.signup_txt}>
+                {i18n.t('AlreadyHaveAnAccount')}{' '}
               </Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity onPress={handleLogin}>
+                <Text style={[styles.signup_txt, {color: colors.appTheme}]}>
+                  {i18n.t('Login')}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
           <AppButton
             onPress={handleSignUp}
             title={i18n.t('SendOTP')}

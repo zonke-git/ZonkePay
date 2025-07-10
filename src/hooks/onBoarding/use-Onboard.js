@@ -1,41 +1,31 @@
 import {useNavigation} from '@react-navigation/native';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {setOnBoardDetails} from '../../redux/slice/onBoardSlice';
+import Toast from 'react-native-root-toast';
+import {updateCustomerdetail} from '../../redux/action/onBoardActions';
 
 export const useOnboard = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const [openTermsAndConditionModal, setOpenTermsAndConditionModal] =
+    useState(false);
   const onBoardFormValues = useSelector(
-    state => state?.onBoard?.onBoardDetails,
+    state => state?.onBoard?.updateOnBoardDetail,
   );
+  const token = useSelector(state => state?.auth?.authTokenInfo);
   const loginDetails = useSelector(state => state?.auth?.loginDetails);
   const commonDetails = useSelector(
     state =>
       state?.commonDetails?.customerDetails_SubmitSuccessMessage?.merchant,
   );
-  console.log('commonDetails', commonDetails);
-  const [openTermsAndConditionModal, setOpenTermsAndConditionModal] =
-    useState(false);
-
-  // useEffect(() => {
-  //   if (commonDetails) {
-  //     dispatch(
-  //       setOnBoardDetails({
-  //         firstName: commonDetails?.first_name,
-  //         lastName: commonDetails?.last_name,
-  //         nickname: '',
-  //         email: commonDetails?.email,
-  //         PhoneNumber: '',
-  //         location: commonDetails?.location,
-  //         location_name: commonDetails?.location,
-  //         referralCode: '',
-  //         termsAndConditions_PrivacyPolicyCheckBox: false,
-  //         CIPCRegistrationNumber: '',
-  //       }),
-  //     );
-  //   }
-  // }, [commonDetails, dispatch]);
+  const IsLoading = useSelector(
+    state => state?.onBoard?.updateOnBoardDetail_IsSubmitting,
+  );
+  const customer_ID = useSelector(
+    state =>
+      state?.onBoard?.customerVerification_SubmitSuccessMessage?.user?._id,
+  );
+  // console.log('customer_ID', customer_ID);
 
   const handleLocationNavigation = () => {
     navigation.navigate('Location');
@@ -43,17 +33,42 @@ export const useOnboard = () => {
 
   const handleFormSubmit = values => {
     console.log('OnBoard Details Form submitted:', values);
-    navigation.navigate('WalletCreatedSuccessfully');
-    // submitOnboardingDetails
+
+    let payload = {
+      email: values?.email,
+      location: values?.location_name,
+      referalcode: values?.referralCode,
+    };
+    dispatch(updateCustomerdetail(payload, token, customer_ID))
+      .then(async response => {
+        console.log('Update Customer Verification Response :', response);
+        if (response?.merchant) {
+          navigation.navigate('WalletCreatedSuccessfully');
+        } else {
+          Toast.show(response?.message || 'Something went wrong', {
+            duration: Toast.durations.SHORT,
+            position: Toast.positions.BOTTOM,
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Update Customer Verification Error :', error);
+        Toast.show(error?.error || 'Something went wrong', {
+          duration: Toast.durations.SHORT,
+          position: Toast.positions.BOTTOM,
+        });
+      });
   };
 
   return {
     loginDetails,
-    dispatch,
+    IsLoading,
     onBoardFormValues,
+    openTermsAndConditionModal,
+
+    dispatch,
     handleLocationNavigation,
     handleFormSubmit,
-    openTermsAndConditionModal,
     setOpenTermsAndConditionModal,
   };
 };

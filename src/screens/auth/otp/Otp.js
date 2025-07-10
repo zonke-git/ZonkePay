@@ -30,6 +30,7 @@ const OTP = () => {
     handleVerifyEmailOTP,
     autoFocus,
     navigation,
+    userInput,
   } = useOTP();
 
   return (
@@ -38,7 +39,11 @@ const OTP = () => {
       subTitle={
         showEmailVerifyContent
           ? i18n.t('OTP_HasBeenSentToYourEmail_ID')
-          : i18n.t('WeHaveSentTheVerificationCodeToYourPhoneNumber')
+          : i18n.t('WeHaveSentTheVerificationCodeToYourPhoneNumber') +
+            ' ' +
+            userInput?.countrieDetails?.phoneCode +
+            ' ' +
+            userInput?.phoneNo?.replace(/\s+/g, '')
       }
       loader={loading || resendLoader || isLoader}>
       <View style={styles.container}>
@@ -75,12 +80,12 @@ const OTP = () => {
           <AppButton
             disabled={otpValue?.length === 6 ? false : true}
             onPress={() => {
-              navigation.navigate('Onboard');
-              //   if (showEmailVerifyContent) {
-              //     handleVerifyEmailOTP();
-              //   } else {
-              //     handleSubmit();
-              //   }
+              // navigation.navigate('Onboard');
+              if (showEmailVerifyContent) {
+                handleVerifyEmailOTP();
+              } else {
+                handleSubmit();
+              }
             }}
             title={`${i18n.t('Verify')} OTP`}
             useColors={

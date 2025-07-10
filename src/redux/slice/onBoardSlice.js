@@ -1,7 +1,15 @@
 import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  onBoardDetails: {
+  customerDetails: {
+    type: 'MERCHANT',
+    type_: {id: 2, name: 'MERCHANT'},
+    saId: '0101310000080',
+    // type: '',
+    // saId: '',
+  },
+
+  updateOnBoardDetail: {
     firstName: '',
     lastName: '',
     nickname: '',
@@ -11,15 +19,19 @@ const initialState = {
     location_name: '',
     referralCode: '',
     termsAndConditions_PrivacyPolicyCheckBox: false,
-    CIPCRegistrationNumber: '',
-    // CIPCRegistrationNumber: '1962/000738/06',
   },
 
-  onBoardDetails_IsSubmitting: false,
-  onBoardDetails_SubmitSuccess: false,
-  onBoardDetails_SubmitError: null,
-  onBoardDetails_SubmitSuccessMessage: '',
-  onBoardDetails_SubmitErrorMessage: '',
+  updateOnBoardDetail_IsSubmitting: false,
+  updateOnBoardDetail_SubmitSuccess: false,
+  updateOnBoardDetail_SubmitError: null,
+  updateOnBoardDetail_SubmitSuccessMessage: '',
+  updateOnBoardDetail_SubmitErrorMessage: '',
+
+  customerVerification_IsSubmitting: false,
+  customerVerification_SubmitSuccess: false,
+  customerVerification_SubmitError: null,
+  customerVerification_SubmitSuccessMessage: '',
+  customerVerification_SubmitErrorMessage: '',
 };
 
 const onBoardSlice = createSlice({
@@ -28,8 +40,12 @@ const onBoardSlice = createSlice({
   reducers: {
     resetOnBoardForm: () => initialState,
 
-    resetOnBoardDetails: state => {
-      state.onBoardDetails = {
+    setCustomerDetails: (state, action) => {
+      state.customerDetails = {...state.customerDetails, ...action.payload};
+    },
+
+    resetupdateOnBoardDetail: state => {
+      state.updateOnBoardDetail = {
         firstName: '',
         lastName: '',
         nickname: '',
@@ -43,45 +59,78 @@ const onBoardSlice = createSlice({
       };
     },
 
-    setOnBoardDetails: (state, action) => {
-      state.onBoardDetails = {...state.onBoardDetails, ...action.payload};
+    setupdateOnBoardDetail: (state, action) => {
+      state.updateOnBoardDetail = {...state.updateOnBoardDetail, ...action.payload};
     },
 
-    onBoardDetails_Loader: state => {
-      state.onBoardDetails_IsSubmitting = true;
-      state.onBoardDetails_SubmitSuccess = false;
-      state.onBoardDetails_SubmitError = null;
-      state.onBoardDetails_SubmitErrorMessage = '';
+    updateOnBoardDetail_Loader: state => {
+      state.updateOnBoardDetail_IsSubmitting = true;
+      state.updateOnBoardDetail_SubmitSuccess = false;
+      state.updateOnBoardDetail_SubmitError = null;
+      state.updateOnBoardDetail_SubmitErrorMessage = '';
     },
-    onBoardDetails_Success: (state, action) => {
-      state.onBoardDetails_IsSubmitting = false;
-      state.onBoardDetails_SubmitSuccess = true;
-      state.onBoardDetails_SubmitSuccessMessage = action.payload;
+    updateOnBoardDetail_Success: (state, action) => {
+      state.updateOnBoardDetail_IsSubmitting = false;
+      state.updateOnBoardDetail_SubmitSuccess = true;
+      state.updateOnBoardDetail_SubmitSuccessMessage = action.payload;
     },
-    onBoardDetails_Failure: (state, action) => {
-      state.onBoardDetails_IsSubmitting = false;
-      state.onBoardDetails_SubmitError = true;
-      state.onBoardDetails_SubmitErrorMessage = action.payload;
+    updateOnBoardDetail_Failure: (state, action) => {
+      state.updateOnBoardDetail_IsSubmitting = false;
+      state.updateOnBoardDetail_SubmitError = true;
+      state.updateOnBoardDetail_SubmitErrorMessage = action.payload;
     },
 
-    onBoardDetails_Reset: state => {
-      state.onBoardDetails_IsSubmitting = false;
-      state.onBoardDetails_SubmitSuccess = false;
-      state.onBoardDetails_SubmitError = null;
-      state.onBoardDetails_SubmitSuccessMessage = '';
-      state.onBoardDetails_SubmitErrorMessage = '';
+    updateOnBoardDetail_Reset: state => {
+      state.updateOnBoardDetail_IsSubmitting = false;
+      state.updateOnBoardDetail_SubmitSuccess = false;
+      state.updateOnBoardDetail_SubmitError = null;
+      state.updateOnBoardDetail_SubmitSuccessMessage = '';
+      state.updateOnBoardDetail_SubmitErrorMessage = '';
+    },
+
+    customerVerification_submitLoader: state => {
+      state.customerVerification_IsSubmitting = true;
+      state.customerVerification_SubmitSuccess = false;
+      state.customerVerification_SubmitError = null;
+      state.customerVerification_SubmitErrorMessage = '';
+    },
+    customerVerification_submitSuccess: (state, action) => {
+      state.customerVerification_IsSubmitting = false;
+      state.customerVerification_SubmitSuccess = true;
+      state.customerVerification_SubmitSuccessMessage = action.payload;
+    },
+    customerVerification_submitFailure: (state, action) => {
+      state.customerVerification_IsSubmitting = false;
+      state.customerVerification_SubmitError = true;
+      state.customerVerification_SubmitErrorMessage = action.payload;
+    },
+    customerVerification_submit_reset: state => {
+      state.customerVerification_IsSubmitting = false;
+      state.customerVerification_SubmitSuccess = false;
+      state.customerVerification_SubmitError = null;
+      state.customerVerification_SubmitSuccessMessage = '';
+      state.customerVerification_SubmitErrorMessage = '';
     },
   },
 });
 
 export const {
   resetOnBoardForm,
-  resetOnBoardDetails,
-  setOnBoardDetails,
-  onBoardDetails_Loader,
-  onBoardDetails_Success,
-  onBoardDetails_Failure,
-  onBoardDetails_Reset,
+
+  setCustomerDetails,
+
+  resetupdateOnBoardDetail,
+  setupdateOnBoardDetail,
+
+  updateOnBoardDetail_Loader,
+  updateOnBoardDetail_Success,
+  updateOnBoardDetail_Failure,
+  updateOnBoardDetail_Reset,
+
+  customerVerification_submitLoader,
+  customerVerification_submitSuccess,
+  customerVerification_submitFailure,
+  customerVerification_submit_reset,
 } = onBoardSlice.actions;
 
 export default onBoardSlice.reducer;

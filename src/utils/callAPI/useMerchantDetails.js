@@ -1,9 +1,9 @@
 import {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
-import {getMerchantDetails} from '../../redux/action/commonDetailsActions';
-import {setMerchantDetailsFailure} from '../../redux/slice/commonDetailsSlice';
+import {customerDetailsByID} from '../../redux/action/commonDetailsActions';
+import {customerDetails_submitFailure} from '../../redux/slice/commonDetailsSlice';
 
-const useMerchantDetails = (token, onSuccess) => {
+const useCustomerDetails = (token, onSuccess) => {
   const dispatch = useDispatch();
 
   const [merchant, setMerchant] = useState(null);
@@ -16,13 +16,15 @@ const useMerchantDetails = (token, onSuccess) => {
     setLoading(true);
     setError(null);
 
-    dispatch(getMerchantDetails(token))
+    dispatch(customerDetailsByID(token))
       .then(res => {
+        console.log('res', res);
+
         const merchantData = res?.merchant;
 
         if (!merchantData) {
           const errorMsg = 'Submission failed';
-          dispatch(setMerchantDetailsFailure(errorMsg));
+          dispatch(customerDetails_submitFailure(errorMsg));
           setError(errorMsg);
           return;
         }
@@ -34,7 +36,7 @@ const useMerchantDetails = (token, onSuccess) => {
       })
       .catch(() => {
         const errorMsg = 'Failed to fetch merchant details';
-        dispatch(setMerchantDetailsFailure(errorMsg));
+        dispatch(customerDetails_submitFailure(errorMsg));
         setError(errorMsg);
       })
       .finally(() => {
@@ -45,4 +47,4 @@ const useMerchantDetails = (token, onSuccess) => {
   return {merchant, loading, error};
 };
 
-export default useMerchantDetails;
+export default useCustomerDetails;

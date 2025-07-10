@@ -15,12 +15,11 @@ import {
   setContactDetails,
   setOnBoardFormNumber,
 } from '../../redux/slice/onBoardSlice';
-// import {resendOTP, verifyOTP} from '../../redux/action/authActions';
 import {getAuthToken, getMerchant_id} from '../../utils/authStorage';
 import {
-  VerifyOTP_MPIN_API,
-  Resend_MPIN_API,
   emailotp_verifyAPI,
+  verifyOTPMPIN_API,
+  resendOTPMPIN_API,
 } from '../../api/api';
 import handleRequestEmail from '../../utils/handleRequestEmail';
 import {saveSessionAndNavigate} from '../../utils/saveSessionAndNavigate';
@@ -190,7 +189,7 @@ export const useOTP = () => {
           country_code: userInput?.countrieDetails?.phoneCode,
         };
         await makeApiCall(
-          Resend_MPIN_API,
+          resendOTPMPIN_API,
           payload,
           auth_token,
           'MPIN OTP resent successfully',
@@ -245,7 +244,7 @@ export const useOTP = () => {
         id: merchant_id,
       };
       await makeApiCall(
-        VerifyOTP_MPIN_API,
+        verifyOTPMPIN_API,
         payload,
         auth_token,
         'MPIN OTP verified successfully!',
@@ -321,5 +320,6 @@ export const useOTP = () => {
     handleVerifyEmailOTP,
     autoFocus,
     navigation,
+    userInput,
   };
 };

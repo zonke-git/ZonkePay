@@ -147,6 +147,11 @@ export default {
   WalletID: 'Wallet ID',
   CurrentBalance: 'Current Balance',
   AvailableBalance: 'Available Balance',
+  MyContact: 'My Contact',
+  Settings: 'Settings',
+  Payment: 'Payment',
+  PaymentHistory: 'Payment History',
+  PaymentSetting: 'Payment Setting',
   //
   //
   //
@@ -162,6 +167,11 @@ export default {
   //
   // SignUP / Login
   PhoneNumberIsRequired: 'Phone number is required',
+  TypeIsRequired: 'Type is required',
+  SettlementAccountIdIsRequired: 'Settlement account id is required',
+  SettlementAccountID_MustBeExactly13Digits:
+    'Settlement Account ID must be exactly 13 digits',
+  OnlyNumbersAllowed: 'Only numbers allowed',
   // Business Details Form
   BusinessNameIsRequired: 'Business name is required',
   BusinessNameMustBeAtLeastTwoCharacters:

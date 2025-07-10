@@ -29,7 +29,7 @@ const historyData = [
   // add more as needed
 ];
 
-const DashBoard = ({navigation}) => {
+const DashBoard = ({}) => {
   const {
     isScanning,
     handleBankSelect,
@@ -37,10 +37,11 @@ const DashBoard = ({navigation}) => {
     handleScan,
     handleCancel,
     setIsScanning,
+    navigation,
   } = useDashboard();
   return (
     <>
-      <DashLayout title={''} loader={false} showAuth={true}>
+      <DashLayout loader={false} showAuth={true} name="hai">
         {!isScanning && (
           <SafeAreaView style={styles.container}>
             <LastUpdated />
@@ -50,6 +51,7 @@ const DashBoard = ({navigation}) => {
             <IconGrid />
           </SafeAreaView>
         )}
+        <Text onPress={() => navigation.navigate('Profile')}>Profile</Text>
       </DashLayout>
 
       {!isScanning && <BottomTabSheet data={historyData} />}

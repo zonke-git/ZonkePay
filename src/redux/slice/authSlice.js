@@ -9,7 +9,7 @@ const initialState = {
     // phoneNo: '812333334',
     // phoneNo: '844444443',
     // phoneNo: '844444447',
-    phoneNo: '',
+    phoneNo: '833333333',
     countrieDetails: countries[161],
   },
 

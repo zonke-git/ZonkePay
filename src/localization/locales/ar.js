@@ -141,6 +141,11 @@ export default {
   WalletID: 'معرف المحفظة',
   CurrentBalance: 'الرصيد الحالي',
   AvailableBalance: 'الرصيد المتوفر',
+  MyContact: 'جهتي الاتصال',
+  Settings: 'الإعدادات',
+  Payment: 'دفع',
+  PaymentHistory: 'تاريخ الدفع',
+  PaymentSetting: 'إعدادات الدفع',
   //
   //
   //
@@ -156,6 +161,11 @@ export default {
   //
   // SignUP / Login
   PhoneNumberIsRequired: 'رقم الهاتف مطلوب',
+  TypeIsRequired: 'يجب تحديد النوع',
+  SettlementAccountIdIsRequired: 'معرّف حساب التسوية مطلوب',
+  OnlyNumbersAllowed: 'يُسمح فقط بالأرقام',
+  SettlementAccountID_MustBeExactly13Digits:
+    'يجب أن يكون معرف حساب التسوية مكونًا بالضبط من 13 رقمًا',
   // Business Details Form
   BusinessNameIsRequired: 'اسم العمل مطلوب',
   BusinessNameMustBeAtLeastTwoCharacters:
@@ -380,7 +390,7 @@ export default {
   Admin: 'Admin',
   Manager: 'Manager',
   Staff: 'Staff',
-  UserType: 'User Type',
+  UserType: 'نوع المستخدم',
   UserID: 'User ID',
   PIN: 'PIN',
   EnterUserId: 'Enter User ID',

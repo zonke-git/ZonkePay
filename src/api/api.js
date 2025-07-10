@@ -26,253 +26,139 @@ export const emailotp_verifyAPI = async (payload, token) => {
   return await post(url, payload, token);
 };
 
+export const customerVerification_API = async (payload, token) => {
+  const url = `${Url.URL_V4}/customer/verification`;
+  return await post(url, payload, token);
+};
+
+export const updateCustomerdetail_API = async (payload, token, id) => {
+  const url = `${Url.URL_V4}/customerdetail${id ? `/${id}` : ''}`;
+  return await put(url, payload, token);
+};
+
 export const getCustomerById_API = async token => {
   const url = `${Url.URL_V4}/customer`;
   return await get(url, '', token);
 };
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-export const businessDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/step1`;
-  return await post(url, payload, token);
-};
-
-export const subCategorysAPI = async (token, outlets_ID) => {
-  let url = `${Url.URL_V4}/subCategorys`;
-
-  if (outlets_ID) {
-    url += `?category=${outlets_ID}`;
+export const getwalletId_API = async (token, walletId) => {
+  let url = `${Url.URL_V4}/wallet`;
+  if (walletId) {
+    url += `/${walletId}`;
   }
-
   return await get(url, '', token);
 };
 
-export const menuProductTypesubCategorysAPI = async (
+export const getMerchantWalletId_API = async (token, walletId) => {
+  let url = `${Url.URL_V4}/merchant/wallet`;
+  if (walletId) {
+    url += `/${walletId}`;
+  }
+  return await get(url, '', token);
+};
+
+export const getWalletTransactions_API = async (
   token,
-  subcategoryId,
-  merchantId,
+  walletId,
+  type = 'credit',
 ) => {
-  let url = `${Url.URL_V4}/catelogues`;
-
-  const queryParams = [];
-  if (subcategoryId) {
-    queryParams.push(`subcategory=${subcategoryId}`);
+  let url = `${Url.URL_V4}/wallet/audit`;
+  if (walletId) {
+    url += `/${walletId}`;
   }
-  if (merchantId) {
-    queryParams.push(`merchant=${merchantId}`);
-  }
-
-  if (queryParams.length > 0) {
-    url += `?${queryParams.join('&')}`;
-  }
-
-  return await get(url, '', token);
-};
-
-export const fetchTagTypesAPI = async (token, catelogueId) => {
-  let url = `${Url.URL_V4}/tagtypes`;
-
-  const queryParams = [];
-  if (catelogueId) {
-    queryParams.push(`catelogue=${catelogueId}`);
-  }
-
-  if (queryParams.length > 0) {
-    url += `?${queryParams.join('&')}`;
-  }
-
-  return await get(url, '', token);
-};
-
-export const fetchTagValuesAPI = async (token, tagTypeId) => {
-  let url = `${Url.URL_V4}/tagvalues`;
-
-  const queryParams = [];
-  if (tagTypeId) {
-    queryParams.push(`tagtype=${tagTypeId}`);
-  }
-
-  if (queryParams.length > 0) {
-    url += `?${queryParams.join('&')}`;
+  if (type) {
+    url += `?type=${type}`;
   }
   return await get(url, '', token);
 };
 
-export const provinceAPI = async token => {
-  const url = `${Url.URL_V4}/states`;
+export const getContactNumber_API = async (token, contact_number) => {
+  let url = `${Url.URL_V4}/searchbynumber`;
+  if (contact_number) {
+    url += `?contact_number=${contact_number}`;
+  }
   return await get(url, '', token);
 };
 
-export const areaAPI = async token => {
-  const url = `${Url.URL_V4}/citys`;
+export const getBanklist_API = async token => {
+  let url = `${Url.URL_V4}/banklist`;
   return await get(url, '', token);
 };
 
-export const getOutletsAPI = async token => {
-  const url = `${Url.URL_V4}/outlets`;
+export const getBankdetailsByContactNo_API = async (token, contact_number) => {
+  let url = `${Url.URL_V4}/bankdetails`;
+  if (contact_number) {
+    url += `?contact_number=${contact_number}`;
+  }
   return await get(url, '', token);
 };
 
-export const getOutletByIDAPI = async (token, id) => {
-  const url = `${Url.URL_V4}/outlet${id ? '/' + id : ''}`;
+export const postBankdetails_API = async (payload, token) => {
+  const url = `${Url.URL_V4}/bankdetails`;
+  return await post(url, payload, token);
+};
+
+export const deleteBankdetails_API = async (token, id) => {
+  const url = `${Url.URL_V4}/bankdetails${id ? `/${id}` : ''}`;
+  return await del(url, '', token);
+};
+
+export const postWalletTopup_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/wallet/topup`;
+  return await post(url, payload, token);
+};
+
+export const getWalletTopups_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/wallet/topups`;
+  return await post(url, payload, token);
+};
+
+export const postWalletWithdraw_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/wallet/withdraw`;
+  return await post(url, payload, token);
+};
+
+export const getWalletWithdrawals_API = async token => {
+  let url = `${Url.URL_V4}/wallet/withdrawals`;
   return await get(url, '', token);
 };
 
-export const outletInfoAPI = async (payload, token, id) => {
-  const url = `${Url.URL_V4}/outlet${id ? '/' + id : ''}`;
+export const postCustomerWalletTransfer_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/wallet/transfer`;
   return await post(url, payload, token);
 };
 
-export const updateOutletInfoAPI = async (payload, token, id) => {
-  const url = `${Url.URL_V4}/outlet${id ? '/' + id : ''}`;
-  return await put(url, payload, token);
+export const postActivateCard_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/wallet/activatecard`;
+  return await post(url, payload, token);
 };
 
-export const outletDocumentsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/outlet/documents/:id`;
-  return await put(url, payload, token);
-};
-
-export const getFacilitys = async (token, outlet_ID) => {
-  const url = `${Url.URL_V4}/facilitys?category=${outlet_ID}`;
+export const getAccountslist_API = async token => {
+  let url = `${Url.URL_V4}/accountslist`;
   return await get(url, '', token);
 };
 
-export const outletCharacteristicsAPI = async (payload, token, outlet_ID) => {
-  const url = `${Url.URL_V4}/outlet/characteristics/${outlet_ID}`;
-  return await put(url, payload, token);
-};
-
-export const outletTimingAPI = async (payload, token, outlet_ID) => {
-  const url = `${Url.URL_V4}/outlet/timing/${outlet_ID}`;
-  return await put(url, payload, token);
-};
-
-export const outletCoverPhotoAPI = async (payload, token, outlet_ID) => {
-  const url = `${Url.URL_V4}/outlet/coverPhoto/${outlet_ID}`;
-  return await put(url, payload, token);
-};
-
-export const outletEngagementmodelAPI = async (payload, token, outlet_ID) => {
-  const url = `${Url.URL_V4}/outlet/engagementmodel/${outlet_ID}`;
-  return await put(url, payload, token);
-};
-
-export const deleteOutletAPI = async (payload, token, outlet_ID) => {
-  const url = `${Url.URL_V4}/outlet/${outlet_ID}`;
-  return await del(url, payload, token);
-};
-
-export const CreateMPIN_API = async (payload, token) => {
-  const url = `${Url.URL_V4}/mpin`;
+export const createMPIN_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/mpin`;
   return await post(url, payload, token);
 };
 
-export const VerifyMPIN_API = async (payload, token) => {
-  const url = `${Url.URL_V4}/verify/mpin`;
+export const verifyMPIN_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/verify/mpin`;
   return await post(url, payload, token);
 };
 
-export const ForgotMPIN_API = async (payload, token) => {
-  const url = `${Url.URL_V4}/forgot/mpin`;
+export const forgotMPIN_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/forgot/mpin`;
   return await post(url, payload, token);
 };
 
-export const VerifyOTP_MPIN_API = async (payload, token) => {
-  const url = `${Url.URL_V4}/verify/otp/mpin`;
+export const verifyOTPMPIN_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/verify/otp/mpin`;
   return await post(url, payload, token);
 };
 
-export const Resend_MPIN_API = async (payload, token) => {
-  const url = `${Url.URL_V4}/resend/otp/mpin`;
+export const resendOTPMPIN_API = async (payload, token) => {
+  let url = `${Url.URL_V4}/customer/resend/otp/mpin`;
   return await post(url, payload, token);
-};
-
-export const profileBusinessDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/profileBusinessDetails`;
-  return await put(url, payload, token);
-};
-
-export const profileContactDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/profileContactDetails`;
-  return await put(url, payload, token);
-};
-
-export const profileFinanceDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/profileFinanceDetails`;
-  return await put(url, payload, token);
-};
-
-export const profileBankDetailsAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/profileBankDetails`;
-  return await post(url, payload, token);
-};
-
-export const fetchGoogleLocation = async (token, params) => {
-  const url =
-    'https://zonkeapi-c7b6ete9cqfuajeq.canadacentral-01.azurewebsites.net/googlelocation';
-  return await get(url, params, token);
-};
-
-export const getMenus = async (token, outlet_ID, page, limit = 25) => {
-  let queryParams = [];
-
-  if (limit) queryParams.push(`limit=${limit}`);
-  if (page) queryParams.push(`page=${page}`);
-  if (outlet_ID) queryParams.push(`outlet=${outlet_ID}`);
-
-  const queryString = queryParams.length ? `?${queryParams.join('&')}` : '';
-  const url = `${Url.URL_V4}/menus${queryString}`;
-
-  return await get(url, '', token);
-};
-
-export const addMenuAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/menu`;
-  return await post(url, payload, token);
-};
-
-export const updateMenuAPI = async (payload, token, menuId) => {
-  const url = `${Url.URL_V4}/menu/${menuId}`;
-  return await put(url, payload, token);
-};
-
-export const deleteMenuAPI = async (token, menuId) => {
-  const url = `${Url.URL_V4}/menu/${menuId}`;
-  return await del(url, {}, token);
-};
-
-export const merchantDetailsAPI = async token => {
-  const url = `${Url.URL_V4}/merchant`;
-  return await get(url, '', token);
-};
-
-export const decryptedAPI = async (payload, token) => {
-  const url = `${Url.URL_V4}/decrypted`;
-  return await post(url, payload, token);
-};
-
-export const logoutAPI = async token => {
-  const url = `${Url.URL_V4}/logout`;
-  return await post(url, {}, token);
 };

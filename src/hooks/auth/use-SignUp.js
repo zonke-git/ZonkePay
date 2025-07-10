@@ -3,7 +3,7 @@ import {useCallback, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {validateSouthAfricanMobile} from '../../validation/Validation';
 import Toast from 'react-native-root-toast';
-import {ForgotMPIN_API} from '../../api/api';
+import {forgotMPIN_API} from '../../api/api';
 import {getAuthToken} from '../../utils/authStorage';
 import {handleGenerateOTPforMob} from '../../utils/handleGenerateOTPforMob';
 import {Alert, BackHandler} from 'react-native';
@@ -29,12 +29,15 @@ export const useSignUp = () => {
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
-        // Confirm exit
-        Alert.alert('Exit App', 'Are you sure you want to exit the app?', [
-          {text: 'Cancel', style: 'cancel'},
-          {text: 'Yes', onPress: () => BackHandler.exitApp()},
-        ]);
-        return true; // prevent default back behavior
+        if (showForgotPage) {
+          navigation.goBack();
+        } else {
+          Alert.alert('Exit App', 'Are you sure you want to exit the app?', [
+            {text: 'Cancel', style: 'cancel'},
+            {text: 'Yes', onPress: () => BackHandler.exitApp()},
+          ]);
+        }
+        return true;
       };
 
       BackHandler.addEventListener('hardwareBackPress', onBackPress);
@@ -42,7 +45,7 @@ export const useSignUp = () => {
       return () => {
         BackHandler.removeEventListener('hardwareBackPress', onBackPress);
       };
-    }, []),
+    }, [navigation, showForgotPage]),
   );
 
   const isPhoneNumberInvalid = () => {
@@ -73,7 +76,7 @@ export const useSignUp = () => {
         country_code: userInput?.countrieDetails?.phoneCode,
       };
 
-      await ForgotMPIN_API(payload, auth_token)
+      await forgotMPIN_API(payload, auth_token)
         .then(response => {
           if (response) {
             navigation.navigate('OTP');

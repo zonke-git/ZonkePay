@@ -11,8 +11,10 @@ import {
   MpinLogin,
   Onboard,
   OTP,
+  Profile,
   SignUp,
   SplashScreen,
+  UserType,
   WalletCreatedSuccessfully,
   Welcome,
 } from '../screens';
@@ -30,6 +32,7 @@ const AppNavigator = ({initialRouteName}) => {
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="UserType" component={UserType} />
       <Stack.Screen name="Onboard" component={Onboard} />
       <Stack.Screen name="Location" component={Location} />
       <Stack.Screen name="LocationMap" component={LocationMap} />
@@ -46,6 +49,7 @@ const AppNavigator = ({initialRouteName}) => {
         component={MpinCreatedSuccessfully}
       />
       <Stack.Screen name="MainApp" component={BottomTabNavigator} />
+      <Stack.Screen name="Profile" component={Profile} />
     </Stack.Navigator>
   );
 };

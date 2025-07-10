@@ -9,23 +9,25 @@ import {CheckBox, CustomTextField, MessageModal} from '../../../components';
 import colors from '../../../Theme/colors';
 import AuthLayout from '../../layout/AuthLayout';
 import {typography} from '../../../Theme/typography';
-import {setOnBoardDetails} from '../../../redux/slice/onBoardSlice';
+import {setupdateOnBoardDetail} from '../../../redux/slice/onBoardSlice';
 
 const Onboard = () => {
   const {
     loginDetails,
-    dispatch,
+    IsLoading,
     onBoardFormValues,
+    openTermsAndConditionModal,
+
+    dispatch,
     handleLocationNavigation,
     handleFormSubmit,
-    openTermsAndConditionModal,
     setOpenTermsAndConditionModal,
   } = useOnboard();
 
-  console.log('onBoardFormValues', onBoardFormValues);
+  // console.log('onBoardFormValues', onBoardFormValues);
 
   return (
-    <AuthLayout title={i18n.t('HelloLetsGetYouOnboard')}>
+    <AuthLayout title={i18n.t('HelloLetsGetYouOnboard')} loader={IsLoading}>
       <View style={styles.container}>
         <Formik
           initialValues={onBoardFormValues}
@@ -53,13 +55,14 @@ const Onboard = () => {
                 value={values[fieldName]}
                 onChangeText={text => {
                   setFieldValue(fieldName, text);
-                  dispatch(setOnBoardDetails({[fieldName]: text}));
+                  dispatch(setupdateOnBoardDetail({[fieldName]: text}));
                 }}
                 onBlur={handleBlur(fieldName)}
                 error={touched[fieldName] && errors[fieldName]}
                 keyboardType={options.keyboardType}
                 multiline={options.multiline}
                 numberOfLines={options.numberOfLines}
+                editableFiled={options.editable}
               />
             );
             return (
@@ -68,10 +71,12 @@ const Onboard = () => {
                   <View>
                     {renderTextField('firstName', i18n.t('FirstName'), {
                       required: true,
+                      editable: false,
                     })}
 
                     {renderTextField('lastName', i18n.t('LastName'), {
                       required: true,
+                      editable: false,
                     })}
 
                     {renderTextField(
@@ -80,7 +85,7 @@ const Onboard = () => {
                       {},
                     )}
 
-                    <CustomTextField
+                    {/* <CustomTextField
                       label={`CIPC ${i18n.t('RegistrationNumber')}`}
                       required
                       placeholder="CIPC Registration Number"
@@ -107,7 +112,7 @@ const Onboard = () => {
 
                         setFieldValue('CIPCRegistrationNumber', formatted);
                         dispatch(
-                          setOnBoardDetails({
+                          setupdateOnBoardDetail({
                             CIPCRegistrationNumber: formatted,
                           }),
                         );
@@ -120,7 +125,7 @@ const Onboard = () => {
                         // businessDetails_SubmitErrorMessage?.registration_number
                       }
                       keyboardType="number-pad"
-                    />
+                    /> */}
 
                     {renderTextField('email', i18n.t('EmailID'), {
                       required: true,
@@ -193,7 +198,7 @@ const Onboard = () => {
                         const newValue =
                           !values?.termsAndConditions_PrivacyPolicyCheckBox;
                         dispatch(
-                          setOnBoardDetails({
+                          setupdateOnBoardDetail({
                             termsAndConditions_PrivacyPolicyCheckBox: newValue,
                           }),
                         );

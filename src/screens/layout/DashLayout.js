@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-// import {SafeAreaView} from 'react-native-safe-area-context';
+import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
@@ -16,6 +16,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import colors from '../../Theme/colors';
 import {typography} from '../../Theme/typography';
 import FullScreenLoader from '../../components/Loader/FullScreenLoader';
+import Toast from 'react-native-root-toast';
+import useCustomerDetails from '../../utils/callAPI/useMerchantDetails';
+import {customerDetailsByID} from '../../redux/action/commonDetailsActions';
 
 const {height} = Dimensions.get('window');
 const verticalScale = size => (height / 812) * size;
@@ -32,28 +35,28 @@ const DashLayout = ({
   name = '',
   showsScrollIndicator = false,
   backButtonFunction,
-  showFilter = false,
 }) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  // const merchant_details = useSelector(
-  //   state => state?.businessProfile?.merchantDetailsdata?.merchant,
-  // );
+  const merchant_details = useSelector(
+    state => state?.businessProfile?.merchantDetailsdata?.merchant,
+  );
   const token = useSelector(state => state?.auth?.authTokenInfo);
   const handleBack = backButtonFunction || (() => navigation.goBack());
-  const [openFilterOtions, setOpenFilterOtions] = useState(false);
 
-  // console.log('merchant_details', merchant_details);
+  const customerDetails = useSelector(
+    state =>
+      state.commonDetails?.customerDetails_SubmitSuccessMessage?.merchant,
+  );
 
-  // useEffect(() => {
-  //   dispatch(getMerchantDetails(token));
-  // }, [dispatch, token]);
+  console.log('customerDetails', customerDetails);
+
+  useEffect(() => {
+    dispatch(customerDetailsByID(token));
+  }, [dispatch, token]);
 
   return (
-    <View style={{flex: 1}}>
-      {/* <SafeAreaView
-        style={styles.container}
-        edges={['bottom', 'left', 'right']}> */}
+    <SafeAreaView style={styles.container} edges={['bottom', 'left', 'right']}>
       {loader && <FullScreenLoader />}
 
       <LinearGradient
@@ -71,20 +74,39 @@ const DashLayout = ({
                 <View>
                   <Text style={styles.hiTxt}>{'Hi,'}</Text>
                   <Text style={styles.nameTxt}>
-                    {'merchant_details?.first_name' +
+                    {customerDetails?.first_name +
                       ' ' +
-                      'merchant_details?.last_name'}
+                      customerDetails?.last_name}
                   </Text>
                 </View>
                 <View style={styles.iconView}>
-                  <Image
-                    source={require('../../assets/images/notifi.png')}
-                    style={styles.notifiIcon}
-                  />
-                  <Image
-                    source={require('../../assets/images/headPhone.png')}
-                    style={styles.headPhoneIcon}
-                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      Toast.hide();
+                      Toast.show('Coming Soon', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                      });
+                    }}>
+                    <Image
+                      source={require('../../assets/images/notifi.png')}
+                      style={styles.notifiIcon}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      Toast.hide();
+                      Toast.show('Coming Soon', {
+                        duration: Toast.durations.SHORT,
+                        position: Toast.positions.BOTTOM,
+                      });
+                    }}>
+                    <Image
+                      source={require('../../assets/images/headPhone.png')}
+                      style={styles.headPhoneIcon}
+                    />
+                  </TouchableOpacity>
                 </View>
               </View>
             ) : null}
@@ -104,35 +126,18 @@ const DashLayout = ({
               )}
               {subTitle && <Text style={styles.subTitleTxt}>{subTitle}</Text>}
             </View>
-
-            {showFilter && (
-              <TouchableOpacity onPress={() => setOpenFilterOtions(true)}>
-                <Image
-                  source={require('../../assets/images/settings-sliders.png')}
-                  style={styles.backButtonIcon}
-                />
-              </TouchableOpacity>
-            )}
-            {openFilterOtions && (
-              <View style={styles.filterOptions}>
-                <Text>Sort</Text>
-              </View>
-            )}
           </View>
         </View>
       </LinearGradient>
 
       <View style={[styles.contentView, containerStyle]}>
         {children}
-
         {/* <ScrollView
           showsVerticalScrollIndicator={showsScrollIndicator}
           contentContainerStyle={styles.scrollContent}>
-          {children}
         </ScrollView> */}
       </View>
-      {/* </SafeAreaView> */}
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -176,7 +181,7 @@ const styles = StyleSheet.create({
   },
   subTitleTxt: {
     fontSize: 12,
-    color: colors.RichBlack,
+    color: colors.white,
     lineHeight: 16.8,
     letterSpacing: -0.12,
     fontFamily: typography.Medium_500,
@@ -224,11 +229,6 @@ const styles = StyleSheet.create({
     height: 24,
     width: 24,
     marginLeft: 16,
-  },
-  filterOptions: {
-    position: 'absolute',
-    right: 10,
-    top: 100,
   },
 });
 

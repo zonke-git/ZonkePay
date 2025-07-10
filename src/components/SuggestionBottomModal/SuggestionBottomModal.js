@@ -101,7 +101,10 @@ const SuggestionBottomModal = ({
               {`Max ${maxSelections} selections`}
             </Text>
           )}
-          <ScrollView contentContainerStyle={{paddingBottom: 20}}>
+          <ScrollView
+            contentContainerStyle={{
+              paddingBottom: 20,
+            }}>
             {options.map((item, index) => {
               const label = getOptionLabel(item);
               const isSelected = isItemSelected(item);
@@ -117,6 +120,7 @@ const SuggestionBottomModal = ({
                   style={[
                     styles.itemContainer,
                     {
+                      paddingHorizontal: 16,
                       backgroundColor: isSelected
                         ? colors.ReddishOrange
                         : themeColors.unselected,
@@ -190,7 +194,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 16,
     paddingBottom: Platform.OS === 'ios' ? 30 : 20,
     height: '50%',
-    paddingHorizontal: 16,
   },
   handle: {
     width: 48,
@@ -208,6 +211,7 @@ const styles = StyleSheet.create({
     letterSpacing: 12 * (0 / 100),
     fontFamily: typography.Bold_700,
     marginBottom: 16,
+    paddingHorizontal: 16,
   },
   selectionInfo: {
     textAlign: 'center',

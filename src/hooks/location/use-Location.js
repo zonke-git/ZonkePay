@@ -3,7 +3,7 @@ import {useCallback, useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   setBusinessDetails,
-  setOnBoardDetails,
+  setupdateOnBoardDetail,
 } from '../../redux/slice/onBoardSlice';
 import {BackHandler, PermissionsAndroid, Platform} from 'react-native';
 import Toast from 'react-native-root-toast';
@@ -80,7 +80,7 @@ export const useLocation = () => {
     console.log('values', values);
 
     dispatch(
-      setOnBoardDetails({
+      setupdateOnBoardDetail({
         location: values?.name,
         location_name: values?.name,
       }),

@@ -1,6 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
 import {useEffect, useState} from 'react';
-import {CreateMPIN_API} from '../../api/api';
 import {useSelector} from 'react-redux';
 import Toast from 'react-native-root-toast';
 import {
@@ -11,6 +10,7 @@ import {
 } from '../../utils/authStorage';
 import {Alert} from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
+import {createMPIN_API} from '../../api/api';
 
 const rnBiometrics = new ReactNativeBiometrics();
 
@@ -88,7 +88,7 @@ export const useMpin = () => {
       };
       console.log('payload', payload);
 
-      CreateMPIN_API(payload, auth_token)
+      createMPIN_API(payload, auth_token)
         .then(async response => {
           // console.log('MPIN Response :', response);
           if (response?.success) {
